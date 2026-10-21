@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<script src="assets/theme.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>정리본 4. Lists, Stacks, Queues — CSED233</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/study-note.css">
+<link rel="stylesheet" href="assets/csed233-legacy.css">
+<link rel="stylesheet" href="assets/v5-layer.css">
+</head>
+<body>
+<div class="paper"><article>
+<div class="phead"><a class="to-home" href="index.html">&larr; 목차</a><span class="phead-c">정리본 4. Lists, Stacks, Queues</span><span class="phead-r">CSED233 &middot; 데이터구조 &middot; <a class="to-root" href="https://cmkang131.github.io/">전체 홈&#8599;</a></span></div>
+<div class="body notes">
+<div class="t-course">CSED233 · 데이터구조 · 포스텍</div>
+<h1 class="t-title">정리본 4. Lists, Stacks, Queues</h1>
+<div class="t-sub">선형 자료구조 3종: List ADT와 구현 방식, Stack(LIFO), Queue(FIFO), Deque.</div>
+
+<section class="part">
+<h2>1. List(리스트) — 순서가 있는 컬렉션</h2>
+<div class="box defbox">
+  
+  <p><strong class="k-blue">List(리스트)</strong>: 순서가 있는 유한 개의 원소 모음. L = ⟨ a₁, a₂, …, aₙ ⟩. 중복 허용, 공 리스트(n=0) 가능.</p>
+</div>
+
+<div class="figwrap">
+<svg viewBox="0 0 560 96" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Sans KR',sans-serif">
+  <g stroke="#1f2328" fill="#fff">
+    <rect x="60" y="24" width="60" height="34" rx="6"/><rect x="130" y="24" width="60" height="34" rx="6"/><rect x="228" y="24" width="60" height="34" rx="6"/><rect x="298" y="24" width="60" height="34" rx="6"/>
+  </g>
+  <g font-size="13.5" text-anchor="middle" fill="#1f2328">
+    <text x="90" y="45">20</text><text x="160" y="45">23</text><text x="258" y="45">12</text><text x="328" y="45">15</text>
+    <text x="90" y="76" font-size="11" fill="#6b7280">0</text><text x="160" y="76" font-size="11" fill="#6b7280">1</text><text x="258" y="76" font-size="11" fill="#6b7280">2</text><text x="328" y="76" font-size="11" fill="#6b7280">3</text>
+  </g>
+  <line x1="209" y1="18" x2="209" y2="64" stroke="#1f2328" stroke-width="2"/>
+  <text x="209" y="12" text-anchor="middle" font-size="11.5" font-weight="700" fill="#1f2328">Fence |</text>
+  <text x="60" y="12" font-size="11.5" fill="#6b7280">Head(처음) →</text>
+  <text x="358" y="12" font-size="11.5" fill="#6b7280">← Tail(끝)</text>
+</svg>
+<div class="figcap">L = ⟨ 20, 23, | 12, 15 ⟩ — Fence는 "처리 완료 구간"과 "미처리 구간"의 경계. Insert(10)은 Fence 위치에 삽입: ⟨ 20, 23, 10 | 12, 15 ⟩</div>
+</div>
+
+<div class="box warnbox">
+  <p class="xlead">Sorted vs Ordered</p>
+  <ul>
+  <li><strong class="k-blue">Sorted List(정렬된 리스트)</strong>: 원소가 값 기준 오름차순. ⟨ 85, 88, 90, 92, 95 ⟩. 저절로 유지되지 않고 정렬이 필요.</li>
+  <li><strong class="k-blue">Ordered List(순서 리스트)</strong>: 삽입 순서만 유지, 값은 무관. ⟨ 90, 85, 95, 88, 92 ⟩.</li>
+  <li>"순서가 있다(ordered)"는 말이 "정렬됐다(sorted)"는 뜻이 아니다.</li>
+  </ul>
+</div>
+
+<h3>1.1 List의 기본 연산 8가지</h3>
+<table>
+<tr><td>연산</td><td>설명</td><td>시간복잡도</td></tr>
+<tr><td>Insert(x, p, L)</td><td>인덱스 p에 x 삽입</td><td>O(n) 또는 O(1) — 구현에 따라</td></tr>
+<tr><td>Delete(p, L)</td><td>인덱스 p의 원소 삭제</td><td>O(n) 또는 O(1) — 구현에 따라</td></tr>
+<tr><td>Search(x, L)</td><td>원소 x 찾기</td><td>O(n)</td></tr>
+<tr><td>Locate(x, L)</td><td>x의 인덱스 반환</td><td>O(n)</td></tr>
+<tr><td>Retrieve(p, L)</td><td>인덱스 p의 값 반환</td><td>배열 O(1) · 연결 리스트 O(n)</td></tr>
+<tr><td>Next(p, L)</td><td>p의 다음 인덱스</td><td>O(1)</td></tr>
+<tr><td>Previous(p, L)</td><td>p의 이전 인덱스</td><td>O(1)</td></tr>
+<tr><td>MakeNull(L)</td><td>L을 공 리스트로</td><td>O(n)</td></tr>
+</table>
+</section>
+
+<section class="part">
+<h2>2. 구현: 배열 기반 vs 포인터 기반</h2>
+
+<h3>2.1 배열 기반 — 연속 메모리</h3>
+<div class="figwrap">
+<svg viewBox="0 0 700 100" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Sans KR',sans-serif">
+  <text x="10" y="16" font-size="12" font-weight="700" fill="#1f2328">Insert(10, 위치 2)</text>
+  <g stroke="#1f2328" fill="#fff">
+    <rect x="10" y="26" width="42" height="28"/><rect x="52" y="26" width="42" height="28"/><rect x="94" y="26" width="42" height="28"/><rect x="136" y="26" width="42" height="28"/>
+  </g>
+  <g font-size="12.5" text-anchor="middle"><text x="31" y="44">20</text><text x="73" y="44">23</text><text x="115" y="44">12</text><text x="157" y="44">15</text></g>
+  <text x="10" y="70" font-size="11" fill="#6b7280">Before</text>
+  <line x1="190" y1="40" x2="224" y2="40" stroke="#6b7280" stroke-width="1.5"/><path d="M220 36 L228 40 L220 44 Z" fill="#6b7280"/>
+  <g stroke="#1f2328" fill="#fff">
+    <rect x="234" y="26" width="42" height="28"/><rect x="276" y="26" width="42" height="28"/><rect x="318" y="26" width="42" height="28" fill="#ffffff"/><rect x="360" y="26" width="42" height="28"/><rect x="402" y="26" width="42" height="28"/>
+  </g>
+  <g font-size="12.5" text-anchor="middle"><text x="255" y="44">20</text><text x="297" y="44">23</text><text x="339" y="44" fill="#1f2328">?</text><text x="381" y="44">12</text><text x="423" y="44">15</text></g>
+  <text x="234" y="70" font-size="11" fill="#6b7280">Step 1: 인덱스 2부터 한 칸씩 Shift → O(n)</text>
+  <line x1="450" y1="40" x2="470" y2="40" stroke="#6b7280" stroke-width="1.5"/><path d="M466 36 L474 40 L466 44 Z" fill="#6b7280"/>
+  <g stroke="#1f2328" fill="#fff">
+    <rect x="480" y="26" width="42" height="28"/><rect x="522" y="26" width="42" height="28"/><rect x="564" y="26" width="42" height="28" fill="#ffffff"/><rect x="606" y="26" width="42" height="28"/><rect x="648" y="26" width="42" height="28"/>
+  </g>
+  <g font-size="12.5" text-anchor="middle"><text x="501" y="44">20</text><text x="543" y="44">23</text><text x="585" y="44" fill="#1f2328">10</text><text x="627" y="44">12</text><text x="669" y="44">15</text></g>
+  <text x="480" y="70" font-size="11" fill="#6b7280">Step 2: 빈자리에 10 삽입</text>
+</svg>
+<div class="figcap">배열 삽입: Shift 비용 때문에 O(n). 맨 뒤 삽입만 O(1).</div>
+</div>
+
+<h3>2.2 포인터 기반 — 연결 리스트</h3>
+<div class="figwrap">
+<svg viewBox="0 0 640 120" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Sans KR',sans-serif">
+  <g stroke="#1f2328" fill="#fff">
+    <rect x="10" y="20" width="56" height="30" rx="5"/><rect x="120" y="20" width="56" height="30" rx="5"/><rect x="300" y="20" width="56" height="30" rx="5"/><rect x="410" y="20" width="56" height="30" rx="5"/><rect x="520" y="20" width="56" height="30" rx="5"/>
+    <rect x="215" y="72" width="56" height="30" rx="5" fill="#ffffff"/>
+  </g>
+  <g font-size="12.5" text-anchor="middle" fill="#1f2328">
+    <text x="38" y="39">20|•</text><text x="148" y="39">23|•</text><text x="328" y="39">12|•</text><text x="438" y="39">15|•</text>
+    <text x="243" y="91" fill="#1f2328">10|•</text>
+  </g>
+  <g stroke="#1f2328" stroke-width="1.3">
+    <line x1="66" y1="35" x2="114" y2="35"/><path d="M110 31 L120 35 L110 39 Z" fill="#1f2328" stroke="none"/>
+    <line x1="356" y1="35" x2="404" y2="35"/><path d="M400 31 L410 35 L400 39 Z" fill="#1f2328" stroke="none"/>
+    <line x1="466" y1="35" x2="514" y2="35"/><path d="M510 31 L520 35 L510 39 Z" fill="#1f2328" stroke="none"/>
+  </g>
+  <text x="582" y="40" font-size="11.5" fill="#6b7280">NULL</text>
+  <g stroke="#1f2328" stroke-width="1.5" stroke-dasharray="4 3">
+    <path d="M176 42 C 190 60, 200 66, 212 74" fill="none"/><path d="M214 68 L216 76 L208 72 Z" fill="#1f2328" stroke="none"/>
+    <path d="M271 78 C 285 72, 292 60, 300 48" fill="none"/><path d="M296 50 L302 44 L304 52 Z" fill="#1f2328" stroke="none"/>
+  </g>
+  <text x="10" y="110" font-size="11.5" fill="#6b7280">Step 1: 새 노드 생성 → Step 2: 포인터 2개만 수정 (23의 next → 10, 10의 next → 12) → O(1), 위치를 이미 알 때</text>
+</svg>
+<div class="figcap">연결 리스트 삽입: 데이터 이동 없이 포인터 수정만</div>
+</div>
+
+<div class="box concept">
+  <p class="xlead">Dummy Header(더미 헤더)</p>
+  <p>연결 리스트 맨 앞에 데이터가 없는 빈 노드를 두는 기법. 더미가 없으면 "첫 번째 노드에 삽입" 같은 경우에 <code>if (p == null)</code> 특수 분기가 필요하다.</p>
+  <p>구조: <code>L → [dummy] → a → b → c</code> — 모든 삽입/삭제가 같은 코드 경로를 타게 된다.</p>
+</div>
+
+<h3>2.3 Cursor(커서) 기반 — 배열로 포인터 흉내</h3>
+<p>배열 인덱스를 포인터처럼 쓰는 기법. 인덱스 0은 NULL 역할로 예약한다.</p>
+<table>
+<tr><td>Index</td><td>Data</td><td>Next</td><td>비고</td></tr>
+<tr><td>0</td><td>—</td><td>—</td><td>NULL 역할 (예약)</td></tr>
+<tr><td>1</td><td>'A'</td><td>4</td><td>L1의 첫 노드</td></tr>
+<tr><td>2</td><td>'X'</td><td>6</td><td>L2의 첫 노드</td></tr>
+<tr><td>3</td><td>—</td><td>5</td><td>Free(빈 공간) 리스트 시작</td></tr>
+<tr><td>4</td><td>'B'</td><td>7</td><td>L1의 둘째 노드</td></tr>
+<tr><td>5</td><td>—</td><td>0</td><td>Free 리스트 끝</td></tr>
+<tr><td>6</td><td>'Y'</td><td>0</td><td>L2의 끝</td></tr>
+<tr><td>7</td><td>'C'</td><td>0</td><td>L1의 끝</td></tr>
+</table>
+<p class="refline">읽는 법: L1 = 1(A) → 4(B) → 7(C, next 0 = 끝). L2 = 2(X) → 6(Y). Free = 3 → 5.</p>
+
+<h3>2.4 성능 비교</h3>
+<table>
+<tr><td>연산</td><td>배열(Array)</td><td>포인터(링크드)</td><td>선택 기준</td></tr>
+<tr><td>Insert / Delete</td><td>O(n)</td><td>O(1) (위치 알 때)</td><td>삽입·삭제 많으면 링크드</td></tr>
+<tr><td>Search / Locate</td><td>O(n)</td><td>O(n)</td><td>동등</td></tr>
+<tr><td>Random Access</td><td>O(1)</td><td>O(n)</td><td>접근 많으면 배열</td></tr>
+<tr><td>메모리</td><td>연속</td><td>분산</td><td>캐시 효율은 배열</td></tr>
+<tr><td>구현</td><td>간단</td><td>복잡</td><td>학습 곡선은 배열</td></tr>
+</table>
+</section>
+
+<section class="part">
+<h2>3. Stack(스택) — LIFO</h2>
+<div class="box defbox">
+  
+  <p><strong class="k-blue">Stack(스택)</strong>: Last In First Out — 마지막에 들어온 것이 먼저 나간다. 현실의 접시 쌓기.</p>
+</div>
+<div class="figwrap">
+<svg viewBox="0 0 640 170" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Sans KR',sans-serif">
+  <g stroke="#1f2328" fill="#fff">
+    <rect x="20" y="24" width="70" height="26"/><rect x="20" y="50" width="70" height="26"/><rect x="20" y="76" width="70" height="26"/><rect x="20" y="102" width="70" height="26"/>
+  </g>
+  <g font-size="12.5" text-anchor="middle"><text x="55" y="41">d</text><text x="55" y="67">c</text><text x="55" y="93">b</text><text x="55" y="119">a</text></g>
+  <text x="98" y="41" font-size="11.5" fill="#6b7280">← Top (pop/push)</text>
+  <text x="98" y="119" font-size="11.5" fill="#6b7280">← Bottom</text>
+  <text x="20" y="150" font-size="11.5" fill="#6b7280">push(a) → push(b) → push(c) → push(d) 순으로 넣으면 pop()은 d부터</text>
+  <line x1="270" y1="80" x2="300" y2="80" stroke="#9aa1aa" stroke-width="1.5"/>
+  <text x="330" y="20" font-size="12" font-weight="700" fill="#1f2328">포인터 구현</text>
+  <g stroke="#1f2328" fill="#fff">
+    <rect x="330" y="30" width="70" height="28" rx="5"/><rect x="450" y="30" width="70" height="28" rx="5"/><rect x="560" y="30" width="70" height="28" rx="5" style="display:none"/><rect x="560" y="30" width="70" height="28" rx="5"/>
+  </g>
+  <g font-size="12" text-anchor="middle"><text x="365" y="48">data|•</text><text x="485" y="48">data|•</text><text x="595" y="48">data|•</text></g>
+  <g stroke="#1f2328" stroke-width="1.3">
+    <line x1="400" y1="44" x2="444" y2="44"/><path d="M440 40 L450 44 L440 48 Z" fill="#1f2328" stroke="none"/>
+    <line x1="520" y1="44" x2="554" y2="44"/><path d="M550 40 L560 44 L550 48 Z" fill="#1f2328" stroke="none"/>
+  </g>
+  <text x="330" y="76" font-size="11.5" fill="#6b7280">Top → 노드 체인 → NULL(바닥)</text>
+</svg>
+</div>
+<ul>
+<li>push(x), pop(), top(), isEmpty() — <span class="hl">모든 연산 O(1)</span>.</li>
+<li>응용: 함수 호출 스택(Call Stack — main → funcA → funcB, 종료는 역순), 괄호 검증( <code>( [ { } ] )</code> 올바름 / <code>( [ } ] )</code> 오류 ), Undo.</li>
+</ul>
+
+<div class="box example">
+  <p class="xlead">예제 · Multiple Stacks — 배열 하나에 스택 둘</p>
+  <p>1차원 배열의 양 끝에서 마주 보며 자라게 하면 공간을 공유할 수 있다.</p>
+<pre><code>[ Stack1 →  ...빈 공간...  ← Stack2 ]
+  Top1 →                    ← Top2
+  [0]                        [n-1]</code></pre>
+  <p><strong class="k-red">Overflow 조건: Top1 + 1 == Top2</strong> (두 탑이 맞닿는 순간). 한쪽이 적게 쓰면 다른 쪽이 남은 공간을 쓸 수 있어 메모리 효율적.</p>
+</div>
+</section>
+
+<section class="part">
+<h2>4. Queue(큐) — FIFO</h2>
+<div class="box defbox">
+  
+  <p><strong class="k-blue">Queue(큐)</strong>: First In First Out — 먼저 들어온 것이 먼저 나간다. 현실의 은행 번호표.</p>
+</div>
+<ul>
+<li><code>enqueue(x)</code>: Rear(뒤)에 삽입 · <code>dequeue()</code>: Front(앞)에서 제거·반환 · 모두 O(1).</li>
+<li>응용: 프린트 대기열, 콜센터, BFS.</li>
+</ul>
+
+<h3>4.1 Circular Queue(원형 큐)</h3>
+<p>일반 배열 큐는 enqueue/dequeue를 반복하면 Front와 Rear가 계속 오른쪽으로 이동해 <strong class="k-red">앞에 빈칸이 있어도 Rear가 끝에 닿으면 삽입 불가</strong>가 된다. 해결책은 배열 끝과 처음을 논리적으로 연결하는 것 — Modulo(나머지) 연산으로 인덱스를 돌린다.</p>
+
+<div class="figwrap">
+<svg viewBox="0 0 300 240" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Sans KR',sans-serif">
+  <g stroke="#1f2328" fill="#fff">
+    <rect x="126" y="16" width="48" height="30" rx="6"/>
+    <rect x="196" y="72" width="48" height="30" rx="6"/>
+    <rect x="164" y="164" width="48" height="30" rx="6"/>
+    <rect x="88" y="164" width="48" height="30" rx="6"/>
+    <rect x="56" y="72" width="48" height="30" rx="6"/>
+  </g>
+  <g font-size="12.5" text-anchor="middle" fill="#1f2328">
+    <text x="150" y="36">[2]</text><text x="220" y="92">[3]</text><text x="188" y="184">[4]</text><text x="112" y="184">[0]</text><text x="80" y="92">[1]</text>
+  </g>
+  <g stroke="#9aa1aa" stroke-width="1.4" fill="none">
+    <path d="M178 40 Q 200 52 202 68"/><path d="M198 64 L204 72 L206 62 Z" fill="#9aa1aa" stroke="none"/>
+    <path d="M222 106 Q 218 140 206 162"/><path d="M210 158 L204 166 L202 156 Z" fill="#9aa1aa" stroke="none"/>
+    <path d="M160 180 L140 180"/><path d="M146 176 L138 180 L146 184 Z" fill="#9aa1aa" stroke="none"/>
+    <path d="M96 160 Q 78 130 78 106"/><path d="M74 112 L78 102 L82 112 Z" fill="#9aa1aa" stroke="none"/>
+    <path d="M104 68 Q 108 52 122 44"/><path d="M118 50 L126 42 L128 52 Z" fill="#9aa1aa" stroke="none"/>
+  </g>
+  <text x="150" y="120" text-anchor="middle" font-size="11.5" fill="#6b7280">4 다음은 다시 0</text>
+</svg>
+<div class="figcap">원형 큐: 인덱스가 끝나면 처음으로</div>
+</div>
+
+<div class="box formula">
+  <p class="xlead">인덱스 갱신 공식</p>
+  <div class="mjx-display"><span class="mjx"><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="28.031ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 12389.6 1000"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="TeXAtom" data-mjx-texclass="ORD"><g data-mml-node="mi"><path data-c="52" d="M130 622Q123 629 119 631T103 634T60 637H27V683H202H236H300Q376 683 417 677T500 648Q595 600 609 517Q610 512 610 501Q610 468 594 439T556 392T511 361T472 343L456 338Q459 335 467 332Q497 316 516 298T545 254T559 211T568 155T578 94Q588 46 602 31T640 16H645Q660 16 674 32T692 87Q692 98 696 101T712 105T728 103T732 90Q732 59 716 27T672 -16Q656 -22 630 -22Q481 -16 458 90Q456 101 456 163T449 246Q430 304 373 320L363 322L297 323H231V192L232 61Q238 51 249 49T301 46H334V0H323Q302 3 181 3Q59 3 38 0H27V46H60Q102 47 111 49T130 61V622ZM491 499V509Q491 527 490 539T481 570T462 601T424 623T362 636Q360 636 340 636T304 637H283Q238 637 234 628Q231 624 231 492V360H289Q390 360 434 378T489 456Q491 467 491 499Z"></path><path data-c="65" d="M28 218Q28 273 48 318T98 391T163 433T229 448Q282 448 320 430T378 380T406 316T415 245Q415 238 408 231H126V216Q126 68 226 36Q246 30 270 30Q312 30 342 62Q359 79 369 104L379 128Q382 131 395 131H398Q415 131 415 121Q415 117 412 108Q393 53 349 21T250 -11Q155 -11 92 58T28 218ZM333 275Q322 403 238 411H236Q228 411 220 410T195 402T166 381T143 340T127 274V267H333V275Z" transform="translate(736,0)"></path><path data-c="61" d="M137 305T115 305T78 320T63 359Q63 394 97 421T218 448Q291 448 336 416T396 340Q401 326 401 309T402 194V124Q402 76 407 58T428 40Q443 40 448 56T453 109V145H493V106Q492 66 490 59Q481 29 455 12T400 -6T353 12T329 54V58L327 55Q325 52 322 49T314 40T302 29T287 17T269 6T247 -2T221 -8T190 -11Q130 -11 82 20T34 107Q34 128 41 147T68 188T116 225T194 253T304 268H318V290Q318 324 312 340Q290 411 215 411Q197 411 181 410T156 406T148 403Q170 388 170 359Q170 334 154 320ZM126 106Q126 75 150 51T209 26Q247 26 276 49T315 109Q317 116 318 175Q318 233 317 233Q309 233 296 232T251 223T193 203T147 166T126 106Z" transform="translate(1180,0)"></path><path data-c="72" d="M36 46H50Q89 46 97 60V68Q97 77 97 91T98 122T98 161T98 203Q98 234 98 269T98 328L97 351Q94 370 83 376T38 385H20V408Q20 431 22 431L32 432Q42 433 60 434T96 436Q112 437 131 438T160 441T171 442H174V373Q213 441 271 441H277Q322 441 343 419T364 373Q364 352 351 337T313 322Q288 322 276 338T263 372Q263 381 265 388T270 400T273 405Q271 407 250 401Q234 393 226 386Q179 341 179 207V154Q179 141 179 127T179 101T180 81T180 66V61Q181 59 183 57T188 54T193 51T200 49T207 48T216 47T225 47T235 46T245 46H276V0H267Q249 3 140 3Q37 3 28 0H20V46H36Z" transform="translate(1680,0)"></path></g></g><g data-mml-node="mo" transform="translate(2349.8,0)"><path data-c="2190" d="M944 261T944 250T929 230H165Q167 228 182 216T211 189T244 152T277 96T303 25Q308 7 308 0Q308 -11 288 -11Q281 -11 278 -11T272 -7T267 2T263 21Q245 94 195 151T73 236Q58 242 55 247Q55 254 59 257T73 264Q121 283 158 314T215 375T247 434T264 480L267 497Q269 503 270 505T275 509T288 511Q308 511 308 500Q308 493 303 475Q293 438 278 406T246 352T215 315T185 287T165 270H929Q944 261 944 250Z"></path></g><g data-mml-node="mo" transform="translate(3627.6,0)"><path data-c="28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path></g><g data-mml-node="TeXAtom" data-mjx-texclass="ORD" transform="translate(4016.6,0)"><g data-mml-node="mi"><path data-c="52" d="M130 622Q123 629 119 631T103 634T60 637H27V683H202H236H300Q376 683 417 677T500 648Q595 600 609 517Q610 512 610 501Q610 468 594 439T556 392T511 361T472 343L456 338Q459 335 467 332Q497 316 516 298T545 254T559 211T568 155T578 94Q588 46 602 31T640 16H645Q660 16 674 32T692 87Q692 98 696 101T712 105T728 103T732 90Q732 59 716 27T672 -16Q656 -22 630 -22Q481 -16 458 90Q456 101 456 163T449 246Q430 304 373 320L363 322L297 323H231V192L232 61Q238 51 249 49T301 46H334V0H323Q302 3 181 3Q59 3 38 0H27V46H60Q102 47 111 49T130 61V622ZM491 499V509Q491 527 490 539T481 570T462 601T424 623T362 636Q360 636 340 636T304 637H283Q238 637 234 628Q231 624 231 492V360H289Q390 360 434 378T489 456Q491 467 491 499Z"></path><path data-c="65" d="M28 218Q28 273 48 318T98 391T163 433T229 448Q282 448 320 430T378 380T406 316T415 245Q415 238 408 231H126V216Q126 68 226 36Q246 30 270 30Q312 30 342 62Q359 79 369 104L379 128Q382 131 395 131H398Q415 131 415 121Q415 117 412 108Q393 53 349 21T250 -11Q155 -11 92 58T28 218ZM333 275Q322 403 238 411H236Q228 411 220 410T195 402T166 381T143 340T127 274V267H333V275Z" transform="translate(736,0)"></path><path data-c="61" d="M137 305T115 305T78 320T63 359Q63 394 97 421T218 448Q291 448 336 416T396 340Q401 326 401 309T402 194V124Q402 76 407 58T428 40Q443 40 448 56T453 109V145H493V106Q492 66 490 59Q481 29 455 12T400 -6T353 12T329 54V58L327 55Q325 52 322 49T314 40T302 29T287 17T269 6T247 -2T221 -8T190 -11Q130 -11 82 20T34 107Q34 128 41 147T68 188T116 225T194 253T304 268H318V290Q318 324 312 340Q290 411 215 411Q197 411 181 410T156 406T148 403Q170 388 170 359Q170 334 154 320ZM126 106Q126 75 150 51T209 26Q247 26 276 49T315 109Q317 116 318 175Q318 233 317 233Q309 233 296 232T251 223T193 203T147 166T126 106Z" transform="translate(1180,0)"></path><path data-c="72" d="M36 46H50Q89 46 97 60V68Q97 77 97 91T98 122T98 161T98 203Q98 234 98 269T98 328L97 351Q94 370 83 376T38 385H20V408Q20 431 22 431L32 432Q42 433 60 434T96 436Q112 437 131 438T160 441T171 442H174V373Q213 441 271 441H277Q322 441 343 419T364 373Q364 352 351 337T313 322Q288 322 276 338T263 372Q263 381 265 388T270 400T273 405Q271 407 250 401Q234 393 226 386Q179 341 179 207V154Q179 141 179 127T179 101T180 81T180 66V61Q181 59 183 57T188 54T193 51T200 49T207 48T216 47T225 47T235 46T245 46H276V0H267Q249 3 140 3Q37 3 28 0H20V46H36Z" transform="translate(1680,0)"></path></g></g><g data-mml-node="mo" transform="translate(6310.8,0)"><path data-c="2B" d="M56 237T56 250T70 270H369V420L370 570Q380 583 389 583Q402 583 409 568V270H707Q722 262 722 250T707 230H409V-68Q401 -82 391 -82H389H387Q375 -82 369 -68V230H70Q56 237 56 250Z"></path></g><g data-mml-node="mn" transform="translate(7311,0)"><path data-c="31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z"></path></g><g data-mml-node="mo" transform="translate(7811,0)"><path data-c="29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path></g><g data-mml-node="mo" transform="translate(8477.8,0)"><path data-c="6D" d="M41 46H55Q94 46 102 60V68Q102 77 102 91T102 122T103 161T103 203Q103 234 103 269T102 328V351Q99 370 88 376T43 385H25V408Q25 431 27 431L37 432Q47 433 65 434T102 436Q119 437 138 438T167 441T178 442H181V402Q181 364 182 364T187 369T199 384T218 402T247 421T285 437Q305 442 336 442Q351 442 364 440T387 434T406 426T421 417T432 406T441 395T448 384T452 374T455 366L457 361L460 365Q463 369 466 373T475 384T488 397T503 410T523 422T546 432T572 439T603 442Q729 442 740 329Q741 322 741 190V104Q741 66 743 59T754 49Q775 46 803 46H819V0H811L788 1Q764 2 737 2T699 3Q596 3 587 0H579V46H595Q656 46 656 62Q657 64 657 200Q656 335 655 343Q649 371 635 385T611 402T585 404Q540 404 506 370Q479 343 472 315T464 232V168V108Q464 78 465 68T468 55T477 49Q498 46 526 46H542V0H534L510 1Q487 2 460 2T422 3Q319 3 310 0H302V46H318Q379 46 379 62Q380 64 380 200Q379 335 378 343Q372 371 358 385T334 402T308 404Q263 404 229 370Q202 343 195 315T187 232V168V108Q187 78 188 68T191 55T200 49Q221 46 249 46H265V0H257L234 1Q210 2 183 2T145 3Q42 3 33 0H25V46H41Z"></path><path data-c="6F" d="M28 214Q28 309 93 378T250 448Q340 448 405 380T471 215Q471 120 407 55T250 -10Q153 -10 91 57T28 214ZM250 30Q372 30 372 193V225V250Q372 272 371 288T364 326T348 362T317 390T268 410Q263 411 252 411Q222 411 195 399Q152 377 139 338T126 246V226Q126 130 145 91Q177 30 250 30Z" transform="translate(833,0)"></path><path data-c="64" d="M376 495Q376 511 376 535T377 568Q377 613 367 624T316 637H298V660Q298 683 300 683L310 684Q320 685 339 686T376 688Q393 689 413 690T443 693T454 694H457V390Q457 84 458 81Q461 61 472 55T517 46H535V0Q533 0 459 -5T380 -11H373V44L365 37Q307 -11 235 -11Q158 -11 96 50T34 215Q34 315 97 378T244 442Q319 442 376 393V495ZM373 342Q328 405 260 405Q211 405 173 369Q146 341 139 305T131 211Q131 155 138 120T173 59Q203 26 251 26Q322 26 373 103V342Z" transform="translate(1333,0)"></path></g><g data-mml-node="mi" transform="translate(10644.6,0)"><path data-c="1D460" d="M131 289Q131 321 147 354T203 415T300 442Q362 442 390 415T419 355Q419 323 402 308T364 292Q351 292 340 300T328 326Q328 342 337 354T354 372T367 378Q368 378 368 379Q368 382 361 388T336 399T297 405Q249 405 227 379T204 326Q204 301 223 291T278 274T330 259Q396 230 396 163Q396 135 385 107T352 51T289 7T195 -10Q118 -10 86 19T53 87Q53 126 74 143T118 160Q133 160 146 151T160 120Q160 94 142 76T111 58Q109 57 108 57T107 55Q108 52 115 47T146 34T201 27Q237 27 263 38T301 66T318 97T323 122Q323 150 302 164T254 181T195 196T148 231Q131 256 131 289Z"></path></g><g data-mml-node="mi" transform="translate(11113.6,0)"><path data-c="1D456" d="M184 600Q184 624 203 642T247 661Q265 661 277 649T290 619Q290 596 270 577T226 557Q211 557 198 567T184 600ZM21 287Q21 295 30 318T54 369T98 420T158 442Q197 442 223 419T250 357Q250 340 236 301T196 196T154 83Q149 61 149 51Q149 26 166 26Q175 26 185 29T208 43T235 78T260 137Q263 149 265 151T282 153Q302 153 302 143Q302 135 293 112T268 61T223 11T161 -11Q129 -11 102 10T74 74Q74 91 79 106T122 220Q160 321 166 341T173 380Q173 404 156 404H154Q124 404 99 371T61 287Q60 286 59 284T58 281T56 279T53 278T49 278T41 278H27Q21 284 21 287Z"></path></g><g data-mml-node="mi" transform="translate(11458.6,0)"><path data-c="1D467" d="M347 338Q337 338 294 349T231 360Q211 360 197 356T174 346T162 335T155 324L153 320Q150 317 138 317Q117 317 117 325Q117 330 120 339Q133 378 163 406T229 440Q241 442 246 442Q271 442 291 425T329 392T367 375Q389 375 411 408T434 441Q435 442 449 442H462Q468 436 468 434Q468 430 463 420T449 399T432 377T418 358L411 349Q368 298 275 214T160 106L148 94L163 93Q185 93 227 82T290 71Q328 71 360 90T402 140Q406 149 409 151T424 153Q443 153 443 143Q443 138 442 134Q425 72 376 31T278 -11Q252 -11 232 6T193 40T155 57Q111 57 76 -3Q70 -11 59 -11H54H41Q35 -5 35 -2Q35 13 93 84Q132 129 225 214T340 322Q352 338 347 338Z"></path></g><g data-mml-node="mi" transform="translate(11923.6,0)"><path data-c="1D452" d="M39 168Q39 225 58 272T107 350T174 402T244 433T307 442H310Q355 442 388 420T421 355Q421 265 310 237Q261 224 176 223Q139 223 138 221Q138 219 132 186T125 128Q125 81 146 54T209 26T302 45T394 111Q403 121 406 121Q410 121 419 112T429 98T420 82T390 55T344 24T281 -1T205 -11Q126 -11 83 42T39 168ZM373 353Q367 405 305 405Q272 405 244 391T199 357T170 316T154 280T149 261Q149 260 169 260Q282 260 327 284T373 353Z"></path></g></g></g></svg></span></div>
+  <div class="mjx-display"><span class="mjx"><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="29.922ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 13225.6 1000"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="TeXAtom" data-mjx-texclass="ORD"><g data-mml-node="mi"><path data-c="46" d="M128 619Q121 626 117 628T101 631T58 634H25V680H582V676Q584 670 596 560T610 444V440H570V444Q563 493 561 501Q555 538 543 563T516 601T477 622T431 631T374 633H334H286Q252 633 244 631T233 621Q232 619 232 490V363H284Q287 363 303 363T327 364T349 367T372 373T389 385Q407 403 410 459V480H450V200H410V221Q407 276 389 296Q381 303 371 307T348 313T327 316T303 317T284 317H232V189L233 61Q240 54 245 52T270 48T333 46H360V0H348Q324 3 182 3Q51 3 36 0H25V46H58Q100 47 109 49T128 61V619Z"></path><path data-c="72" d="M36 46H50Q89 46 97 60V68Q97 77 97 91T98 122T98 161T98 203Q98 234 98 269T98 328L97 351Q94 370 83 376T38 385H20V408Q20 431 22 431L32 432Q42 433 60 434T96 436Q112 437 131 438T160 441T171 442H174V373Q213 441 271 441H277Q322 441 343 419T364 373Q364 352 351 337T313 322Q288 322 276 338T263 372Q263 381 265 388T270 400T273 405Q271 407 250 401Q234 393 226 386Q179 341 179 207V154Q179 141 179 127T179 101T180 81T180 66V61Q181 59 183 57T188 54T193 51T200 49T207 48T216 47T225 47T235 46T245 46H276V0H267Q249 3 140 3Q37 3 28 0H20V46H36Z" transform="translate(653,0)"></path><path data-c="6F" d="M28 214Q28 309 93 378T250 448Q340 448 405 380T471 215Q471 120 407 55T250 -10Q153 -10 91 57T28 214ZM250 30Q372 30 372 193V225V250Q372 272 371 288T364 326T348 362T317 390T268 410Q263 411 252 411Q222 411 195 399Q152 377 139 338T126 246V226Q126 130 145 91Q177 30 250 30Z" transform="translate(1045,0)"></path><path data-c="6E" d="M41 46H55Q94 46 102 60V68Q102 77 102 91T102 122T103 161T103 203Q103 234 103 269T102 328V351Q99 370 88 376T43 385H25V408Q25 431 27 431L37 432Q47 433 65 434T102 436Q119 437 138 438T167 441T178 442H181V402Q181 364 182 364T187 369T199 384T218 402T247 421T285 437Q305 442 336 442Q450 438 463 329Q464 322 464 190V104Q464 66 466 59T477 49Q498 46 526 46H542V0H534L510 1Q487 2 460 2T422 3Q319 3 310 0H302V46H318Q379 46 379 62Q380 64 380 200Q379 335 378 343Q372 371 358 385T334 402T308 404Q263 404 229 370Q202 343 195 315T187 232V168V108Q187 78 188 68T191 55T200 49Q221 46 249 46H265V0H257L234 1Q210 2 183 2T145 3Q42 3 33 0H25V46H41Z" transform="translate(1545,0)"></path><path data-c="74" d="M27 422Q80 426 109 478T141 600V615H181V431H316V385H181V241Q182 116 182 100T189 68Q203 29 238 29Q282 29 292 100Q293 108 293 146V181H333V146V134Q333 57 291 17Q264 -10 221 -10Q187 -10 162 2T124 33T105 68T98 100Q97 107 97 248V385H18V422H27Z" transform="translate(2101,0)"></path></g></g><g data-mml-node="mo" transform="translate(2767.8,0)"><path data-c="2190" d="M944 261T944 250T929 230H165Q167 228 182 216T211 189T244 152T277 96T303 25Q308 7 308 0Q308 -11 288 -11Q281 -11 278 -11T272 -7T267 2T263 21Q245 94 195 151T73 236Q58 242 55 247Q55 254 59 257T73 264Q121 283 158 314T215 375T247 434T264 480L267 497Q269 503 270 505T275 509T288 511Q308 511 308 500Q308 493 303 475Q293 438 278 406T246 352T215 315T185 287T165 270H929Q944 261 944 250Z"></path></g><g data-mml-node="mo" transform="translate(4045.6,0)"><path data-c="28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path></g><g data-mml-node="TeXAtom" data-mjx-texclass="ORD" transform="translate(4434.6,0)"><g data-mml-node="mi"><path data-c="46" d="M128 619Q121 626 117 628T101 631T58 634H25V680H582V676Q584 670 596 560T610 444V440H570V444Q563 493 561 501Q555 538 543 563T516 601T477 622T431 631T374 633H334H286Q252 633 244 631T233 621Q232 619 232 490V363H284Q287 363 303 363T327 364T349 367T372 373T389 385Q407 403 410 459V480H450V200H410V221Q407 276 389 296Q381 303 371 307T348 313T327 316T303 317T284 317H232V189L233 61Q240 54 245 52T270 48T333 46H360V0H348Q324 3 182 3Q51 3 36 0H25V46H58Q100 47 109 49T128 61V619Z"></path><path data-c="72" d="M36 46H50Q89 46 97 60V68Q97 77 97 91T98 122T98 161T98 203Q98 234 98 269T98 328L97 351Q94 370 83 376T38 385H20V408Q20 431 22 431L32 432Q42 433 60 434T96 436Q112 437 131 438T160 441T171 442H174V373Q213 441 271 441H277Q322 441 343 419T364 373Q364 352 351 337T313 322Q288 322 276 338T263 372Q263 381 265 388T270 400T273 405Q271 407 250 401Q234 393 226 386Q179 341 179 207V154Q179 141 179 127T179 101T180 81T180 66V61Q181 59 183 57T188 54T193 51T200 49T207 48T216 47T225 47T235 46T245 46H276V0H267Q249 3 140 3Q37 3 28 0H20V46H36Z" transform="translate(653,0)"></path><path data-c="6F" d="M28 214Q28 309 93 378T250 448Q340 448 405 380T471 215Q471 120 407 55T250 -10Q153 -10 91 57T28 214ZM250 30Q372 30 372 193V225V250Q372 272 371 288T364 326T348 362T317 390T268 410Q263 411 252 411Q222 411 195 399Q152 377 139 338T126 246V226Q126 130 145 91Q177 30 250 30Z" transform="translate(1045,0)"></path><path data-c="6E" d="M41 46H55Q94 46 102 60V68Q102 77 102 91T102 122T103 161T103 203Q103 234 103 269T102 328V351Q99 370 88 376T43 385H25V408Q25 431 27 431L37 432Q47 433 65 434T102 436Q119 437 138 438T167 441T178 442H181V402Q181 364 182 364T187 369T199 384T218 402T247 421T285 437Q305 442 336 442Q450 438 463 329Q464 322 464 190V104Q464 66 466 59T477 49Q498 46 526 46H542V0H534L510 1Q487 2 460 2T422 3Q319 3 310 0H302V46H318Q379 46 379 62Q380 64 380 200Q379 335 378 343Q372 371 358 385T334 402T308 404Q263 404 229 370Q202 343 195 315T187 232V168V108Q187 78 188 68T191 55T200 49Q221 46 249 46H265V0H257L234 1Q210 2 183 2T145 3Q42 3 33 0H25V46H41Z" transform="translate(1545,0)"></path><path data-c="74" d="M27 422Q80 426 109 478T141 600V615H181V431H316V385H181V241Q182 116 182 100T189 68Q203 29 238 29Q282 29 292 100Q293 108 293 146V181H333V146V134Q333 57 291 17Q264 -10 221 -10Q187 -10 162 2T124 33T105 68T98 100Q97 107 97 248V385H18V422H27Z" transform="translate(2101,0)"></path></g></g><g data-mml-node="mo" transform="translate(7146.8,0)"><path data-c="2B" d="M56 237T56 250T70 270H369V420L370 570Q380 583 389 583Q402 583 409 568V270H707Q722 262 722 250T707 230H409V-68Q401 -82 391 -82H389H387Q375 -82 369 -68V230H70Q56 237 56 250Z"></path></g><g data-mml-node="mn" transform="translate(8147,0)"><path data-c="31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z"></path></g><g data-mml-node="mo" transform="translate(8647,0)"><path data-c="29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path></g><g data-mml-node="mo" transform="translate(9313.8,0)"><path data-c="6D" d="M41 46H55Q94 46 102 60V68Q102 77 102 91T102 122T103 161T103 203Q103 234 103 269T102 328V351Q99 370 88 376T43 385H25V408Q25 431 27 431L37 432Q47 433 65 434T102 436Q119 437 138 438T167 441T178 442H181V402Q181 364 182 364T187 369T199 384T218 402T247 421T285 437Q305 442 336 442Q351 442 364 440T387 434T406 426T421 417T432 406T441 395T448 384T452 374T455 366L457 361L460 365Q463 369 466 373T475 384T488 397T503 410T523 422T546 432T572 439T603 442Q729 442 740 329Q741 322 741 190V104Q741 66 743 59T754 49Q775 46 803 46H819V0H811L788 1Q764 2 737 2T699 3Q596 3 587 0H579V46H595Q656 46 656 62Q657 64 657 200Q656 335 655 343Q649 371 635 385T611 402T585 404Q540 404 506 370Q479 343 472 315T464 232V168V108Q464 78 465 68T468 55T477 49Q498 46 526 46H542V0H534L510 1Q487 2 460 2T422 3Q319 3 310 0H302V46H318Q379 46 379 62Q380 64 380 200Q379 335 378 343Q372 371 358 385T334 402T308 404Q263 404 229 370Q202 343 195 315T187 232V168V108Q187 78 188 68T191 55T200 49Q221 46 249 46H265V0H257L234 1Q210 2 183 2T145 3Q42 3 33 0H25V46H41Z"></path><path data-c="6F" d="M28 214Q28 309 93 378T250 448Q340 448 405 380T471 215Q471 120 407 55T250 -10Q153 -10 91 57T28 214ZM250 30Q372 30 372 193V225V250Q372 272 371 288T364 326T348 362T317 390T268 410Q263 411 252 411Q222 411 195 399Q152 377 139 338T126 246V226Q126 130 145 91Q177 30 250 30Z" transform="translate(833,0)"></path><path data-c="64" d="M376 495Q376 511 376 535T377 568Q377 613 367 624T316 637H298V660Q298 683 300 683L310 684Q320 685 339 686T376 688Q393 689 413 690T443 693T454 694H457V390Q457 84 458 81Q461 61 472 55T517 46H535V0Q533 0 459 -5T380 -11H373V44L365 37Q307 -11 235 -11Q158 -11 96 50T34 215Q34 315 97 378T244 442Q319 442 376 393V495ZM373 342Q328 405 260 405Q211 405 173 369Q146 341 139 305T131 211Q131 155 138 120T173 59Q203 26 251 26Q322 26 373 103V342Z" transform="translate(1333,0)"></path></g><g data-mml-node="mi" transform="translate(11480.6,0)"><path data-c="1D460" d="M131 289Q131 321 147 354T203 415T300 442Q362 442 390 415T419 355Q419 323 402 308T364 292Q351 292 340 300T328 326Q328 342 337 354T354 372T367 378Q368 378 368 379Q368 382 361 388T336 399T297 405Q249 405 227 379T204 326Q204 301 223 291T278 274T330 259Q396 230 396 163Q396 135 385 107T352 51T289 7T195 -10Q118 -10 86 19T53 87Q53 126 74 143T118 160Q133 160 146 151T160 120Q160 94 142 76T111 58Q109 57 108 57T107 55Q108 52 115 47T146 34T201 27Q237 27 263 38T301 66T318 97T323 122Q323 150 302 164T254 181T195 196T148 231Q131 256 131 289Z"></path></g><g data-mml-node="mi" transform="translate(11949.6,0)"><path data-c="1D456" d="M184 600Q184 624 203 642T247 661Q265 661 277 649T290 619Q290 596 270 577T226 557Q211 557 198 567T184 600ZM21 287Q21 295 30 318T54 369T98 420T158 442Q197 442 223 419T250 357Q250 340 236 301T196 196T154 83Q149 61 149 51Q149 26 166 26Q175 26 185 29T208 43T235 78T260 137Q263 149 265 151T282 153Q302 153 302 143Q302 135 293 112T268 61T223 11T161 -11Q129 -11 102 10T74 74Q74 91 79 106T122 220Q160 321 166 341T173 380Q173 404 156 404H154Q124 404 99 371T61 287Q60 286 59 284T58 281T56 279T53 278T49 278T41 278H27Q21 284 21 287Z"></path></g><g data-mml-node="mi" transform="translate(12294.6,0)"><path data-c="1D467" d="M347 338Q337 338 294 349T231 360Q211 360 197 356T174 346T162 335T155 324L153 320Q150 317 138 317Q117 317 117 325Q117 330 120 339Q133 378 163 406T229 440Q241 442 246 442Q271 442 291 425T329 392T367 375Q389 375 411 408T434 441Q435 442 449 442H462Q468 436 468 434Q468 430 463 420T449 399T432 377T418 358L411 349Q368 298 275 214T160 106L148 94L163 93Q185 93 227 82T290 71Q328 71 360 90T402 140Q406 149 409 151T424 153Q443 153 443 143Q443 138 442 134Q425 72 376 31T278 -11Q252 -11 232 6T193 40T155 57Q111 57 76 -3Q70 -11 59 -11H54H41Q35 -5 35 -2Q35 13 93 84Q132 129 225 214T340 322Q352 338 347 338Z"></path></g><g data-mml-node="mi" transform="translate(12759.6,0)"><path data-c="1D452" d="M39 168Q39 225 58 272T107 350T174 402T244 433T307 442H310Q355 442 388 420T421 355Q421 265 310 237Q261 224 176 223Q139 223 138 221Q138 219 132 186T125 128Q125 81 146 54T209 26T302 45T394 111Q403 121 406 121Q410 121 419 112T429 98T420 82T390 55T344 24T281 -1T205 -11Q126 -11 83 42T39 168ZM373 353Q367 405 305 405Q272 405 244 391T199 357T170 316T154 280T149 261Q149 260 169 260Q282 260 327 284T373 353Z"></path></g></g></g></svg></span></div>
+</div>
+
+<div class="box warnbox">
+  <p class="xlead">Empty와 Full의 구분</p>
+  <p>비었을 때도 <strong class="k-red">Front == Rear</strong>, 꽉 찼을 때도 <strong class="k-red">Front == Rear</strong> — 포인터만으로는 구분할 수 없다. 해결책(택 1):</p>
+  <ol>
+  <li><strong class="k-blue">한 칸 비워두기</strong> (가장 흔함): 아래 조건이면 Full로 판정.
+    <div class="fbox"><div class="mjx-display"><span class="mjx"><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="37.245ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 16462.1 1000"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mo"><path data-c="28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path></g><g data-mml-node="TeXAtom" data-mjx-texclass="ORD" transform="translate(389,0)"><g data-mml-node="mi"><path data-c="52" d="M130 622Q123 629 119 631T103 634T60 637H27V683H202H236H300Q376 683 417 677T500 648Q595 600 609 517Q610 512 610 501Q610 468 594 439T556 392T511 361T472 343L456 338Q459 335 467 332Q497 316 516 298T545 254T559 211T568 155T578 94Q588 46 602 31T640 16H645Q660 16 674 32T692 87Q692 98 696 101T712 105T728 103T732 90Q732 59 716 27T672 -16Q656 -22 630 -22Q481 -16 458 90Q456 101 456 163T449 246Q430 304 373 320L363 322L297 323H231V192L232 61Q238 51 249 49T301 46H334V0H323Q302 3 181 3Q59 3 38 0H27V46H60Q102 47 111 49T130 61V622ZM491 499V509Q491 527 490 539T481 570T462 601T424 623T362 636Q360 636 340 636T304 637H283Q238 637 234 628Q231 624 231 492V360H289Q390 360 434 378T489 456Q491 467 491 499Z"></path><path data-c="65" d="M28 218Q28 273 48 318T98 391T163 433T229 448Q282 448 320 430T378 380T406 316T415 245Q415 238 408 231H126V216Q126 68 226 36Q246 30 270 30Q312 30 342 62Q359 79 369 104L379 128Q382 131 395 131H398Q415 131 415 121Q415 117 412 108Q393 53 349 21T250 -11Q155 -11 92 58T28 218ZM333 275Q322 403 238 411H236Q228 411 220 410T195 402T166 381T143 340T127 274V267H333V275Z" transform="translate(736,0)"></path><path data-c="61" d="M137 305T115 305T78 320T63 359Q63 394 97 421T218 448Q291 448 336 416T396 340Q401 326 401 309T402 194V124Q402 76 407 58T428 40Q443 40 448 56T453 109V145H493V106Q492 66 490 59Q481 29 455 12T400 -6T353 12T329 54V58L327 55Q325 52 322 49T314 40T302 29T287 17T269 6T247 -2T221 -8T190 -11Q130 -11 82 20T34 107Q34 128 41 147T68 188T116 225T194 253T304 268H318V290Q318 324 312 340Q290 411 215 411Q197 411 181 410T156 406T148 403Q170 388 170 359Q170 334 154 320ZM126 106Q126 75 150 51T209 26Q247 26 276 49T315 109Q317 116 318 175Q318 233 317 233Q309 233 296 232T251 223T193 203T147 166T126 106Z" transform="translate(1180,0)"></path><path data-c="72" d="M36 46H50Q89 46 97 60V68Q97 77 97 91T98 122T98 161T98 203Q98 234 98 269T98 328L97 351Q94 370 83 376T38 385H20V408Q20 431 22 431L32 432Q42 433 60 434T96 436Q112 437 131 438T160 441T171 442H174V373Q213 441 271 441H277Q322 441 343 419T364 373Q364 352 351 337T313 322Q288 322 276 338T263 372Q263 381 265 388T270 400T273 405Q271 407 250 401Q234 393 226 386Q179 341 179 207V154Q179 141 179 127T179 101T180 81T180 66V61Q181 59 183 57T188 54T193 51T200 49T207 48T216 47T225 47T235 46T245 46H276V0H267Q249 3 140 3Q37 3 28 0H20V46H36Z" transform="translate(1680,0)"></path></g></g><g data-mml-node="mo" transform="translate(2683.2,0)"><path data-c="2B" d="M56 237T56 250T70 270H369V420L370 570Q380 583 389 583Q402 583 409 568V270H707Q722 262 722 250T707 230H409V-68Q401 -82 391 -82H389H387Q375 -82 369 -68V230H70Q56 237 56 250Z"></path></g><g data-mml-node="mn" transform="translate(3683.4,0)"><path data-c="31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z"></path></g><g data-mml-node="mo" transform="translate(4183.4,0)"><path data-c="29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path></g><g data-mml-node="mo" transform="translate(4850.2,0)"><path data-c="6D" d="M41 46H55Q94 46 102 60V68Q102 77 102 91T102 122T103 161T103 203Q103 234 103 269T102 328V351Q99 370 88 376T43 385H25V408Q25 431 27 431L37 432Q47 433 65 434T102 436Q119 437 138 438T167 441T178 442H181V402Q181 364 182 364T187 369T199 384T218 402T247 421T285 437Q305 442 336 442Q351 442 364 440T387 434T406 426T421 417T432 406T441 395T448 384T452 374T455 366L457 361L460 365Q463 369 466 373T475 384T488 397T503 410T523 422T546 432T572 439T603 442Q729 442 740 329Q741 322 741 190V104Q741 66 743 59T754 49Q775 46 803 46H819V0H811L788 1Q764 2 737 2T699 3Q596 3 587 0H579V46H595Q656 46 656 62Q657 64 657 200Q656 335 655 343Q649 371 635 385T611 402T585 404Q540 404 506 370Q479 343 472 315T464 232V168V108Q464 78 465 68T468 55T477 49Q498 46 526 46H542V0H534L510 1Q487 2 460 2T422 3Q319 3 310 0H302V46H318Q379 46 379 62Q380 64 380 200Q379 335 378 343Q372 371 358 385T334 402T308 404Q263 404 229 370Q202 343 195 315T187 232V168V108Q187 78 188 68T191 55T200 49Q221 46 249 46H265V0H257L234 1Q210 2 183 2T145 3Q42 3 33 0H25V46H41Z"></path><path data-c="6F" d="M28 214Q28 309 93 378T250 448Q340 448 405 380T471 215Q471 120 407 55T250 -10Q153 -10 91 57T28 214ZM250 30Q372 30 372 193V225V250Q372 272 371 288T364 326T348 362T317 390T268 410Q263 411 252 411Q222 411 195 399Q152 377 139 338T126 246V226Q126 130 145 91Q177 30 250 30Z" transform="translate(833,0)"></path><path data-c="64" d="M376 495Q376 511 376 535T377 568Q377 613 367 624T316 637H298V660Q298 683 300 683L310 684Q320 685 339 686T376 688Q393 689 413 690T443 693T454 694H457V390Q457 84 458 81Q461 61 472 55T517 46H535V0Q533 0 459 -5T380 -11H373V44L365 37Q307 -11 235 -11Q158 -11 96 50T34 215Q34 315 97 378T244 442Q319 442 376 393V495ZM373 342Q328 405 260 405Q211 405 173 369Q146 341 139 305T131 211Q131 155 138 120T173 59Q203 26 251 26Q322 26 373 103V342Z" transform="translate(1333,0)"></path></g><g data-mml-node="mi" transform="translate(7017,0)"><path data-c="1D460" d="M131 289Q131 321 147 354T203 415T300 442Q362 442 390 415T419 355Q419 323 402 308T364 292Q351 292 340 300T328 326Q328 342 337 354T354 372T367 378Q368 378 368 379Q368 382 361 388T336 399T297 405Q249 405 227 379T204 326Q204 301 223 291T278 274T330 259Q396 230 396 163Q396 135 385 107T352 51T289 7T195 -10Q118 -10 86 19T53 87Q53 126 74 143T118 160Q133 160 146 151T160 120Q160 94 142 76T111 58Q109 57 108 57T107 55Q108 52 115 47T146 34T201 27Q237 27 263 38T301 66T318 97T323 122Q323 150 302 164T254 181T195 196T148 231Q131 256 131 289Z"></path></g><g data-mml-node="mi" transform="translate(7486,0)"><path data-c="1D456" d="M184 600Q184 624 203 642T247 661Q265 661 277 649T290 619Q290 596 270 577T226 557Q211 557 198 567T184 600ZM21 287Q21 295 30 318T54 369T98 420T158 442Q197 442 223 419T250 357Q250 340 236 301T196 196T154 83Q149 61 149 51Q149 26 166 26Q175 26 185 29T208 43T235 78T260 137Q263 149 265 151T282 153Q302 153 302 143Q302 135 293 112T268 61T223 11T161 -11Q129 -11 102 10T74 74Q74 91 79 106T122 220Q160 321 166 341T173 380Q173 404 156 404H154Q124 404 99 371T61 287Q60 286 59 284T58 281T56 279T53 278T49 278T41 278H27Q21 284 21 287Z"></path></g><g data-mml-node="mi" transform="translate(7831,0)"><path data-c="1D467" d="M347 338Q337 338 294 349T231 360Q211 360 197 356T174 346T162 335T155 324L153 320Q150 317 138 317Q117 317 117 325Q117 330 120 339Q133 378 163 406T229 440Q241 442 246 442Q271 442 291 425T329 392T367 375Q389 375 411 408T434 441Q435 442 449 442H462Q468 436 468 434Q468 430 463 420T449 399T432 377T418 358L411 349Q368 298 275 214T160 106L148 94L163 93Q185 93 227 82T290 71Q328 71 360 90T402 140Q406 149 409 151T424 153Q443 153 443 143Q443 138 442 134Q425 72 376 31T278 -11Q252 -11 232 6T193 40T155 57Q111 57 76 -3Q70 -11 59 -11H54H41Q35 -5 35 -2Q35 13 93 84Q132 129 225 214T340 322Q352 338 347 338Z"></path></g><g data-mml-node="mi" transform="translate(8296,0)"><path data-c="1D452" d="M39 168Q39 225 58 272T107 350T174 402T244 433T307 442H310Q355 442 388 420T421 355Q421 265 310 237Q261 224 176 223Q139 223 138 221Q138 219 132 186T125 128Q125 81 146 54T209 26T302 45T394 111Q403 121 406 121Q410 121 419 112T429 98T420 82T390 55T344 24T281 -1T205 -11Q126 -11 83 42T39 168ZM373 353Q367 405 305 405Q272 405 244 391T199 357T170 316T154 280T149 261Q149 260 169 260Q282 260 327 284T373 353Z"></path></g><g data-mml-node="mo" transform="translate(9039.8,0)"><path data-c="3D" d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z"></path></g><g data-mml-node="TeXAtom" data-mjx-texclass="ORD" transform="translate(10095.6,0)"><g data-mml-node="mi"><path data-c="46" d="M128 619Q121 626 117 628T101 631T58 634H25V680H582V676Q584 670 596 560T610 444V440H570V444Q563 493 561 501Q555 538 543 563T516 601T477 622T431 631T374 633H334H286Q252 633 244 631T233 621Q232 619 232 490V363H284Q287 363 303 363T327 364T349 367T372 373T389 385Q407 403 410 459V480H450V200H410V221Q407 276 389 296Q381 303 371 307T348 313T327 316T303 317T284 317H232V189L233 61Q240 54 245 52T270 48T333 46H360V0H348Q324 3 182 3Q51 3 36 0H25V46H58Q100 47 109 49T128 61V619Z"></path><path data-c="72" d="M36 46H50Q89 46 97 60V68Q97 77 97 91T98 122T98 161T98 203Q98 234 98 269T98 328L97 351Q94 370 83 376T38 385H20V408Q20 431 22 431L32 432Q42 433 60 434T96 436Q112 437 131 438T160 441T171 442H174V373Q213 441 271 441H277Q322 441 343 419T364 373Q364 352 351 337T313 322Q288 322 276 338T263 372Q263 381 265 388T270 400T273 405Q271 407 250 401Q234 393 226 386Q179 341 179 207V154Q179 141 179 127T179 101T180 81T180 66V61Q181 59 183 57T188 54T193 51T200 49T207 48T216 47T225 47T235 46T245 46H276V0H267Q249 3 140 3Q37 3 28 0H20V46H36Z" transform="translate(653,0)"></path><path data-c="6F" d="M28 214Q28 309 93 378T250 448Q340 448 405 380T471 215Q471 120 407 55T250 -10Q153 -10 91 57T28 214ZM250 30Q372 30 372 193V225V250Q372 272 371 288T364 326T348 362T317 390T268 410Q263 411 252 411Q222 411 195 399Q152 377 139 338T126 246V226Q126 130 145 91Q177 30 250 30Z" transform="translate(1045,0)"></path><path data-c="6E" d="M41 46H55Q94 46 102 60V68Q102 77 102 91T102 122T103 161T103 203Q103 234 103 269T102 328V351Q99 370 88 376T43 385H25V408Q25 431 27 431L37 432Q47 433 65 434T102 436Q119 437 138 438T167 441T178 442H181V402Q181 364 182 364T187 369T199 384T218 402T247 421T285 437Q305 442 336 442Q450 438 463 329Q464 322 464 190V104Q464 66 466 59T477 49Q498 46 526 46H542V0H534L510 1Q487 2 460 2T422 3Q319 3 310 0H302V46H318Q379 46 379 62Q380 64 380 200Q379 335 378 343Q372 371 358 385T334 402T308 404Q263 404 229 370Q202 343 195 315T187 232V168V108Q187 78 188 68T191 55T200 49Q221 46 249 46H265V0H257L234 1Q210 2 183 2T145 3Q42 3 33 0H25V46H41Z" transform="translate(1545,0)"></path><path data-c="74" d="M27 422Q80 426 109 478T141 600V615H181V431H316V385H181V241Q182 116 182 100T189 68Q203 29 238 29Q282 29 292 100Q293 108 293 146V181H333V146V134Q333 57 291 17Q264 -10 221 -10Q187 -10 162 2T124 33T105 68T98 100Q97 107 97 248V385H18V422H27Z" transform="translate(2101,0)"></path></g></g><g data-mml-node="mstyle" transform="translate(12585.6,0)"><g data-mml-node="mspace"></g></g><g data-mml-node="mo" transform="translate(13141.3,0)"><path data-c="21D2" d="M580 514Q580 525 596 525Q601 525 604 525T609 525T613 524T615 523T617 520T619 517T622 512Q659 438 720 381T831 300T927 263Q944 258 944 250T935 239T898 228T840 204Q696 134 622 -12Q618 -21 615 -22T600 -24Q580 -24 580 -17Q580 -13 585 0Q620 69 671 123L681 133H70Q56 140 56 153Q56 168 72 173H725L735 181Q774 211 852 250Q851 251 834 259T789 283T735 319L725 327H72Q56 332 56 347Q56 360 70 367H681L671 377Q638 412 609 458T580 514Z"></path></g><g data-mml-node="mstyle" transform="translate(14141.3,0)"><g data-mml-node="mspace"></g></g><g data-mml-node="mtext" transform="translate(14697.1,0)"><path data-c="46" d="M128 619Q121 626 117 628T101 631T58 634H25V680H582V676Q584 670 596 560T610 444V440H570V444Q563 493 561 501Q555 538 543 563T516 601T477 622T431 631T374 633H334H286Q252 633 244 631T233 621Q232 619 232 490V363H284Q287 363 303 363T327 364T349 367T372 373T389 385Q407 403 410 459V480H450V200H410V221Q407 276 389 296Q381 303 371 307T348 313T327 316T303 317T284 317H232V189L233 61Q240 54 245 52T270 48T333 46H360V0H348Q324 3 182 3Q51 3 36 0H25V46H58Q100 47 109 49T128 61V619Z"></path><path data-c="75" d="M383 58Q327 -10 256 -10H249Q124 -10 105 89Q104 96 103 226Q102 335 102 348T96 369Q86 385 36 385H25V408Q25 431 27 431L38 432Q48 433 67 434T105 436Q122 437 142 438T172 441T184 442H187V261Q188 77 190 64Q193 49 204 40Q224 26 264 26Q290 26 311 35T343 58T363 90T375 120T379 144Q379 145 379 161T380 201T380 248V315Q380 361 370 372T320 385H302V431Q304 431 378 436T457 442H464V264Q464 84 465 81Q468 61 479 55T524 46H542V0Q540 0 467 -5T390 -11H383V58Z" transform="translate(653,0)"></path><path data-c="6C" d="M42 46H56Q95 46 103 60V68Q103 77 103 91T103 124T104 167T104 217T104 272T104 329Q104 366 104 407T104 482T104 542T103 586T103 603Q100 622 89 628T44 637H26V660Q26 683 28 683L38 684Q48 685 67 686T104 688Q121 689 141 690T171 693T182 694H185V379Q185 62 186 60Q190 52 198 49Q219 46 247 46H263V0H255L232 1Q209 2 183 2T145 3T107 3T57 1L34 0H26V46H42Z" transform="translate(1209,0)"></path><path data-c="6C" d="M42 46H56Q95 46 103 60V68Q103 77 103 91T103 124T104 167T104 217T104 272T104 329Q104 366 104 407T104 482T104 542T103 586T103 603Q100 622 89 628T44 637H26V660Q26 683 28 683L38 684Q48 685 67 686T104 688Q121 689 141 690T171 693T182 694H185V379Q185 62 186 60Q190 52 198 49Q219 46 247 46H263V0H255L232 1Q209 2 183 2T145 3T107 3T57 1L34 0H26V46H42Z" transform="translate(1487,0)"></path></g></g></g></svg></span></div></div></li>
+  <li><strong class="k-blue">count 변수</strong>로 원소 개수를 별도 추적.</li>
+  </ol>
+</div>
+
+<h3>4.2 Linked Queue(연결 큐)</h3>
+<p>포인터로 노드를 체인처럼 연결: Front 포인터 → [Data|Next] → … → [Data|NULL] ← Rear 포인터. 배열 기반(원형 큐 포함)은 처음에 크기를 정해야 하므로, <span class="hl">데이터 양을 모를 때는 포인터 기반이 낫다</span>.</p>
+</section>
+
+<section class="part">
+<h2>5. Deque(덱) — Double-Ended Queue</h2>
+<p>양쪽 끝에서 삽입/삭제가 모두 가능한 큐. Stack + Queue의 기능을 합친 인터페이스로 보면 된다.</p>
+<ul>
+<li>양쪽 끝 모두 O(1) 접근. 구현: 원형 배열 또는 이중 연결 리스트.</li>
+<li>응용: 슬라이딩 윈도우 등 앞뒤 접근이 모두 필요한 경우.</li>
+</ul>
+</section>
+
+<section class="part">
+<h2>6. 선택 가이드</h2>
+<div class="box">
+  <p class="xlead">상황 → 자료구조</p>
+  <ul>
+  <li>최근 것부터 처리 → <strong class="k-blue">Stack</strong> (Undo, 함수 호출, 뒤로가기)</li>
+  <li>먼저 온 것부터 처리 → <strong class="k-blue">Queue</strong> (프린트 대기열, 콜센터)</li>
+  <li>양쪽에서 접근 → <strong class="k-blue">Deque</strong></li>
+  <li>삽입/삭제가 잦다 → <strong class="k-blue">Linked List</strong></li>
+  <li>인덱스로 빠르게 접근 → <strong class="k-blue">Array</strong></li>
+  </ul>
+</div>
+</section>
+
+<section class="part">
+<h2>7. Quiz</h2>
+
+<div class="qa">
+  <div class="qa-q"><span class="qa-badge">Q1</span>Stack과 Queue의 가장 큰 차이는?</div>
+  <details class="qa-hint"><summary>힌트</summary>
+    <div class="qa-panel"><p>"어느 쪽에서 나가는가"가 다르다: 스택은 넣은 쪽, 큐는 반대쪽.</p></div></details>
+  <details class="qa-ans"><summary>정답</summary>
+    <div class="qa-panel">
+      <p class="qa-note">개념은 힌트 참고.</p>
+      <div class="qa-final">정답: Stack은 LIFO(마지막에 들어온 것 먼저), Queue는 FIFO(먼저 들어온 것 먼저).</div>
+    </div></details>
+</div>
+
+<div class="qa">
+  <div class="qa-q"><span class="qa-badge">Q2</span>배열 기반 List에서 맨 앞에 삽입하는 비용은?</div>
+  <details class="qa-hint"><summary>힌트</summary>
+    <div class="qa-panel"><p>섹션 2.1의 Shift 그림: 앞에 넣으면 모든 원소가 움직인다.</p></div></details>
+  <details class="qa-ans"><summary>정답</summary>
+    <div class="qa-panel">
+      <p class="qa-note">개념은 힌트 참고.</p>
+      <ol class="steps">
+        <li>맨 앞 삽입은 n개 전부를 오른쪽으로 한 칸씩 Shift해야 한다.</li>
+        <li>따라서 O(n). 맨 뒤 삽입만 Shift가 없어 O(1).</li>
+      </ol>
+      <div class="qa-final">정답: O(n) — 모든 원소를 Shift해야 한다. 맨 뒤 삽입만 O(1).</div>
+    </div></details>
+</div>
+
+<div class="qa">
+  <div class="qa-q"><span class="qa-badge">Q3</span>연결 리스트에서 Insert는 O(1)인데 Locate는 O(n)인 이유는?</div>
+  <details class="qa-hint"><summary>힌트</summary>
+    <div class="qa-panel"><p>O(1) Insert에는 "위치를 이미 안다"는 전제가 붙는다.</p></div></details>
+  <details class="qa-ans"><summary>정답</summary>
+    <div class="qa-panel">
+      <p class="qa-note">개념은 힌트 참고.</p>
+      <ol class="steps">
+        <li>Insert: 위치를 알면 포인터 2개만 수정 → O(1).</li>
+        <li>Locate: 원소가 어디 있는지 모르니 처음부터 순회 → O(n).</li>
+      </ol>
+      <div class="qa-final">정답: Insert는 위치를 알 때 포인터만 바꾸면 되지만, Locate는 찾으려면 순회가 필요하기 때문.</div>
+    </div></details>
+</div>
+
+<div class="qa">
+  <div class="qa-q"><span class="qa-badge">Q4</span>Stack을 배열로 구현할 때의 장점과 단점은?</div>
+  <details class="qa-hint"><summary>힌트</summary>
+    <div class="qa-panel"><p>배열의 일반적 성질(연속 메모리, 고정 크기)을 스택에 대입해 보자.</p></div></details>
+  <details class="qa-ans"><summary>정답</summary>
+    <div class="qa-panel">
+      <p class="qa-note">개념은 힌트 참고.</p>
+      <div class="qa-final">정답: 장점 — 구현이 간단하고 접근이 O(1). 단점 — 크기가 고정되어 메모리 낭비 또는 Overflow 가능.</div>
+    </div></details>
+</div>
+
+<div class="qa">
+  <div class="qa-q"><span class="qa-badge">Q5</span>왜 Deque을 따로 배우는가?</div>
+  <details class="qa-hint"><summary>힌트</summary>
+    <div class="qa-panel"><p>Stack도 Queue도 한쪽 끝만 빠르다. 양쪽이 다 필요하면?</p></div></details>
+  <details class="qa-ans"><summary>정답</summary>
+    <div class="qa-panel">
+      <p class="qa-note">개념은 힌트 참고.</p>
+      <div class="qa-final">정답: 양쪽 끝에서의 빠른 접근이 동시에 필요한 경우(슬라이딩 윈도우 등)가 있어서. Stack+Queue 기능을 하나로 제공한다.</div>
+    </div></details>
+</div>
+
+<div class="qa">
+  <div class="qa-q"><span class="qa-badge">Q6</span>Singly Linked List를 Doubly Linked List로 바꾸려면?</div>
+  <details class="qa-hint"><summary>힌트</summary>
+    <div class="qa-panel"><p>뒤로 가려면 뒤를 가리키는 포인터가 필요하다. 비용도 같이 생각해 보자.</p></div></details>
+  <details class="qa-ans"><summary>정답</summary>
+    <div class="qa-panel">
+      <p class="qa-note">개념은 힌트 참고.</p>
+      <ol class="steps">
+        <li>Node 구조체에 <code>Node* prev</code> 필드를 추가한다.</li>
+        <li>Insert/Delete 시 <code>prev</code> 포인터도 함께 갱신한다.</li>
+        <li>대가: 노드당 포인터 1개분 공간 추가. 얻는 것: 양방향 탐색.</li>
+      </ol>
+      <div class="qa-final">정답: <code>prev</code> 포인터를 추가하고 갱신 로직을 보강한다. 공간은 늘지만 양방향 탐색을 얻는다.</div>
+    </div></details>
+</div>
+
+<div class="qa">
+  <div class="qa-q"><span class="qa-badge">Q7</span>Circular Queue에서 Front == Rear일 때 Empty/Full을 구분 못하는 근본 이유는?</div>
+  <details class="qa-hint"><summary>힌트</summary>
+    <div class="qa-panel"><p>상태의 개수를 세어 보자. 크기 n 배열의 "채워진 정도"는 0개~n개로 n+1가지다.</p></div></details>
+  <details class="qa-ans"><summary>정답</summary>
+    <div class="qa-panel">
+      <p class="qa-note">개념은 힌트 참고.</p>
+      <ol class="steps">
+        <li>크기 n 배열의 가능한 채움 상태는 n+1가지(0개~n개).</li>
+        <li>그런데 Front == Rear 조건만으로는 Empty와 Full이 같은 표현으로 보인다.</li>
+        <li>그래서 한 칸을 희생하거나 count 변수로 상태 공간을 분리한다.</li>
+      </ol>
+      <div class="qa-final">정답: F == R 표현 하나에 Empty와 Full 두 상태가 겹치기 때문 → count 변수나 한 칸 희생으로 구분한다.</div>
+    </div></details>
+</div>
+
+<div class="qa">
+  <div class="qa-q"><span class="qa-badge">Q8</span>Cursor List에서 link = 0을 끝(sentinel)으로 쓰는 이유는?</div>
+  <details class="qa-hint"><summary>힌트</summary>
+    <div class="qa-panel"><p>포인터 세계의 NULL을 인덱스 세계에서 무엇으로 대신할까?</p></div></details>
+  <details class="qa-ans"><summary>정답</summary>
+    <div class="qa-panel">
+      <p class="qa-note">개념은 힌트 참고.</p>
+      <div class="qa-final">정답: 인덱스 0을 "유효 노드 없음"으로 예약해 NULL을 대체한다. 실제 노드는 인덱스 1부터 시작.</div>
+    </div></details>
+</div>
+</section>
+
+<div class="pnav"><a href="sum3.html">‹ 정리본 3. 알고리즘 분석</a><a href="index.html">목차</a><a href="sum5.html">정리본 5. Trees ›</a></div>
+</div></article></div>
+<script src="assets/v5.js"></script>
+</body>
+</html>

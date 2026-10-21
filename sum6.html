@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<script src="assets/theme.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>정리본 6. Trees Traversal — CSED233</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/study-note.css">
+<link rel="stylesheet" href="assets/csed233-legacy.css">
+<link rel="stylesheet" href="assets/v5-layer.css">
+</head>
+<body>
+<div class="paper"><article>
+<div class="phead"><a class="to-home" href="index.html">&larr; 목차</a><span class="phead-c">정리본 6. Trees Traversal</span><span class="phead-r">CSED233 &middot; 데이터구조 &middot; <a class="to-root" href="https://cmkang131.github.io/">전체 홈&#8599;</a></span></div>
+<div class="body notes">
+<div class="t-course">CSED233 · 데이터구조 · 포스텍</div>
+<h1 class="t-title">정리본 6. Trees Traversal</h1>
+<div class="t-sub">순회 4가지 · 순회 수열로 트리 재구성 · General Tree 구현 3가지와 이진 트리 변환.</div>
+
+<section class="part">
+<h2>1. Tree Traversal(순회) — 모든 노드를 정확히 한 번씩</h2>
+<ul>
+<li><strong class="k-blue">DFS(깊이 우선)</strong>: 한쪽을 끝까지 먼저. 부모를 언제 방문하느냐에 따라 Preorder / Inorder / Postorder.</li>
+<li><strong class="k-blue">BFS(너비 우선)</strong>: 같은 깊이부터. Level-order.</li>
+</ul>
+
+<div class="figwrap">
+<svg viewBox="0 0 640 240" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Sans KR',sans-serif">
+  <g stroke="#9aa1aa" stroke-width="1.4">
+    <line x1="96" y1="42" x2="58" y2="80"/><line x1="118" y1="42" x2="156" y2="80"/>
+    <line x1="52" y1="104" x2="34" y2="140"/><line x1="66" y1="104" x2="86" y2="140"/>
+  </g>
+  <g stroke="#1f2328" fill="#fff">
+    <circle cx="107" cy="28" r="16"/><circle cx="59" cy="92" r="16"/><circle cx="157" cy="92" r="16"/>
+    <circle cx="34" cy="156" r="15"/><circle cx="86" cy="156" r="15"/>
+  </g>
+  <g font-size="13" text-anchor="middle" fill="#1f2328" font-weight="700">
+    <text x="107" y="33">A</text><text x="59" y="97">B</text><text x="157" y="97">C</text><text x="34" y="161">D</text><text x="86" y="161">E</text>
+  </g>
+  <g font-size="11" fill="#6b7280">
+    <text x="107" y="196" text-anchor="middle">이 트리 하나로 아래 4가지 순회를 비교</text>
+  </g>
+  <g font-size="12.5" fill="#1f2328">
+    <rect x="230" y="20" width="400" height="46" rx="9" fill="#ffffff" stroke="#1f2328"/>
+    <text x="244" y="39" font-weight="700" fill="#1f2328">Preorder(전위) — 부모 → 왼쪽 → 오른쪽</text>
+    <text x="244" y="57" fill="#1f2328">A → B → D → E → C</text>
+    <rect x="230" y="76" width="400" height="46" rx="9" fill="#ffffff" stroke="#1f2328"/>
+    <text x="244" y="95" font-weight="700" fill="#1f2328">Inorder(중위) — 왼쪽 → 부모 → 오른쪽</text>
+    <text x="244" y="113" fill="#1f2328">D → B → E → A → C</text>
+    <rect x="230" y="132" width="400" height="46" rx="9" fill="#ffffff" stroke="#1f2328"/>
+    <text x="244" y="151" font-weight="700" fill="#1f2328">Postorder(후위) — 왼쪽 → 오른쪽 → 부모</text>
+    <text x="244" y="169" fill="#1f2328">D → E → B → C → A</text>
+    <rect x="230" y="188" width="400" height="46" rx="9" fill="#ffffff" stroke="#1f2328"/>
+    <text x="244" y="207" font-weight="700" fill="#1f2328">Level-order(레벨 순회, BFS) — 레벨별로</text>
+    <text x="244" y="225" fill="#1f2328">A → B → C → D → E</text>
+  </g>
+</svg>
+<div class="figcap">DFS 3종은 "부모를 언제 찍느냐"만 다르다</div>
+</div>
+
+<h3>1.1 구현과 용도</h3>
+<pre><code>void preorder(Node* n)  { if (!n) return; cout &lt;&lt; n-&gt;val; preorder(n-&gt;left); preorder(n-&gt;right); }
+void inorder(Node* n)   { if (!n) return; inorder(n-&gt;left); cout &lt;&lt; n-&gt;val; inorder(n-&gt;right); }
+void postorder(Node* n) { if (!n) return; postorder(n-&gt;left); postorder(n-&gt;right); cout &lt;&lt; n-&gt;val; }</code></pre>
+<table>
+<tr><td>순회</td><td>자료구조</td><td>구현</td><td>주요 용도</td></tr>
+<tr><td>Preorder</td><td>Stack (재귀)</td><td>재귀</td><td>트리 복사·출력, 파일 시스템 브라우징</td></tr>
+<tr><td><b class="k-blue">Inorder</b></td><td>Stack (재귀)</td><td>재귀</td><td><b class="k-blue">BST에서 오름차순 정렬 출력</b> (가장 중요한 BST 성질)</td></tr>
+<tr><td>Postorder</td><td>Stack (재귀)</td><td>재귀</td><td>트리 삭제(자식 먼저 delete), 후위 표기(postfix)</td></tr>
+<tr><td>Level-order</td><td>Queue</td><td>반복</td><td>BFS, 계층별 처리, 최단 경로</td></tr>
+</table>
+
+<pre><code>void levelorder(Node* root) {
+    queue&lt;Node*&gt; q;
+    q.push(root);
+    while (!q.empty()) {
+        Node* node = q.front(); q.pop();
+        cout &lt;&lt; node-&gt;val;
+        if (node-&gt;left)  q.push(node-&gt;left);
+        if (node-&gt;right) q.push(node-&gt;right);
+    }
+}</code></pre>
+<p class="refline">Queue(FIFO)라서 같은 깊이의 노드가 먼저 나온다. Stack이면 DFS가 된다.</p>
+</section>
+
+<section class="part">
+<h2>2. Tree 재구성(Reconstruction)</h2>
+<p>문제: 순회 수열 하나만으로 원본 트리를 복원할 수 있는가?</p>
+
+<div class="box example">
+  <p class="xlead">같은 Preorder, 다른 트리</p>
+<pre><code>Tree 1:    A        Tree 2:    A
+          /                    \
+         B                      B
+        /                        \
+       C                          C
+둘 다 Preorder = A B C → 단일 순회로는 구분 불가능</code></pre>
+</div>
+
+<table>
+<tr><td>조합</td><td>복원 가능?</td></tr>
+<tr><td>Preorder + Inorder</td><td><b class="k-blue">✓ 가능</b></td></tr>
+<tr><td>Postorder + Inorder</td><td><b class="k-blue">✓ 가능</b></td></tr>
+<tr><td>Level-order + Inorder</td><td><b class="k-blue">✓ 가능</b></td></tr>
+<tr><td>Preorder + Postorder</td><td><b class="k-red">✗ 불가능</b> — 왼쪽/오른쪽 서브트리 경계를 모름</td></tr>
+</table>
+<p>→ <span class="hl">Inorder가 반드시 필요</span>하다. Inorder가 루트 기준 왼쪽/오른쪽 구간의 경계를 알려주기 때문.</p>
+
+<div class="box example">
+  <p class="xlead">예제 · Preorder + Inorder로 복원</p>
+  <p>Pre: <code>A B D E C</code> · In: <code>D B E A C</code></p>
+  <ol class="steps">
+    <li>Preorder의 첫 원소는 항상 루트 → 루트 = A.</li>
+    <li>Inorder에서 A의 위치를 찾으면 왼쪽 [D B E] / 오른쪽 [C]로 갈라진다.</li>
+    <li>각 구간을 서브트리로 재귀 복원: 왼쪽 Pre = B D E, In = D B E → 루트 B, 왼쪽 D, 오른쪽 E.</li>
+  </ol>
+<pre><code>결과:    A
+        / \
+       B   C
+      / \
+     D   E</code></pre>
+</div>
+</section>
+
+<section class="part">
+<h2>3. General Tree(일반 트리) 구현 3가지</h2>
+
+<h3>3.1 단순 배열 (Parent 포인터 배열)</h3>
+<p>각 노드의 부모 인덱스만 저장한다.</p>
+<table>
+<tr><td>k</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td></tr>
+<tr><td>Label</td><td>a</td><td>b</td><td>d</td><td>f</td><td>c</td><td>e</td></tr>
+<tr><td>Parent</td><td>0</td><td>1</td><td>2</td><td>2</td><td>1</td><td>2</td></tr>
+</table>
+<ul>
+<li>Parent(k) 연산은 <span class="mjx"><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="4.618ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 2041 1000"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D442" d="M740 435Q740 320 676 213T511 42T304 -22Q207 -22 138 35T51 201Q50 209 50 244Q50 346 98 438T227 601Q351 704 476 704Q514 704 524 703Q621 689 680 617T740 435ZM637 476Q637 565 591 615T476 665Q396 665 322 605Q242 542 200 428T157 216Q157 126 200 73T314 19Q404 19 485 98T608 313Q637 408 637 476Z"></path></g><g data-mml-node="mo" transform="translate(763,0)"><path data-c="28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path></g><g data-mml-node="mn" transform="translate(1152,0)"><path data-c="31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z"></path></g><g data-mml-node="mo" transform="translate(1652,0)"><path data-c="29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path></g></g></g></svg></span>로 매우 빠름.</li>
+<li>자식들을 찾으려면 배열 전체 스캔 → <span class="mjx"><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="4.844ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 2141 1000"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D442" d="M740 435Q740 320 676 213T511 42T304 -22Q207 -22 138 35T51 201Q50 209 50 244Q50 346 98 438T227 601Q351 704 476 704Q514 704 524 703Q621 689 680 617T740 435ZM637 476Q637 565 591 615T476 665Q396 665 322 605Q242 542 200 428T157 216Q157 126 200 73T314 19Q404 19 485 98T608 313Q637 408 637 476Z"></path></g><g data-mml-node="mo" transform="translate(763,0)"><path data-c="28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path></g><g data-mml-node="mi" transform="translate(1152,0)"><path data-c="1D45B" d="M21 287Q22 293 24 303T36 341T56 388T89 425T135 442Q171 442 195 424T225 390T231 369Q231 367 232 367L243 378Q304 442 382 442Q436 442 469 415T503 336T465 179T427 52Q427 26 444 26Q450 26 453 27Q482 32 505 65T540 145Q542 153 560 153Q580 153 580 145Q580 144 576 130Q568 101 554 73T508 17T439 -10Q392 -10 371 17T350 73Q350 92 386 193T423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 180T152 343Q153 348 153 366Q153 405 129 405Q91 405 66 305Q60 285 60 284Q58 278 41 278H27Q21 284 21 287Z"></path></g><g data-mml-node="mo" transform="translate(1752,0)"><path data-c="29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path></g></g></g></svg></span>. 자식 간 순서(맨 왼쪽 자식)도 표현 못 함.</li>
+</ul>
+
+<h3>3.2 List-of-Children</h3>
+<p>각 부모가 자식 인덱스들의 연결 리스트를 가진다.</p>
+<table>
+<tr><td>k</td><td>Label</td><td>Parent</td><td>Children 리스트</td></tr>
+<tr><td>1</td><td>a</td><td>0</td><td>→ 2 → 5</td></tr>
+<tr><td>2</td><td>b</td><td>1</td><td>→ 3 → 6 → 4</td></tr>
+<tr><td>3</td><td>d</td><td>2</td><td>—</td></tr>
+<tr><td>4</td><td>f</td><td>2</td><td>—</td></tr>
+<tr><td>5</td><td>c</td><td>1</td><td>—</td></tr>
+<tr><td>6</td><td>e</td><td>2</td><td>—</td></tr>
+</table>
+<ul>
+<li>두 트리 결합은 새 서브트리 루트의 부모 인덱스만 갱신 → <span class="mjx"><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="4.618ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 2041 1000"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D442" d="M740 435Q740 320 676 213T511 42T304 -22Q207 -22 138 35T51 201Q50 209 50 244Q50 346 98 438T227 601Q351 704 476 704Q514 704 524 703Q621 689 680 617T740 435ZM637 476Q637 565 591 615T476 665Q396 665 322 605Q242 542 200 428T157 216Q157 126 200 73T314 19Q404 19 485 98T608 313Q637 408 637 476Z"></path></g><g data-mml-node="mo" transform="translate(763,0)"><path data-c="28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path></g><g data-mml-node="mn" transform="translate(1152,0)"><path data-c="31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z"></path></g><g data-mml-node="mo" transform="translate(1652,0)"><path data-c="29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path></g></g></g></svg></span>.</li>
+<li>오른쪽 형제(Right sibling) 접근이 어렵고, 노드 데이터가 배열과 자식 리스트 양쪽에 중복 존재.</li>
+</ul>
+
+<h3>3.3 Left-Child / Right-Sibling — 일반 트리를 이진 트리로</h3>
+<p>노드마다 <strong class="k-blue">맨 왼쪽 자식(Lc)</strong>과 <strong class="k-blue">바로 오른쪽 형제(Rs)</strong>, 딱 2개의 포인터만 쓴다. 자식 수가 아무리 많아도 표현 가능하며, 사실상 <span class="hl">일반 트리를 이진 트리로 변환</span>하는 것이다.</p>
+
+<div class="figwrap">
+<svg viewBox="0 0 660 240" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Sans KR',sans-serif">
+  <text x="10" y="16" font-size="12" font-weight="700" fill="#1f2328">원본 일반 트리</text>
+  <g stroke="#9aa1aa" stroke-width="1.3">
+    <line x1="55" y1="42" x2="30" y2="72"/><line x1="55" y1="42" x2="62" y2="72"/><line x1="55" y1="42" x2="94" y2="72"/>
+    <line x1="26" y1="96" x2="14" y2="122"/><line x1="38" y1="96" x2="50" y2="122"/>
+  </g>
+  <g stroke="#1f2328" fill="#fff">
+    <circle cx="55" cy="32" r="11"/><circle cx="30" cy="84" r="11"/><circle cx="62" cy="84" r="11"/><circle cx="94" cy="84" r="11"/><circle cx="14" cy="134" r="11"/><circle cx="50" cy="134" r="11"/>
+  </g>
+  <g font-size="11.5" text-anchor="middle" fill="#1f2328">
+    <text x="55" y="36">a</text><text x="30" y="88">b</text><text x="62" y="88">c</text><text x="94" y="88">d</text><text x="14" y="138">e</text><text x="50" y="138">f</text>
+  </g>
+  <text x="10" y="176" font-size="11" fill="#6b7280">Preorder: a b e f c d</text>
+  <text x="10" y="193" font-size="11" fill="#6b7280">Postorder: e f b c d a</text>
+
+  <text x="190" y="16" font-size="12" font-weight="700" fill="#1f2328">Lc/Rs 링크 (↓=Lc, →=Rs)</text>
+  <g stroke="#1f2328" stroke-width="1.3">
+    <line x1="235" y1="44" x2="235" y2="66"/><path d="M231 62 L235 70 L239 62 Z" fill="#1f2328" stroke="none"/>
+    <line x1="235" y1="96" x2="235" y2="118"/><path d="M231 114 L235 122 L239 114 Z" fill="#1f2328" stroke="none"/>
+    <line x1="246" y1="84" x2="282" y2="84"/><path d="M278 80 L286 84 L278 88 Z" fill="#1f2328" stroke="none"/>
+    <line x1="304" y1="84" x2="336" y2="84"/><path d="M332 80 L340 84 L332 88 Z" fill="#1f2328" stroke="none"/>
+    <line x1="246" y1="132" x2="282" y2="132"/><path d="M278 128 L286 132 L278 136 Z" fill="#1f2328" stroke="none"/>
+  </g>
+  <g stroke="#1f2328" fill="#fff">
+    <circle cx="235" cy="32" r="11"/><circle cx="235" cy="84" r="11"/><circle cx="293" cy="84" r="11"/><circle cx="347" cy="84" r="11"/><circle cx="235" cy="132" r="11"/><circle cx="293" cy="132" r="11"/>
+  </g>
+  <g font-size="11.5" text-anchor="middle" fill="#1f2328">
+    <text x="235" y="36">a</text><text x="235" y="88">b</text><text x="293" y="88">c</text><text x="347" y="88">d</text><text x="235" y="136">e</text><text x="293" y="136">f</text>
+  </g>
+
+  <text x="450" y="16" font-size="12" font-weight="700" fill="#1f2328">45° 회전 → 이진 트리</text>
+  <g stroke="#9aa1aa" stroke-width="1.3">
+    <line x1="487" y1="42" x2="463" y2="70"/>
+    <line x1="459" y1="92" x2="439" y2="118"/><line x1="471" y1="92" x2="491" y2="118"/>
+    <line x1="495" y1="140" x2="511" y2="164"/><line x1="487" y1="140" x2="471" y2="164"/>
+  </g>
+  <g stroke="#1f2328" fill="#fff">
+    <circle cx="491" cy="32" r="11"/><circle cx="459" cy="82" r="11"/><circle cx="495" cy="128" r="11"/><circle cx="435" cy="128" r="11"/><circle cx="515" cy="176" r="11"/><circle cx="467" cy="176" r="11"/>
+  </g>
+  <g font-size="11.5" text-anchor="middle" fill="#1f2328">
+    <text x="491" y="36">a</text><text x="459" y="86">b</text><text x="495" y="132">c</text><text x="435" y="132">e</text><text x="515" y="180">d</text><text x="467" y="180">f</text>
+  </g>
+  <text x="440" y="210" font-size="11" fill="#6b7280">Preorder: a b e f c d · Inorder: e f b c d a</text>
+</svg>
+<div class="figcap">Lc = 왼쪽 자식 포인터, Rs = 오른쪽 형제 포인터. 형제 체인을 오른쪽 자식으로 돌리면 이진 트리가 된다.</div>
+</div>
+
+<div class="box tipbox">
+  <p class="xlead">아름다운 대응 관계</p>
+  <ul>
+  <li>일반 트리의 <strong class="k-blue">Preorder</strong> = 변환된 이진 트리의 <strong class="k-blue">Preorder</strong> (a b e f c d — 완벽 일치).</li>
+  <li>일반 트리의 <strong class="k-blue">Postorder</strong> = 변환된 이진 트리의 <strong class="k-blue">Inorder</strong> (e f b c d a — 완벽 일치).</li>
+  </ul>
+</div>
+</section>
+
+<section class="part">
+<h2>4. Quiz</h2>
+
+<div class="qa">
+  <div class="qa-q"><span class="qa-badge">Q1</span>BST에서 Inorder의 의미는?</div>
+  <details class="qa-hint"><summary>힌트</summary>
+    <div class="qa-panel"><p>Inorder = 왼쪽(작은 것) → 부모 → 오른쪽(큰 것). BST의 대소 규칙과 맞물려 보자.</p></div></details>
+  <details class="qa-ans"><summary>정답</summary>
+    <div class="qa-panel">
+      <p class="qa-note">개념은 힌트 참고.</p>
+      <div class="qa-final">정답: Inorder 순회 결과가 오름차순 정렬 — BST의 핵심 성질.</div>
+    </div></details>
+</div>
+
+<div class="qa">
+  <div class="qa-q"><span class="qa-badge">Q2</span>Postorder를 사용하는 대표적인 이유는?</div>
+  <details class="qa-hint"><summary>힌트</summary>
+    <div class="qa-panel"><p>Postorder는 자식이 부모보다 항상 먼저 방문된다. "delete 순서"와 연결해 보자.</p></div></details>
+  <details class="qa-ans"><summary>정답</summary>
+    <div class="qa-panel">
+      <p class="qa-note">개념은 힌트 참고.</p>
+      <div class="qa-final">정답: 트리 삭제 시 자식을 먼저 delete 할 수 있어서 (메모리 누수 방지). 수식 후위 평가에도 사용.</div>
+    </div></details>
+</div>
+
+<div class="qa">
+  <div class="qa-q"><span class="qa-badge">Q3</span>Preorder + Postorder 조합으로는 재구성이 불가능한 이유는?</div>
+  <details class="qa-hint"><summary>힌트</summary>
+    <div class="qa-panel"><p>루트는 찾을 수 있다. 문제는 왼쪽과 오른쪽의 "경계"다.</p></div></details>
+  <details class="qa-ans"><summary>정답</summary>
+    <div class="qa-panel">
+      <p class="qa-note">개념은 힌트 참고.</p>
+      <div class="qa-final">정답: 루트는 알아도 왼쪽/오른쪽 서브트리의 경계를 구분할 수 없어서. Inorder가 반드시 필요하다.</div>
+    </div></details>
+</div>
+
+<div class="qa">
+  <div class="qa-q"><span class="qa-badge">Q4</span>Level-order 순회에 Queue를 쓰는 이유는?</div>
+  <details class="qa-hint"><summary>힌트</summary>
+    <div class="qa-panel"><p>FIFO = 먼저 발견한 노드를 먼저 처리. Stack이면 어떻게 될까?</p></div></details>
+  <details class="qa-ans"><summary>정답</summary>
+    <div class="qa-panel">
+      <p class="qa-note">개념은 힌트 참고.</p>
+      <div class="qa-final">정답: FIFO 덕분에 같은 깊이의 노드를 순서대로 처리할 수 있어서. Stack을 쓰면 DFS가 되어 버린다.</div>
+    </div></details>
+</div>
+</section>
+
+<div class="pnav"><a href="sum5.html">‹ 정리본 5. Trees</a><a href="index.html">목차</a><a href="sum7.html">정리본 7. Heaps ›</a></div>
+</div></article></div>
+<script src="assets/v5.js"></script>
+</body>
+</html>

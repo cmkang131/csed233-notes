@@ -1,0 +1,64 @@
+/* ==========================================================================
+   csed233-legacy.css — 복구된 강의 노트/정리본/시험 대비 페이지(ch*, sum*, exam) 전용.
+   study-note.css 와 v5-layer.css 사이에 얹는다 (템플릿 파일은 건드리지 않음).
+   팔레트는 v5 규칙: ink #1a1a1a, accent #9e2b25, 파랑/보라 금지 (k-blue = 볼드 검정).
+   ========================================================================== */
+
+/* 페이지 타이틀 블록 (노트 상단) */
+.t-course{font-size:13px;color:var(--gray);letter-spacing:.08em;font-weight:700;margin-top:22px}
+h1.t-title{font-size:27px;line-height:1.32;color:var(--ink);font-weight:700;margin:6px 0 4px}
+.t-sub{font-size:15.5px;color:#4b5563;margin-top:8px;line-height:1.6}
+@media (max-width:760px){h1.t-title{font-size:22px}}
+
+/* 키 용어: 파랑 리드어는 템플릿 규칙에 따라 볼드 검정 */
+.k-blue{color:var(--ink);font-weight:700}
+.k-green{color:var(--ink);font-weight:700}
+
+/* 박스: 검정 보더는 개념/정의/수식 문장만, 나머지는 가로선 구분 */
+.box{margin:18px 0 0;padding:13px 0 0;border-top:1px solid #d8dce2;background:#fff}
+.box > :last-child{margin-bottom:0}
+.box .mjx-display{margin:.2em 0}
+.box ul,.box ol{margin:.2em 0}
+.box.concept,.box.defbox,.box.warnbox,.box.formula{border:1.5px solid var(--ink);border-radius:10px;padding:14px 18px 15px;margin:14px 0}
+.xlead{font-weight:700;margin:0 0 5px}
+h2+.box:not(.concept):not(.defbox):not(.warnbox):not(.formula),
+h3+.box:not(.concept):not(.defbox):not(.warnbox):not(.formula){border-top:none;padding-top:2px;margin-top:10px}
+
+/* figure */
+.figwrap{text-align:center;margin:14px 0}
+.figwrap svg{max-width:min(640px,94%);height:auto}
+.figcap{font-size:13.5px;color:#555;text-align:center;margin-top:8px}
+
+/* 코드 블록 */
+pre{background:#f6f7f9;border:1px solid #e3e6ea;border-radius:8px;padding:12px 16px;margin:.5em 0;overflow-x:auto;
+  font-family:ui-monospace,'SF Mono',Menlo,Consolas,'Noto Sans KR',monospace;font-size:13.5px;line-height:1.6;white-space:pre}
+pre code{background:none;border:none;padding:0;font-size:inherit;border-radius:0}
+
+/* 표: booktabs 유지 + 첫 행 헤더 굵게 (원본 header-row 관행) */
+.notes table tr:first-child td,.notes table tr:first-child th{font-weight:700}
+
+/* 정의/주의 박스 (ch 페이지 호환) */
+.def,.warn{border:1.5px solid var(--ink);border-left:4px solid var(--ink);background:#fff;border-radius:0 10px 10px 0;padding:10px 16px;margin:12px 0}
+.def p,.warn p{margin:.25em 0}
+
+/* 표 래퍼 */
+.tbl{overflow-x:auto;margin:10px 0}
+
+/* QA: plain text 토글 (힌트/정답) */
+.qa{margin:18px 0}
+.qa-q{font-size:16px;line-height:1.65;font-weight:600}
+.qa-badge{font-weight:700;margin-right:2px}
+.qa-badge::after{content:"."}
+.qa details{margin-top:4px}
+.qa details summary{cursor:pointer;font-size:14px;font-weight:400;color:var(--ink);text-decoration:underline;text-underline-offset:2px;margin-left:20px;user-select:none}
+.qa details summary:hover{color:var(--ink);background:var(--hl)}
+.qa details .qa-panel{margin:6px 0 4px 20px;padding:8px 0 2px;border-top:1px solid #d8dce2;font-size:15.5px;line-height:1.65}
+.qa-note{color:var(--gray);font-size:13.5px;margin:0 0 8px}
+.qa-final{display:inline-block;margin-top:10px;padding:0 3px;font-weight:700;color:var(--ink);background:var(--hl);border-radius:2px}
+
+/* 인쇄 */
+@media print{
+  .qa details .qa-panel{display:block}
+  article.prob-page{page-break-before:always}
+  article.prob-page:first-of-type{page-break-before:avoid}
+}

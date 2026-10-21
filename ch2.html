@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<script src="assets/theme.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ch2. One-Day C++ — 자료구조 구현 토대 — CSED233</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/study-note.css">
+<link rel="stylesheet" href="assets/csed233-legacy.css">
+<link rel="stylesheet" href="assets/v5-layer.css">
+</head>
+<body>
+<div class="paper"><article class="prob-page">
+<div class="phead"><a class="to-home" href="index.html">&larr; 목차</a><span class="phead-c">Ch2. One-Day C++ — 자료구조 구현 토대</span><span class="phead-r">CSED233 &middot; 데이터구조 &middot; <a class="to-root" href="https://cmkang131.github.io/">전체 홈&#8599;</a></span></div>
+<div class="body notes">
+<div class="t-course">CSED233 · 데이터구조 · 포스텍</div>
+<h1 class="t-title">Ch2. One-Day C++ — 자료구조 구현 토대</h1>
+<section class="part"><h2>1. 컴파일 파이프라인</h2>
+<h3>이론 &amp; 배경</h3>
+<ul>
+<li><strong class="k-blue">C++</strong>: C 확장, cross-platform, OOP(class), 고성능. 주요 버전 C++11/14/17/20/23.</li>
+<li><strong class="k-blue">Build 과정</strong>:
+<ul>
+<li><strong class="k-blue">Compiler(컴파일러)</strong>: <code>.cpp/.h</code> → <code>.o</code>(linux) / <code>.obj</code>(windows) (machine-code 변환)</li>
+<li><strong class="k-blue">Linker(링커)</strong>: 여러 <code>.o</code> + library → 실행 파일(<code>.exe</code> / linux 바이너리)</li>
+</ul>
+</li>
+<li>실습: <code>g++ -o my_main main.cpp</code> → <code>./my_main</code></li>
+</ul>
+<div class="qa">
+  <div class="qa-q"><span class="qa-badge">Q1</span>Compiler의 입출력은?</div>
+  <details class="qa-hint"><summary>힌트</summary>
+    <div class="qa-panel"><p>컴파일은 소스 파일 단위로 일어나고, 결과물은 기계어 오브젝트 파일이다.</p></div></details>
+  <details class="qa-ans"><summary>정답</summary>
+    <div class="qa-panel">
+      <p class="qa-note">개념은 힌트 참고.</p>
+      <p><strong class="k-blue">In</strong>: <code>.cpp</code>, <code>.h</code> / <strong class="k-blue">Out</strong>: <code>.o</code>, <code>.obj</code> (cpp 파일당 하나)</p>
+    </div></details>
+</div><div class="qa">
+  <div class="qa-q"><span class="qa-badge">Q2</span>Linker의 입출력은?</div>
+  <details class="qa-hint"><summary>힌트</summary>
+    <div class="qa-panel"><p>링커는 여러 오브젝트 파일을 하나의 실행 파일로 묶는다.</p></div></details>
+  <details class="qa-ans"><summary>정답</summary>
+    <div class="qa-panel">
+      <p class="qa-note">개념은 힌트 참고.</p>
+      <p><strong class="k-blue">In</strong>: 다수의 <code>.o</code> / <strong class="k-blue">Out</strong>: <code>.exe</code>(Windows) / 확장자 없는 실행 파일(Linux)</p>
+    </div></details>
+</div></section>
+<section class="part"><h2>2. 변수 · 타입 · Namespace(네임스페이스)</h2>
+<h3>기본 타입</h3>
+<p><code>bool</code>, <code>char</code>, <code>short</code>, <code>int</code>, <code>long long</code>, <code>float</code>(f32), <code>double</code>(f64).</p>
+<ul>
+<li><strong class="k-blue">Namespace</strong> <code>std::</code>: <code>cout</code>, <code>cin</code>, <code>endl</code> 등 표준 라이브러리 식별자 scope.</li>
+<li><code>using std::string;</code> 으로 prefix 생략 가능.</li>
+</ul>
+<h3>Float64 vs Float32</h3>
+<ul>
+<li><strong class="k-blue">f64 사용</strong>: 정밀도 중요(과학/금융 계산, 누적 오차 누적 방지)</li>
+<li><strong class="k-blue">f32 사용</strong>: 메모리/속도 중요, GPU, 이미지 처리 등 precision 덜 필요</li>
+</ul>
+</section>
+<div class="qa">
+  <div class="qa-q"><span class="qa-badge">Q3</span>직접 만든 <code>void cout(...)</code> 와 <code>std::cout</code> 을 동시에 사용하려면?</div>
+  <details class="qa-hint"><summary>힌트</summary>
+    <div class="qa-panel"><p>이름이 같아도 namespace가 다르면 다른 함수다. 전역 공간의 이름은 <code>::이름</code>으로 명시할 수 있다.</p></div></details>
+  <details class="qa-ans"><summary>정답</summary>
+    <div class="qa-panel">
+      <p class="qa-note">개념은 힌트 참고.</p>
+      <p><code>::cout(s)</code>(global) vs <code>std::cout &lt;&lt; s</code>(namespaced)로 구분해 호출한다.</p>
+    </div></details>
+</div>
+<section class="part"><h2>3. Pointer(포인터), Reference(레퍼런스), Array (DS 구현 핵심)</h2>
+<h3>Pointer(포인터)</h3>
+<ul>
+<li>모든 변수는 메모리 주소를 가짐 → <strong class="k-blue">pointer</strong>는 그 주소를 저장하는 변수.</li>
+<li>타입 <code>T*</code> = T 변수에 대한 포인터.</li>
+<li>연산자:
+<ul>
+<li><code>&amp;x</code>: x의 주소 (address-of)</li>
+<li><code>*q</code>: q가 가리키는 값 (dereference)</li>
+</ul>
+</li>
+</ul>
+<pre><code class="language-c++">char ch = 'Q';
+char* p = &amp;ch;   // p holds address of ch
+cout &lt;&lt; *p;      // 'Q'
+*p = 'X';        // ch 값이 'X'로 변경
+</code></pre>
+<h3>Array(배열) ↔ Pointer(포인터) 동등성</h3>
+<ul>
+<li><code>T[N]</code>: 같은 타입 N개 연속 저장.</li>
+<li><strong class="k-blue">배열명 = 첫 원소 pointer</strong>:</li>
+</ul>
+<pre><code class="language-c++">char c[] = {'c','a','t'};
+char* p = c;        // p → c[0]
+char* q = &amp;c[0];    // q → c[0]
+cout &lt;&lt; c[2] &lt;&lt; p[2] &lt;&lt; q[2]; // &quot;ttt&quot;
+</code></pre>
+<ul>
+<li>초기화 시 크기 생략 가능: <code>int a[] = {10,11,12,13};</code></li>
+</ul>
+
+</section>
+<section class="part"><h2>4. Dynamic Memory(동적 메모리) (new/delete)</h2>
+<h3>Heap(힙) 할당</h3>
+<ul>
+<li><strong class="k-blue">Free store(프리 스토어) / heap</strong>: runtime에 object를 동적 할당.</li>
+<li><code>new T</code> → T 크기 할당 + 포인터 리턴</li>
+<li><code>delete p</code> → 해제</li>
+<li><strong class="k-blue">자동 GC 없음</strong>: 할당한 것은 반드시 <code>delete</code>. 안 하면 <strong class="k-red">memory leak</strong>.</li>
+</ul>
+<h3>배열 동적 할당</h3>
+<pre><code class="language-c++">char* buffer = new char[500];
+buffer[3] = 'a';
+delete[] buffer;   // 배열은 delete[] 필수
+</code></pre>
+<ul>
+<li>핵심: 일반 객체는 <code>delete</code>, 배열은 <code>delete[]</code>. 섞으면 UB.</li>
+</ul>
+
+</section>
+<section class="part"><h2>5. Reference (별칭)</h2>
+<h3>참조</h3>
+<ul>
+<li><code>T&amp;</code>: 기존 객체의 <strong class="k-blue">alias</strong>. 선언 시 반드시 초기화, NULL 불가.</li>
+<li>Pointer와 차이: reference는 재할당 불가, dereference 불필요.</li>
+</ul>
+<pre><code class="language-c++">string author = &quot;Samuel Clemens&quot;;
+string&amp; penName = author;  // alias
+penName = &quot;Mark Twain&quot;;    // author도 바뀜
+</code></pre>
+<h3>함수 인자 전달</h3>
+<pre><code class="language-c++">void f(int value, int&amp; ref) {
+    value++;  // 원본 영향 없음 (pass by value)
+    ref++;    // 원본 수정 (pass by reference)
+}
+</code></pre>
+<ul>
+<li><strong class="hl">DS 구현에서 중요</strong>: 크기 큰 객체 복사 비용 회피, 원본 수정이 필요할 때.</li>
+</ul>
+
+</section>
+<section class="part"><h2>6. 제어 흐름 &amp; 함수</h2>
+<h3>For loop</h3>
+<pre><code class="language-javascript">for (init; condition; increment) { body }
+</code></pre>
+<ul>
+<li><code>break</code>: innermost loop/switch 즉시 탈출</li>
+<li><code>continue</code>: 현재 iteration 나머지 skip</li>
+</ul>
+<h3>Function</h3>
+<ul>
+<li><strong class="k-blue">Declaration</strong> (prototype): 타입 + 이름 + 인자 리스트</li>
+<li><strong class="k-blue">Definition</strong>: declaration + body</li>
+<li><strong class="k-blue">Overloading(오버로딩)</strong>: 같은 이름, 다른 인자 리스트 → 목적은 같으나 타입이 다른 경우</li>
+</ul>
+<pre><code class="language-c++">void print(int x);
+void print(const Passenger&amp; p);  // overloaded
+</code></pre>
+
+</section>
+<section class="part"><h2>7. Struct(구조체) vs Class(클래스)</h2>
+<h3>차이</h3>
+<ul>
+<li><strong class="k-blue">Struct</strong>: 데이터 그룹화 중심. 멤버 기본 <strong class="k-blue">public</strong>.</li>
+<li><strong class="k-blue">Class</strong>: 데이터 추상화/재사용 중심. 멤버 기본 <strong class="k-blue">private</strong>.</li>
+<li>문법적 차이는 default access modifier뿐.</li>
+</ul>
+<h3>String (STL)</h3>
+<pre><code class="language-c++">#include &lt;string&gt;
+using std::string;
+string s = &quot;to be&quot;;
+string t = &quot;not&quot; + s;
+int i = s.size();   // 4
+char c = s[3];      // 'e'
+s += &quot; Smith&quot;;      // 추가
+</code></pre>
+<ul>
+<li>Lexicographic 비교는 ASCII 기반 좌→우.</li>
+</ul>
+
+</section>
+<section class="part"><h2>8. Casting(캐스팅)</h2>
+<h3>명시적 캐스팅</h3>
+<pre><code class="language-c++">int cat = 14;
+double dog = (double)cat;  // C-style
+double pig = double(cat);  // functional
+</code></pre>
+<h3>함정</h3>
+<pre><code class="language-c++">int i1=18, i2=16;
+double dv1 = i1/i2;                  // 1.0 (int 나눗셈 먼저!)
+double dv2 = double(i1)/double(i2);  // 1.125
+double dv3 = double(i1/i2);          // 1.0 (이미 int)
+</code></pre>
+<ul>
+<li><strong class="hl">핵심</strong>: 나눗셈 <strong class="k-blue">전</strong>에 캐스팅해야 함. 괄호 위치 주의.</li>
+</ul>
+
+</section>
+<section class="part"><h2>Summary</h2>
+<ul>
+<li>Compiler/Linker</li>
+<li>Variable, pointer, array, dynamic memory, function, class/struct, string</li>
+<li>Header file, namespace, cin/cout, enumeration, reference</li>
+<li>Casting, Loop, break/continue</li>
+</ul>
+</section>
+<div class="pnav"><a href="ch1.html">‹ Ch1. Introduction — 자료구조란?</a><a href="index.html">목차</a><a href="ch3.html">Ch3. Algorithm Analysis — Big-O & 점근 분석 ›</a></div>
+</div></article></div>
+<script src="assets/v5.js"></script>
+</body>
+</html>
