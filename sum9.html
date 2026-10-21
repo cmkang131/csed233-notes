@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<title>정리본 9. Binary Search Tree — CSED233</title>
+</head>
+<body>
+<div class="paper"><article>
+<div class="phead"><a class="to-home" href="index.html">‹ 홈으로</a><span class="phead-c">정리본 9. Binary Search Tree</span><span class="phead-r">CSED233 · 데이터구조</span></div>
+<div class="body notes">
+<div class="t-course">CSED233 · 데이터구조 · 포스텍</div>
+<h1 class="t-title">정리본 9. Binary Search Tree</h1>
+<div class="t-sub">BST 성질 · Search/Insert/Delete · 균형이 성능을 결정한다.</div>
+
+<section class="part">
+<h2>1. BST의 정의와 성질</h2>
+<div class="box defbox">
+  <span class="box-label">정의</span>
+  <p><strong class="k-blue">Binary Search Tree(이진 탐색 트리)</strong>: 모든 노드에서 <span class="hl">왼쪽 서브트리의 모든 값 &lt; 노드 값 &lt; 오른쪽 서브트리의 모든 값</span>을 만족하는 이진 트리.</p>
+  <p class="refline">"직계 자식"이 아니라 "서브트리 전체"와의 관계다 — 이 차이가 시험에 나온다.</p>
+</div>
+
+<div class="figwrap">
+<svg viewBox="0 0 560 210" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Sans KR',sans-serif">
+  <g stroke="#9aa1aa" stroke-width="1.4">
+    <line x1="268" y1="34" x2="196" y2="72"/><line x1="292" y1="34" x2="364" y2="72"/>
+    <line x1="182" y1="94" x2="150" y2="126"/><line x1="206" y1="94" x2="240" y2="126"/>
+    <line x1="352" y1="94" x2="322" y2="126"/><line x1="376" y1="94" x2="408" y2="126"/>
+  </g>
+  <g stroke="#1f2328" fill="#fff">
+    <circle cx="280" cy="24" r="15"/><circle cx="194" cy="84" r="15"/><circle cx="366" cy="84" r="15"/>
+    <circle cx="146" cy="140" r="14"/><circle cx="244" cy="140" r="14"/><circle cx="318" cy="140" r="14"/><circle cx="412" cy="140" r="14"/>
+  </g>
+  <g font-size="13" text-anchor="middle" fill="#1f2328" font-weight="700">
+    <text x="280" y="29">12</text><text x="194" y="89">5</text><text x="366" y="89">17</text>
+    <text x="146" y="145">3</text><text x="244" y="145">8</text><text x="318" y="145">13</text><text x="412" y="145">20</text>
+  </g>
+  <g font-size="11.5" fill="#4b5563">
+    <text x="40" y="180">검증: 5 왼쪽 {3} &lt; 5 ✓ · 5 오른쪽 {8} &gt; 5 ✓</text>
+    <text x="40" y="198">12 왼쪽 전체 {3,5,8} &lt; 12 ✓ · 12 오른쪽 전체 {13,17,20} &gt; 12 ✓</text>
+  </g>
+</svg>
+<div class="figcap">성질을 만족하는 BST 예시</div>
+</div>
+
+<div class="box concept">
+  <span class="box-label">개념 · BST의 존재 이유</span>
+  <p><strong class="k-blue">Inorder Traversal(중위 순회) 결과 = 오름차순 정렬</strong>이다. 위 트리의 inorder는 <code>3, 5, 8, 12, 13, 17, 20</code>.</p>
+  <ul>
+  <li>별도 정렬 알고리즘 없이 정렬된 데이터를 얻는다.</li>
+  <li>삽입·삭제가 일어나도 정렬 상태가 유지되는 <em>dynamic sorted data</em> 구조.</li>
+  </ul>
+</div>
+</section>
+
+<section class="part">
+<h2>2. 기본 연산</h2>
+
+<h3>2.1 Search(탐색)</h3>
+<p>Search(8): 12에서 시작 → 8 &lt; 12 왼쪽 → 8 &gt; 5 오른쪽 → 8 발견. 경로 <code>12 → 5 → 8</code>, 3번 비교. 시간복잡도 = <strong>O(높이)</strong>.</p>
+<div class="box example">
+  <span class="box-label">직관 · 높이가 전부다</span>
+  <ul>
+  <li>균형 BST: <span class="mjx"><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="8.112ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 3585.7 1000"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D442" d="M740 435Q740 320 676 213T511 42T304 -22Q207 -22 138 35T51 201Q50 209 50 244Q50 346 98 438T227 601Q351 704 476 704Q514 704 524 703Q621 689 680 617T740 435ZM637 476Q637 565 591 615T476 665Q396 665 322 605Q242 542 200 428T157 216Q157 126 200 73T314 19Q404 19 485 98T608 313Q637 408 637 476Z"></path></g><g data-mml-node="mo" transform="translate(763,0)"><path data-c="28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path></g><g data-mml-node="mi" transform="translate(1152,0)"><path data-c="6C" d="M42 46H56Q95 46 103 60V68Q103 77 103 91T103 124T104 167T104 217T104 272T104 329Q104 366 104 407T104 482T104 542T103 586T103 603Q100 622 89 628T44 637H26V660Q26 683 28 683L38 684Q48 685 67 686T104 688Q121 689 141 690T171 693T182 694H185V379Q185 62 186 60Q190 52 198 49Q219 46 247 46H263V0H255L232 1Q209 2 183 2T145 3T107 3T57 1L34 0H26V46H42Z"></path><path data-c="6F" d="M28 214Q28 309 93 378T250 448Q340 448 405 380T471 215Q471 120 407 55T250 -10Q153 -10 91 57T28 214ZM250 30Q372 30 372 193V225V250Q372 272 371 288T364 326T348 362T317 390T268 410Q263 411 252 411Q222 411 195 399Q152 377 139 338T126 246V226Q126 130 145 91Q177 30 250 30Z" transform="translate(278,0)"></path><path data-c="67" d="M329 409Q373 453 429 453Q459 453 472 434T485 396Q485 382 476 371T449 360Q416 360 412 390Q410 404 415 411Q415 412 416 414V415Q388 412 363 393Q355 388 355 386Q355 385 359 381T368 369T379 351T388 325T392 292Q392 230 343 187T222 143Q172 143 123 171Q112 153 112 133Q112 98 138 81Q147 75 155 75T227 73Q311 72 335 67Q396 58 431 26Q470 -13 470 -72Q470 -139 392 -175Q332 -206 250 -206Q167 -206 107 -175Q29 -140 29 -75Q29 -39 50 -15T92 18L103 24Q67 55 67 108Q67 155 96 193Q52 237 52 292Q52 355 102 398T223 442Q274 442 318 416L329 409ZM299 343Q294 371 273 387T221 404Q192 404 171 388T145 343Q142 326 142 292Q142 248 149 227T179 192Q196 182 222 182Q244 182 260 189T283 207T294 227T299 242Q302 258 302 292T299 343ZM403 -75Q403 -50 389 -34T348 -11T299 -2T245 0H218Q151 0 138 -6Q118 -15 107 -34T95 -74Q95 -84 101 -97T122 -127T170 -155T250 -167Q319 -167 361 -139T403 -75Z" transform="translate(778,0)"></path></g><g data-mml-node="mo" transform="translate(2430,0)"><path data-c="2061" d=""></path></g><g data-mml-node="mi" transform="translate(2596.7,0)"><path data-c="1D45B" d="M21 287Q22 293 24 303T36 341T56 388T89 425T135 442Q171 442 195 424T225 390T231 369Q231 367 232 367L243 378Q304 442 382 442Q436 442 469 415T503 336T465 179T427 52Q427 26 444 26Q450 26 453 27Q482 32 505 65T540 145Q542 153 560 153Q580 153 580 145Q580 144 576 130Q568 101 554 73T508 17T439 -10Q392 -10 371 17T350 73Q350 92 386 193T423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 180T152 343Q153 348 153 366Q153 405 129 405Q91 405 66 305Q60 285 60 284Q58 278 41 278H27Q21 284 21 287Z"></path></g><g data-mml-node="mo" transform="translate(3196.7,0)"><path data-c="29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path></g></g></g></svg></span> — 1,000,000개에서 약 20번 비교.</li>
+  <li>편향 BST: <span class="mjx"><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="4.844ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 2141 1000"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D442" d="M740 435Q740 320 676 213T511 42T304 -22Q207 -22 138 35T51 201Q50 209 50 244Q50 346 98 438T227 601Q351 704 476 704Q514 704 524 703Q621 689 680 617T740 435ZM637 476Q637 565 591 615T476 665Q396 665 322 605Q242 542 200 428T157 216Q157 126 200 73T314 19Q404 19 485 98T608 313Q637 408 637 476Z"></path></g><g data-mml-node="mo" transform="translate(763,0)"><path data-c="28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path></g><g data-mml-node="mi" transform="translate(1152,0)"><path data-c="1D45B" d="M21 287Q22 293 24 303T36 341T56 388T89 425T135 442Q171 442 195 424T225 390T231 369Q231 367 232 367L243 378Q304 442 382 442Q436 442 469 415T503 336T465 179T427 52Q427 26 444 26Q450 26 453 27Q482 32 505 65T540 145Q542 153 560 153Q580 153 580 145Q580 144 576 130Q568 101 554 73T508 17T439 -10Q392 -10 371 17T350 73Q350 92 386 193T423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 180T152 343Q153 348 153 366Q153 405 129 405Q91 405 66 305Q60 285 60 284Q58 278 41 278H27Q21 284 21 287Z"></path></g><g data-mml-node="mo" transform="translate(1752,0)"><path data-c="29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path></g></g></g></svg></span> — 최악 1,000,000번 비교, 사실상 연결 리스트.</li>
+  </ul>
+</div>
+
+<h3>2.2 Insert(삽입)</h3>
+<ol class="steps">
+  <li>Search와 같은 방식으로 내려가며 <strong>빈 자리를 찾는다</strong>.</li>
+  <li>찾은 리프 위치에 새 노드를 단다.</li>
+</ol>
+<pre><code>Insert(4):  5 → 왼쪽 3 → 3의 오른쪽이 비어 있음 → 거기에 4
+
+Before:   5        After:    5
+         / \               / \
+        3   8             3   8
+                             \
+                              4</code></pre>
+<p>시간복잡도: O(높이) — 균형이면 <span class="mjx"><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="8.112ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 3585.7 1000"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D442" d="M740 435Q740 320 676 213T511 42T304 -22Q207 -22 138 35T51 201Q50 209 50 244Q50 346 98 438T227 601Q351 704 476 704Q514 704 524 703Q621 689 680 617T740 435ZM637 476Q637 565 591 615T476 665Q396 665 322 605Q242 542 200 428T157 216Q157 126 200 73T314 19Q404 19 485 98T608 313Q637 408 637 476Z"></path></g><g data-mml-node="mo" transform="translate(763,0)"><path data-c="28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path></g><g data-mml-node="mi" transform="translate(1152,0)"><path data-c="6C" d="M42 46H56Q95 46 103 60V68Q103 77 103 91T103 124T104 167T104 217T104 272T104 329Q104 366 104 407T104 482T104 542T103 586T103 603Q100 622 89 628T44 637H26V660Q26 683 28 683L38 684Q48 685 67 686T104 688Q121 689 141 690T171 693T182 694H185V379Q185 62 186 60Q190 52 198 49Q219 46 247 46H263V0H255L232 1Q209 2 183 2T145 3T107 3T57 1L34 0H26V46H42Z"></path><path data-c="6F" d="M28 214Q28 309 93 378T250 448Q340 448 405 380T471 215Q471 120 407 55T250 -10Q153 -10 91 57T28 214ZM250 30Q372 30 372 193V225V250Q372 272 371 288T364 326T348 362T317 390T268 410Q263 411 252 411Q222 411 195 399Q152 377 139 338T126 246V226Q126 130 145 91Q177 30 250 30Z" transform="translate(278,0)"></path><path data-c="67" d="M329 409Q373 453 429 453Q459 453 472 434T485 396Q485 382 476 371T449 360Q416 360 412 390Q410 404 415 411Q415 412 416 414V415Q388 412 363 393Q355 388 355 386Q355 385 359 381T368 369T379 351T388 325T392 292Q392 230 343 187T222 143Q172 143 123 171Q112 153 112 133Q112 98 138 81Q147 75 155 75T227 73Q311 72 335 67Q396 58 431 26Q470 -13 470 -72Q470 -139 392 -175Q332 -206 250 -206Q167 -206 107 -175Q29 -140 29 -75Q29 -39 50 -15T92 18L103 24Q67 55 67 108Q67 155 96 193Q52 237 52 292Q52 355 102 398T223 442Q274 442 318 416L329 409ZM299 343Q294 371 273 387T221 404Q192 404 171 388T145 343Q142 326 142 292Q142 248 149 227T179 192Q196 182 222 182Q244 182 260 189T283 207T294 227T299 242Q302 258 302 292T299 343ZM403 -75Q403 -50 389 -34T348 -11T299 -2T245 0H218Q151 0 138 -6Q118 -15 107 -34T95 -74Q95 -84 101 -97T122 -127T170 -155T250 -167Q319 -167 361 -139T403 -75Z" transform="translate(778,0)"></path></g><g data-mml-node="mo" transform="translate(2430,0)"><path data-c="2061" d=""></path></g><g data-mml-node="mi" transform="translate(2596.7,0)"><path data-c="1D45B" d="M21 287Q22 293 24 303T36 341T56 388T89 425T135 442Q171 442 195 424T225 390T231 369Q231 367 232 367L243 378Q304 442 382 442Q436 442 469 415T503 336T465 179T427 52Q427 26 444 26Q450 26 453 27Q482 32 505 65T540 145Q542 153 560 153Q580 153 580 145Q580 144 576 130Q568 101 554 73T508 17T439 -10Q392 -10 371 17T350 73Q350 92 386 193T423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 180T152 343Q153 348 153 366Q153 405 129 405Q91 405 66 305Q60 285 60 284Q58 278 41 278H27Q21 284 21 287Z"></path></g><g data-mml-node="mo" transform="translate(3196.7,0)"><path data-c="29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path></g></g></g></svg></span>.</p>
+
+<h3>2.3 Delete(삭제) — 3가지 경우</h3>
+<div class="cards3">
+  <div class="box defbox"><span class="box-label">Case 1 · Leaf</span>
+    <p>자식 없음 → 그냥 제거. 비용 <span class="mjx"><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="4.618ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 2041 1000"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D442" d="M740 435Q740 320 676 213T511 42T304 -22Q207 -22 138 35T51 201Q50 209 50 244Q50 346 98 438T227 601Q351 704 476 704Q514 704 524 703Q621 689 680 617T740 435ZM637 476Q637 565 591 615T476 665Q396 665 322 605Q242 542 200 428T157 216Q157 126 200 73T314 19Q404 19 485 98T608 313Q637 408 637 476Z"></path></g><g data-mml-node="mo" transform="translate(763,0)"><path data-c="28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path></g><g data-mml-node="mn" transform="translate(1152,0)"><path data-c="31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z"></path></g><g data-mml-node="mo" transform="translate(1652,0)"><path data-c="29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path></g></g></g></svg></span>.</p>
+<pre><code>Delete(3):
+  5         5
+ / \    →    \
+3   8         8</code></pre></div>
+  <div class="box defbox"><span class="box-label">Case 2 · 자식 1개</span>
+    <p>자식이 자리를 물려받는다. 비용 <span class="mjx"><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="4.618ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 2041 1000"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D442" d="M740 435Q740 320 676 213T511 42T304 -22Q207 -22 138 35T51 201Q50 209 50 244Q50 346 98 438T227 601Q351 704 476 704Q514 704 524 703Q621 689 680 617T740 435ZM637 476Q637 565 591 615T476 665Q396 665 322 605Q242 542 200 428T157 216Q157 126 200 73T314 19Q404 19 485 98T608 313Q637 408 637 476Z"></path></g><g data-mml-node="mo" transform="translate(763,0)"><path data-c="28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path></g><g data-mml-node="mn" transform="translate(1152,0)"><path data-c="31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z"></path></g><g data-mml-node="mo" transform="translate(1652,0)"><path data-c="29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path></g></g></g></svg></span>.</p>
+<pre><code>Delete(5):
+  12          12
+ /      →    /
+5            3
+/
+3</code></pre></div>
+  <div class="box warnbox"><span class="box-label">Case 3 · 자식 2개 — 핵심</span>
+    <p><strong class="k-blue">Successor(오른쪽 서브트리의 최솟값)</strong>로 값을 대체한 뒤, successor를 삭제한다.</p>
+    <p class="refline">successor는 자식이 최대 1개라 Case 1/2로 환원된다.</p></div>
+</div>
+<div class="box example">
+  <span class="box-label">예제 · Delete(12) — 자식 2개</span>
+<ol class="steps">
+  <li>오른쪽 서브트리(17)에서 계속 왼쪽으로 내려가 최솟값 <b>13</b>을 찾는다.</li>
+  <li>12의 값을 13으로 대체한다.</li>
+  <li>원래 13 노드를 Case 1/2 방식으로 삭제한다.</li>
+</ol>
+<pre><code>Before:        12           After:         13
+              /  \                       /  \
+             5   17                     5   17
+            / \  / \                   / \    \
+           3  8 13 20                 3  8    20</code></pre>
+</div>
+<div class="box tipbox">
+  <span class="box-label">왜 successor인가</span>
+  <p>Successor는 삭제 노드보다는 크고 오른쪽 서브트리의 다른 모든 노드보다는 작다 — 그래서 대체해도 <strong class="k-blue">BST 성질이 자동 유지</strong>된다. (왼쪽 서브트리의 최댓값, predecessor를 써도 같은 논리로 된다.)</p>
+</div>
+</section>
+
+<section class="part">
+<h2>3. 균형 vs 편향 — 삽입 순서가 운명을 가른다</h2>
+<div class="figwrap">
+<svg viewBox="0 0 640 190" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Sans KR',sans-serif">
+  <text x="20" y="16" font-size="12" fill="#1e7a46" font-weight="700">균형 BST — 높이 2, 모든 연산 O(log n)</text>
+  <g stroke="#9aa1aa" stroke-width="1.3">
+    <line x1="148" y1="30" x2="108" y2="56"/><line x1="172" y1="30" x2="212" y2="56"/>
+    <line x1="100" y1="76" x2="82" y2="98"/><line x1="116" y1="76" x2="136" y2="98"/>
+    <line x1="206" y1="76" x2="188" y2="98"/><line x1="222" y1="76" x2="240" y2="98"/>
+  </g>
+  <g stroke="#1f2328" fill="#fff">
+    <circle cx="160" cy="28" r="12"/><circle cx="108" cy="68" r="12"/><circle cx="212" cy="68" r="12"/>
+    <circle cx="80" cy="112" r="11"/><circle cx="138" cy="112" r="11"/><circle cx="186" cy="112" r="11"/><circle cx="242" cy="112" r="11"/>
+  </g>
+  <g font-size="11.5" text-anchor="middle" fill="#1f2328">
+    <text x="160" y="32">12</text><text x="108" y="72">5</text><text x="212" y="72">17</text>
+    <text x="80" y="116">3</text><text x="138" y="116">8</text><text x="186" y="116">13</text><text x="242" y="116">20</text>
+  </g>
+  <text x="360" y="16" font-size="12" fill="#b03a32" font-weight="700">편향 BST — 높이 n, 모든 연산 O(n)</text>
+  <g stroke="#9aa1aa" stroke-width="1.3">
+    <line x1="398" y1="30" x2="416" y2="48"/><line x1="430" y1="60" x2="446" y2="76"/>
+    <line x1="458" y1="88" x2="472" y2="102"/><line x1="484" y1="114" x2="496" y2="126"/>
+  </g>
+  <g stroke="#1f2328" fill="#fff">
+    <circle cx="392" cy="28" r="11"/><circle cx="424" cy="56" r="11"/><circle cx="452" cy="84" r="11"/><circle cx="478" cy="110" r="11"/><circle cx="502" cy="134" r="11"/>
+  </g>
+  <g font-size="11.5" text-anchor="middle" fill="#1f2328">
+    <text x="392" y="32">1</text><text x="424" y="60">2</text><text x="452" y="88">3</text><text x="478" y="114">4</text><text x="502" y="138">5</text>
+  </g>
+  <text x="540" y="30" font-size="11" fill="#6b7280">삽입 순서</text>
+  <text x="540" y="46" font-size="11" fill="#6b7280">[1,2,3,4,5]</text>
+  <text x="540" y="62" font-size="11" fill="#6b7280">→ 전부 오른쪽</text>
+</svg>
+<div class="figcap">같은 데이터라도 삽입 순서에 따라 균형/편향이 갈린다</div>
+</div>
+<div class="box warnbox">
+  <span class="box-label">함정 · 삽입 순서</span>
+  <ul>
+  <li><code>[1, 2, 3, 4, 5]</code> 순으로 삽입 → 높이 5의 편향 트리, 성능 <span class="mjx"><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="4.844ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 2141 1000"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D442" d="M740 435Q740 320 676 213T511 42T304 -22Q207 -22 138 35T51 201Q50 209 50 244Q50 346 98 438T227 601Q351 704 476 704Q514 704 524 703Q621 689 680 617T740 435ZM637 476Q637 565 591 615T476 665Q396 665 322 605Q242 542 200 428T157 216Q157 126 200 73T314 19Q404 19 485 98T608 313Q637 408 637 476Z"></path></g><g data-mml-node="mo" transform="translate(763,0)"><path data-c="28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path></g><g data-mml-node="mi" transform="translate(1152,0)"><path data-c="1D45B" d="M21 287Q22 293 24 303T36 341T56 388T89 425T135 442Q171 442 195 424T225 390T231 369Q231 367 232 367L243 378Q304 442 382 442Q436 442 469 415T503 336T465 179T427 52Q427 26 444 26Q450 26 453 27Q482 32 505 65T540 145Q542 153 560 153Q580 153 580 145Q580 144 576 130Q568 101 554 73T508 17T439 -10Q392 -10 371 17T350 73Q350 92 386 193T423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 180T152 343Q153 348 153 366Q153 405 129 405Q91 405 66 305Q60 285 60 284Q58 278 41 278H27Q21 284 21 287Z"></path></g><g data-mml-node="mo" transform="translate(1752,0)"><path data-c="29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path></g></g></g></svg></span>.</li>
+  <li><code>[3, 1, 5, 2, 4]</code> 순으로 삽입 → 높이 2의 균형 트리, 성능 <span class="mjx"><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="8.112ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 3585.7 1000"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D442" d="M740 435Q740 320 676 213T511 42T304 -22Q207 -22 138 35T51 201Q50 209 50 244Q50 346 98 438T227 601Q351 704 476 704Q514 704 524 703Q621 689 680 617T740 435ZM637 476Q637 565 591 615T476 665Q396 665 322 605Q242 542 200 428T157 216Q157 126 200 73T314 19Q404 19 485 98T608 313Q637 408 637 476Z"></path></g><g data-mml-node="mo" transform="translate(763,0)"><path data-c="28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path></g><g data-mml-node="mi" transform="translate(1152,0)"><path data-c="6C" d="M42 46H56Q95 46 103 60V68Q103 77 103 91T103 124T104 167T104 217T104 272T104 329Q104 366 104 407T104 482T104 542T103 586T103 603Q100 622 89 628T44 637H26V660Q26 683 28 683L38 684Q48 685 67 686T104 688Q121 689 141 690T171 693T182 694H185V379Q185 62 186 60Q190 52 198 49Q219 46 247 46H263V0H255L232 1Q209 2 183 2T145 3T107 3T57 1L34 0H26V46H42Z"></path><path data-c="6F" d="M28 214Q28 309 93 378T250 448Q340 448 405 380T471 215Q471 120 407 55T250 -10Q153 -10 91 57T28 214ZM250 30Q372 30 372 193V225V250Q372 272 371 288T364 326T348 362T317 390T268 410Q263 411 252 411Q222 411 195 399Q152 377 139 338T126 246V226Q126 130 145 91Q177 30 250 30Z" transform="translate(278,0)"></path><path data-c="67" d="M329 409Q373 453 429 453Q459 453 472 434T485 396Q485 382 476 371T449 360Q416 360 412 390Q410 404 415 411Q415 412 416 414V415Q388 412 363 393Q355 388 355 386Q355 385 359 381T368 369T379 351T388 325T392 292Q392 230 343 187T222 143Q172 143 123 171Q112 153 112 133Q112 98 138 81Q147 75 155 75T227 73Q311 72 335 67Q396 58 431 26Q470 -13 470 -72Q470 -139 392 -175Q332 -206 250 -206Q167 -206 107 -175Q29 -140 29 -75Q29 -39 50 -15T92 18L103 24Q67 55 67 108Q67 155 96 193Q52 237 52 292Q52 355 102 398T223 442Q274 442 318 416L329 409ZM299 343Q294 371 273 387T221 404Q192 404 171 388T145 343Q142 326 142 292Q142 248 149 227T179 192Q196 182 222 182Q244 182 260 189T283 207T294 227T299 242Q302 258 302 292T299 343ZM403 -75Q403 -50 389 -34T348 -11T299 -2T245 0H218Q151 0 138 -6Q118 -15 107 -34T95 -74Q95 -84 101 -97T122 -127T170 -155T250 -167Q319 -167 361 -139T403 -75Z" transform="translate(778,0)"></path></g><g data-mml-node="mo" transform="translate(2430,0)"><path data-c="2061" d=""></path></g><g data-mml-node="mi" transform="translate(2596.7,0)"><path data-c="1D45B" d="M21 287Q22 293 24 303T36 341T56 388T89 425T135 442Q171 442 195 424T225 390T231 369Q231 367 232 367L243 378Q304 442 382 442Q436 442 469 415T503 336T465 179T427 52Q427 26 444 26Q450 26 453 27Q482 32 505 65T540 145Q542 153 560 153Q580 153 580 145Q580 144 576 130Q568 101 554 73T508 17T439 -10Q392 -10 371 17T350 73Q350 92 386 193T423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 180T152 343Q153 348 153 366Q153 405 129 405Q91 405 66 305Q60 285 60 284Q58 278 41 278H27Q21 284 21 287Z"></path></g><g data-mml-node="mo" transform="translate(3196.7,0)"><path data-c="29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path></g></g></g></svg></span>.</li>
+  </ul>
+  <p>삽입 순서를 통제할 수 없다면 스스로 균형을 잡는 트리가 필요하다 → 정리본 10의 <strong class="k-blue">AVL Tree</strong>, Red-Black Tree.</p>
+</div>
+</section>
+
+<section class="part">
+<h2>4. Quiz</h2>
+
+<div class="qa">
+  <div class="qa-q"><span class="qa-badge">Q1</span>BST에서 Inorder 순회가 중요한 이유는?</div>
+  <details class="qa-hint"><summary>힌트</summary>
+    <div class="qa-panel"><p>왼쪽 &lt; 노드 &lt; 오른쪽을 inorder 순서(왼쪽 → 노드 → 오른쪽)로 방문하면 어떤 순서가 나올까.</p></div></details>
+  <details class="qa-ans"><summary>정답</summary>
+    <div class="qa-panel">
+      <p class="qa-note">개념은 힌트 참고.</p>
+      <div class="qa-final">정답: Inorder 결과가 오름차순 정렬이기 때문. 별도 정렬 없이 정렬된 데이터를 얻을 수 있다.</div>
+    </div></details>
+</div>
+
+<div class="qa">
+  <div class="qa-q"><span class="qa-badge">Q2</span>Degree-2 노드 삭제 시 왜 Successor를 사용하는가?</div>
+  <details class="qa-hint"><summary>힌트</summary>
+    <div class="qa-panel"><p>Successor는 오른쪽 서브트리의 최솟값 — 크기 관계를 생각해 보자.</p></div></details>
+  <details class="qa-ans"><summary>정답</summary>
+    <div class="qa-panel">
+      <p class="qa-note">개념은 힌트 참고.</p>
+      <div class="qa-final">정답: Successor는 삭제 노드보다 크면서 오른쪽 서브트리의 모든 노드보다 작으므로, 대체해도 BST 성질이 자동으로 유지되기 때문. 게다가 자식이 최대 1개라 삭제가 간단하다.</div>
+    </div></details>
+</div>
+
+<div class="qa">
+  <div class="qa-q"><span class="qa-badge">Q3</span>[1, 2, 3, 4, 5] 순서로 Insert한 후 트리의 높이는?</div>
+  <details class="qa-hint"><summary>힌트</summary>
+    <div class="qa-panel"><p>매번 루트보다 큰 값이 들어온다. 새 노드는 항상 어디에 붙을까.</p></div></details>
+  <details class="qa-ans"><summary>정답</summary>
+    <div class="qa-panel">
+      <p class="qa-note">개념은 힌트 참고.</p>
+      <div class="qa-final">정답: 높이 5 — 모든 노드가 오른쪽으로만 이어진 편향 트리. 성능이 <span class="mjx"><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="4.844ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 2141 1000"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D442" d="M740 435Q740 320 676 213T511 42T304 -22Q207 -22 138 35T51 201Q50 209 50 244Q50 346 98 438T227 601Q351 704 476 704Q514 704 524 703Q621 689 680 617T740 435ZM637 476Q637 565 591 615T476 665Q396 665 322 605Q242 542 200 428T157 216Q157 126 200 73T314 19Q404 19 485 98T608 313Q637 408 637 476Z"></path></g><g data-mml-node="mo" transform="translate(763,0)"><path data-c="28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path></g><g data-mml-node="mi" transform="translate(1152,0)"><path data-c="1D45B" d="M21 287Q22 293 24 303T36 341T56 388T89 425T135 442Q171 442 195 424T225 390T231 369Q231 367 232 367L243 378Q304 442 382 442Q436 442 469 415T503 336T465 179T427 52Q427 26 444 26Q450 26 453 27Q482 32 505 65T540 145Q542 153 560 153Q580 153 580 145Q580 144 576 130Q568 101 554 73T508 17T439 -10Q392 -10 371 17T350 73Q350 92 386 193T423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 180T152 343Q153 348 153 366Q153 405 129 405Q91 405 66 305Q60 285 60 284Q58 278 41 278H27Q21 284 21 287Z"></path></g><g data-mml-node="mo" transform="translate(1752,0)"><path data-c="29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path></g></g></g></svg></span>까지 저하되므로 자동 균형 트리가 필요하다.</div>
+    </div></details>
+</div>
+
+<div class="qa">
+  <div class="qa-q"><span class="qa-badge">Q4</span>BST 성능이 <span class="mjx"><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="4.844ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 2141 1000"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D442" d="M740 435Q740 320 676 213T511 42T304 -22Q207 -22 138 35T51 201Q50 209 50 244Q50 346 98 438T227 601Q351 704 476 704Q514 704 524 703Q621 689 680 617T740 435ZM637 476Q637 565 591 615T476 665Q396 665 322 605Q242 542 200 428T157 216Q157 126 200 73T314 19Q404 19 485 98T608 313Q637 408 637 476Z"></path></g><g data-mml-node="mo" transform="translate(763,0)"><path data-c="28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path></g><g data-mml-node="mi" transform="translate(1152,0)"><path data-c="1D45B" d="M21 287Q22 293 24 303T36 341T56 388T89 425T135 442Q171 442 195 424T225 390T231 369Q231 367 232 367L243 378Q304 442 382 442Q436 442 469 415T503 336T465 179T427 52Q427 26 444 26Q450 26 453 27Q482 32 505 65T540 145Q542 153 560 153Q580 153 580 145Q580 144 576 130Q568 101 554 73T508 17T439 -10Q392 -10 371 17T350 73Q350 92 386 193T423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 180T152 343Q153 348 153 366Q153 405 129 405Q91 405 66 305Q60 285 60 284Q58 278 41 278H27Q21 284 21 287Z"></path></g><g data-mml-node="mo" transform="translate(1752,0)"><path data-c="29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path></g></g></g></svg></span>까지 나빠지는 이유는?</div>
+  <details class="qa-hint"><summary>힌트</summary>
+    <div class="qa-panel"><p>모든 연산의 비용은 경로 길이 = 높이에 비례한다.</p></div></details>
+  <details class="qa-ans"><summary>정답</summary>
+    <div class="qa-panel">
+      <p class="qa-note">개념은 힌트 참고.</p>
+      <div class="qa-final">정답: 편향된 순서로 삽입되면 높이가 n까지 커져 선형 탐색과 다를 바 없어진다. AVL/Red-Black Tree 같은 자동 균형 트리로 해결한다.</div>
+    </div></details>
+</div>
+
+<div class="qa">
+  <div class="qa-q"><span class="qa-badge">Q5</span>Search / Insert / Delete의 시간복잡도가 동일한 이유는?</div>
+  <details class="qa-hint"><summary>힌트</summary>
+    <div class="qa-panel"><p>세 연산 모두 공통적으로 하는 일이 있다.</p></div></details>
+  <details class="qa-ans"><summary>정답</summary>
+    <div class="qa-panel">
+      <p class="qa-note">개념은 힌트 참고.</p>
+      <div class="qa-final">정답: 모두 경로상의 노드만 방문하고, 경로 길이 = 트리 높이라서. 균형 BST에서는 셋 다 <span class="mjx"><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="8.112ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 3585.7 1000"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D442" d="M740 435Q740 320 676 213T511 42T304 -22Q207 -22 138 35T51 201Q50 209 50 244Q50 346 98 438T227 601Q351 704 476 704Q514 704 524 703Q621 689 680 617T740 435ZM637 476Q637 565 591 615T476 665Q396 665 322 605Q242 542 200 428T157 216Q157 126 200 73T314 19Q404 19 485 98T608 313Q637 408 637 476Z"></path></g><g data-mml-node="mo" transform="translate(763,0)"><path data-c="28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path></g><g data-mml-node="mi" transform="translate(1152,0)"><path data-c="6C" d="M42 46H56Q95 46 103 60V68Q103 77 103 91T103 124T104 167T104 217T104 272T104 329Q104 366 104 407T104 482T104 542T103 586T103 603Q100 622 89 628T44 637H26V660Q26 683 28 683L38 684Q48 685 67 686T104 688Q121 689 141 690T171 693T182 694H185V379Q185 62 186 60Q190 52 198 49Q219 46 247 46H263V0H255L232 1Q209 2 183 2T145 3T107 3T57 1L34 0H26V46H42Z"></path><path data-c="6F" d="M28 214Q28 309 93 378T250 448Q340 448 405 380T471 215Q471 120 407 55T250 -10Q153 -10 91 57T28 214ZM250 30Q372 30 372 193V225V250Q372 272 371 288T364 326T348 362T317 390T268 410Q263 411 252 411Q222 411 195 399Q152 377 139 338T126 246V226Q126 130 145 91Q177 30 250 30Z" transform="translate(278,0)"></path><path data-c="67" d="M329 409Q373 453 429 453Q459 453 472 434T485 396Q485 382 476 371T449 360Q416 360 412 390Q410 404 415 411Q415 412 416 414V415Q388 412 363 393Q355 388 355 386Q355 385 359 381T368 369T379 351T388 325T392 292Q392 230 343 187T222 143Q172 143 123 171Q112 153 112 133Q112 98 138 81Q147 75 155 75T227 73Q311 72 335 67Q396 58 431 26Q470 -13 470 -72Q470 -139 392 -175Q332 -206 250 -206Q167 -206 107 -175Q29 -140 29 -75Q29 -39 50 -15T92 18L103 24Q67 55 67 108Q67 155 96 193Q52 237 52 292Q52 355 102 398T223 442Q274 442 318 416L329 409ZM299 343Q294 371 273 387T221 404Q192 404 171 388T145 343Q142 326 142 292Q142 248 149 227T179 192Q196 182 222 182Q244 182 260 189T283 207T294 227T299 242Q302 258 302 292T299 343ZM403 -75Q403 -50 389 -34T348 -11T299 -2T245 0H218Q151 0 138 -6Q118 -15 107 -34T95 -74Q95 -84 101 -97T122 -127T170 -155T250 -167Q319 -167 361 -139T403 -75Z" transform="translate(778,0)"></path></g><g data-mml-node="mo" transform="translate(2430,0)"><path data-c="2061" d=""></path></g><g data-mml-node="mi" transform="translate(2596.7,0)"><path data-c="1D45B" d="M21 287Q22 293 24 303T36 341T56 388T89 425T135 442Q171 442 195 424T225 390T231 369Q231 367 232 367L243 378Q304 442 382 442Q436 442 469 415T503 336T465 179T427 52Q427 26 444 26Q450 26 453 27Q482 32 505 65T540 145Q542 153 560 153Q580 153 580 145Q580 144 576 130Q568 101 554 73T508 17T439 -10Q392 -10 371 17T350 73Q350 92 386 193T423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 180T152 343Q153 348 153 366Q153 405 129 405Q91 405 66 305Q60 285 60 284Q58 278 41 278H27Q21 284 21 287Z"></path></g><g data-mml-node="mo" transform="translate(3196.7,0)"><path data-c="29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path></g></g></g></svg></span>.</div>
+    </div></details>
+</div>
+</section>
+
+<div class="pnav"><a href="sum8.html">‹ 정리본 8. Sorting</a><a href="index.html">목차</a><a href="sum10.html">정리본 10. AVL Tree ›</a></div>
+</div></article></div>
+</body>
+</html>

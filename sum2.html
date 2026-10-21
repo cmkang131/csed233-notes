@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<title>정리본 2. C++ 기초 — CSED233</title>
+</head>
+<body>
+<div class="paper"><article>
+<div class="phead"><a class="to-home" href="index.html">‹ 홈으로</a><span class="phead-c">정리본 2. C++ 기초</span><span class="phead-r">CSED233 · 데이터구조</span></div>
+<div class="body notes">
+<div class="t-course">CSED233 · 데이터구조 · 포스텍</div>
+<h1 class="t-title">정리본 2. C++ 기초</h1>
+<div class="t-sub">자료구조 구현의 토대: 왜 C++인가 · 빌드 프로세스 · 포인터와 메모리 · new/delete.</div>
+
+<section class="part">
+<h2>1. 왜 자료구조를 C++로 배우는가</h2>
+<p>자료구조는 <span class="hl">포인터 기반의 자료 조직</span>이다. 따라서 메모리를 직접 제어할 수 있는 언어가 필요하다.</p>
+<ul>
+<li><strong class="k-blue">C (1972)</strong>: 절차지향, 메모리 직접 관리, 함수 중심. 빠르지만 위험하다.</li>
+<li><strong class="k-blue">C++</strong>: C + 객체지향 + 개선된 메모리 관리. 안전하면서 고성능 — 자료구조 학습에 "딱 맞는 추상화 수준".</li>
+</ul>
+
+<h3>1.1 다른 언어와 비교하면 이유가 보인다</h3>
+<div class="box example">
+  <span class="box-label">Python — 구현은 쉽지만 본질을 숨긴다</span>
+<pre><code>arr = [0] * 1000000   # 내부 구조? 메모리는? 포인터는? 전부 모른다
+class Node:
+    def __init__(self, data):
+        self.next = None   # Python이 포인터를 대신 관리</code></pre>
+<p>포인터라는 메모리 개념을 배울 수 없다. 자료구조의 진정한 이해 = 메모리 레벨의 이해인데, Python은 그것을 감춘다.</p>
+</div>
+<div class="box example">
+  <span class="box-label">Java — 자동화가 원리 이해를 막는다</span>
+<pre><code>LinkedList&lt;Integer&gt; list = new LinkedList&lt;&gt;();
+list.add(10);   // 내부 동작? 메모리 할당/해제 시점? GC의 영향?</code></pre>
+<p>세부사항이 자동화되어 있어 동작 원리와 성능 분석이 어렵다(Garbage Collection의 영향).</p>
+</div>
+<div class="box tipbox">
+  <span class="box-label">C++ — 메모리 관리가 프로그래머의 책임</span>
+<pre><code>int* arr = new int[n];  // 할당이 명시적
+arr[i] = value;         // 접근이 명시적
+delete[] arr;           // 해제가 명시적
+
+struct Node {
+    int data;
+    Node* next;         // 포인터로 다음 노드 연결
+};</code></pre>
+<p>자료구조가 메모리를 어떻게 쓰는지 명확히 보이고, 성능 분석이 가능하고, 포인터 개념을 완전히 이해하게 된다.</p>
+</div>
+
+<h3>1.2 C++이 필수인 3가지 이유</h3>
+<ol>
+<li><strong class="k-blue">메모리 직접 관리</strong> — 포인터로 노드를 연결하는 연결 리스트/트리/그래프, 크기를 제어하는 동적 배열. Python/Java의 가비지 컬렉션은 이 구조 이해를 어렵게 한다.</li>
+<li><strong class="k-blue">성능 측정이 정확</strong> — C++은 빨라서 O(n) vs O(log n) 차이가 명확하다 (n=100만: 100만 회 vs 20회). 느린 언어는 차이가 뭉개져 오측정된다.</li>
+<li><strong class="k-blue">개념과 메모리가 연결</strong> — "왜 배열은 Random Access가 O(1)인가"(연속 메모리 + 포인터 산술), "왜 연결 리스트는 Insert가 O(1)인가"(포인터만 변경) 같은 질문의 답이 C++에서 명시적으로 드러난다.</li>
+</ol>
+
+<h3>1.3 C++ 특징 정리</h3>
+<table>
+<tr><td>특징</td><td>설명</td><td>자료구조 학습에 중요한 이유</td></tr>
+<tr><td><b class="k-blue">크로스플랫폼</b></td><td>Windows, Mac, Linux 모두 호환</td><td>어디서나 학습 환경 구성 가능</td></tr>
+<tr><td><b class="k-blue">고성능</b></td><td>빠른 실행 속도</td><td>O(n) vs O(log n) 차이가 명확히 보임</td></tr>
+<tr><td><b class="k-blue">메모리 제어</b></td><td>new/delete로 동적 할당</td><td><b class="hl">가장 중요</b> — 포인터 기반 자료구조 구현의 핵심</td></tr>
+<tr><td><b class="k-blue">객체지향</b></td><td>클래스로 자료구조 캡슐화</td><td>트리/그래프 같은 복잡 구조 관리 용이</td></tr>
+<tr><td><b class="k-blue">최신 표준</b></td><td>C++11/14/17/20/23</td><td>모던 문법으로 간결한 코드</td></tr>
+</table>
+</section>
+
+<section class="part">
+<h2>2. 빌드 프로세스: 작성에서 실행까지</h2>
+
+<div class="figwrap">
+<svg viewBox="0 0 660 132" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Sans KR',sans-serif">
+  <defs><marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#6b7280"/></marker></defs>
+  <g font-size="12.5" text-anchor="middle">
+    <rect x="10" y="30" width="130" height="52" rx="9" fill="#f1f6ff" stroke="#c9d9f7"/>
+    <text x="75" y="51" font-weight="700" fill="#1a3f9e">① 작성</text><text x="75" y="70" font-size="11" fill="#4b5563">hello.cpp</text>
+    <rect x="180" y="30" width="130" height="52" rx="9" fill="#f1f6ff" stroke="#c9d9f7"/>
+    <text x="245" y="51" font-weight="700" fill="#1a3f9e">② 컴파일</text><text x="245" y="70" font-size="11" fill="#4b5563">hello.o</text>
+    <rect x="350" y="30" width="130" height="52" rx="9" fill="#f1f6ff" stroke="#c9d9f7"/>
+    <text x="415" y="51" font-weight="700" fill="#1a3f9e">③ 링킹</text><text x="415" y="70" font-size="11" fill="#4b5563">hello (exe)</text>
+    <rect x="520" y="30" width="130" height="52" rx="9" fill="#f0f8f2" stroke="#c8e4d2"/>
+    <text x="585" y="51" font-weight="700" fill="#1e7a46">④ 실행</text><text x="585" y="70" font-size="11" fill="#4b5563">결과 출력</text>
+  </g>
+  <line x1="140" y1="56" x2="176" y2="56" stroke="#6b7280" stroke-width="1.5" marker-end="url(#ar2)"/>
+  <line x1="310" y1="56" x2="346" y2="56" stroke="#6b7280" stroke-width="1.5" marker-end="url(#ar2)"/>
+  <line x1="480" y1="56" x2="516" y2="56" stroke="#6b7280" stroke-width="1.5" marker-end="url(#ar2)"/>
+  <g font-size="11" fill="#6b7280" text-anchor="middle">
+    <text x="245" y="106">g++ -c hello.cpp</text>
+    <text x="415" y="106">g++ hello.o -o hello</text>
+    <text x="585" y="106">./hello</text>
+  </g>
+</svg>
+<div class="figcap">각 단계는 종류가 다른 오류를 잡는다. 셋 모두 필요하다.</div>
+</div>
+
+<table>
+<tr><td>단계</td><td>하는 일</td><td>잡아내는 오류</td></tr>
+<tr><td><b class="k-blue">② 컴파일(Compilation)</b></td><td>C++ 코드를 기계어로 번역, 문법·타입 검사 → .o(object) 파일. 아직 라이브러리가 없어 실행 불가.</td><td>컴파일 오류 — 문법/타입, 선언 누락 (예: <code>#include "LinkedList.h"</code> 빼먹음)</td></tr>
+<tr><td><b class="k-blue">③ 링킹(Linking)</b></td><td>.o 파일들 + 표준 라이브러리(iostream 등)를 결합 → 최종 실행 파일.</td><td>링커 오류 — 정의되지 않은 함수 (예: <code>undefined reference to 'sqrt'</code> — -lm 누락)</td></tr>
+<tr><td><b class="k-blue">④ 실행(Execution)</b></td><td>프로그램 실행, 결과 출력.</td><td>런타임 오류 — 실제 동작 중 발생</td></tr>
+</table>
+
+<div class="box concept">
+  <span class="box-label">개념 · 여러 파일 프로젝트</span>
+<pre><code>main.cpp ──[컴파일]──&gt; main.o ┐
+LinkedList.cpp ──[컴파일]──&gt; LinkedList.o ├──[링킹]──&gt; app ──[실행]──&gt; 출력
+                                  stdlib ──┘</code></pre>
+<p>컴파일은 "각 파일이 맞는가?", 링킹은 "전부 모아 완성됐는가?", 실행은 "실제로 작동하는가?"를 본다.</p>
+</div>
+</section>
+
+<section class="part">
+<h2>3. Header 파일과 라이브러리</h2>
+<p><code>#include &lt;iostream&gt;</code>은 <span class="hl">"이런 함수·객체들이 있다"는 선언</span>을 가져오는 것이다. 실제 구현은 컴파일러가 제공하는 라이브러리에 있다.</p>
+<ul>
+<li><code>std::cout</code> — 표준 출력 객체: <code>cout &lt;&lt; "Hello" &lt;&lt; endl;</code></li>
+<li><code>std::cin</code> — 표준 입력 객체: <code>cin &gt;&gt; x;</code></li>
+<li><code>std::endl</code> — 줄바꿈.</li>
+</ul>
+
+<h3>3.1 자료구조 학습에 필요한 헤더</h3>
+<table>
+<tr><td>Header</td><td>기능</td><td>자료구조 용도</td></tr>
+<tr><td><code>&lt;iostream&gt;</code></td><td>입출력 (cout, cin)</td><td>데이터 입력/출력 테스트</td></tr>
+<tr><td><code>&lt;cstdlib&gt;</code></td><td>표준 함수 (malloc, rand)</td><td>메모리 할당 (구형 — new가 나음)</td></tr>
+<tr><td><code>&lt;cstring&gt;</code></td><td>문자열 함수 (strlen, strcpy)</td><td>문자열 자료구조</td></tr>
+<tr><td><code>&lt;vector&gt;</code></td><td>동적 배열 (STL)</td><td>배열 자료구조 참고</td></tr>
+<tr><td><code>&lt;list&gt;</code></td><td>연결 리스트 (STL)</td><td>연결 리스트 구현 참고</td></tr>
+<tr><td><code>&lt;queue&gt;</code></td><td>큐 (STL)</td><td>큐 구현 참고</td></tr>
+<tr><td><code>&lt;stack&gt;</code></td><td>스택 (STL)</td><td>스택 구현 참고</td></tr>
+<tr><td><code>&lt;algorithm&gt;</code></td><td>정렬, 탐색 (std::sort, std::find)</td><td>정렬/탐색 알고리즘 참고</td></tr>
+</table>
+</section>
+
+<section class="part">
+<h2>4. 포인터와 메모리 — 자료구조의 핵심</h2>
+
+<div class="box defbox">
+  <span class="box-label">정의</span>
+  <p><strong class="k-blue">포인터(Pointer)</strong>: 메모리 주소를 저장하는 변수.</p>
+  <ul>
+  <li><code>&amp;</code> = "주소를 얻어라" &nbsp;·&nbsp; <code>*</code> = "그 주소가 가리키는 값을 얻어라" &nbsp;·&nbsp; <code>-&gt;</code> = 포인터로 구조체 멤버 접근</li>
+  </ul>
+</div>
+
+<div class="figwrap">
+<svg viewBox="0 0 640 120" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Sans KR',sans-serif">
+  <text x="20" y="22" font-size="12.5" fill="#6b7280">int x = 10; int* p = &amp;x; int** pp = &amp;p;</text>
+  <rect x="20" y="40" width="120" height="44" rx="8" fill="#fff" stroke="#1f2328"/>
+  <text x="80" y="59" text-anchor="middle" font-size="12.5" fill="#1f2328">x = 10</text>
+  <text x="80" y="76" text-anchor="middle" font-size="10.5" fill="#6b7280">@0x...f8ac</text>
+  <rect x="240" y="40" width="140" height="44" rx="8" fill="#f1f6ff" stroke="#c9d9f7"/>
+  <text x="310" y="59" text-anchor="middle" font-size="12.5" fill="#1a3f9e">p = 0x...f8ac</text>
+  <text x="310" y="76" text-anchor="middle" font-size="10.5" fill="#6b7280">*p → 10</text>
+  <rect x="460" y="40" width="140" height="44" rx="8" fill="#f1f6ff" stroke="#c9d9f7"/>
+  <text x="530" y="59" text-anchor="middle" font-size="12.5" fill="#1a3f9e">pp = &amp;p</text>
+  <text x="530" y="76" text-anchor="middle" font-size="10.5" fill="#6b7280">**pp → 10</text>
+  <line x1="240" y1="62" x2="144" y2="62" stroke="#1f2328" stroke-width="1.5"/>
+  <path d="M152 58 L140 62 L152 66 Z" fill="#1f2328"/>
+  <line x1="460" y1="62" x2="384" y2="62" stroke="#1f2328" stroke-width="1.5"/>
+  <path d="M392 58 L380 62 L392 66 Z" fill="#1f2328"/>
+</svg>
+<div class="figcap">포인터의 포인터: pp → p의 주소 → x의 주소 → 값 10</div>
+</div>
+
+<h3>4.1 메모리 구조: Stack vs Heap</h3>
+<div class="figwrap">
+<svg viewBox="0 0 420 250" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Sans KR',sans-serif">
+  <text x="330" y="18" font-size="11" fill="#6b7280">HIGH ADDRESS</text>
+  <rect x="20" y="24" width="380" height="78" rx="9" fill="#f1f6ff" stroke="#c9d9f7"/>
+  <text x="34" y="44" font-size="13" font-weight="700" fill="#1a3f9e">Stack (지역 변수)</text>
+  <text x="34" y="62" font-size="11.5" fill="#4b5563">int x = 10; int* p = &amp;x; · 함수 종료 시 자동 해제</text>
+  <text x="34" y="80" font-size="11.5" fill="#4b5563">빠름 · 크기 작음 · 자동 할당/해제</text>
+  <rect x="20" y="110" width="380" height="78" rx="9" fill="#fdf8ec" stroke="#ecdcb4"/>
+  <text x="34" y="130" font-size="13" font-weight="700" fill="#92660a">Heap (동적 할당)</text>
+  <text x="34" y="148" font-size="11.5" fill="#4b5563">new로 할당 · delete 필수 (안 하면 Memory Leak)</text>
+  <text x="34" y="166" font-size="11.5" fill="#4b5563">느림 · 크기 큼 · 수동 할당/해제 · 자료구조는 여기!</text>
+  <rect x="20" y="196" width="380" height="26" rx="8" fill="#f6f7f9" stroke="#e3e6ea"/>
+  <text x="34" y="214" font-size="11.5" fill="#4b5563">Data/BSS (전역 변수) · Code (프로그램 코드, 읽기 전용)</text>
+  <text x="330" y="242" font-size="11" fill="#6b7280">LOW ADDRESS</text>
+</svg>
+<div class="figcap">동적 자료구조는 모두 Heap 위에서 만들어진다</div>
+</div>
+
+<table>
+<tr><td></td><td>Stack</td><td>Heap</td></tr>
+<tr><td><b class="k-blue">속도</b></td><td>빠름</td><td>느림</td></tr>
+<tr><td><b class="k-blue">크기</b></td><td>작음 (한정)</td><td>큼</td></tr>
+<tr><td><b class="k-blue">해제</b></td><td>자동</td><td>수동 (delete)</td></tr>
+<tr><td><b class="k-blue">위험</b></td><td>안전</td><td>누수 위험</td></tr>
+<tr><td><b class="k-blue">용도</b></td><td>지역 변수</td><td>동적 배열, <b class="k-red">자료구조 필수</b></td></tr>
+</table>
+</section>
+
+<section class="part">
+<h2>5. 동적 할당: new / delete</h2>
+<p>크기를 미리 알 수 없을 때 고정 배열은 낭비다. <code>int arr[1000]</code>은 10개만 필요해도 1000개를 잡는다.</p>
+<pre><code>int n;
+cin &gt;&gt; n;                  // 사용자가 크기 입력
+int* arr = new int[n];     // n개만 정확히 할당
+// ... 사용 ...
+delete[] arr;              // 사용 후 반드시 해제</code></pre>
+
+<p>메모리 관리는 <span class="hl">할당(new) → 사용 → 해제(delete)</span>의 라이프사이클에 대한 책임이다.</p>
+
+<div class="box warnbox">
+  <span class="box-label">주의 · Memory Leak(메모리 누수)</span>
+<pre><code>void processRequest() {
+    int* p = new int[1000000];  // 4MB 할당
+    // delete[] p;  ← 빼먹으면?
+}</code></pre>
+<ul>
+<li>요청 1회당 4MB 낭비 → 3,600회면 4MB × 3600 ≈ 14GB.</li>
+<li>해제하지 않은 메모리는 프로그램 종료까지 회수되지 않는다 → 장시간 실행 서버는 결국 crash.</li>
+</ul>
+<p><strong class="k-red">자료구조 구현에서는 노드마다 new/delete가 짝을 이뤄야 한다. 메모리 관리 능력 = 자료구조 구현 능력.</strong></p>
+</div>
+</section>
+
+<section class="part">
+<h2>6. 주석과 실습</h2>
+<pre><code>int x = 10;   // 단일 라인 주석
+/* 여러 줄에 걸친 주석.
+   자료구조의 연산 설명, 시간복잡도, delete 주의사항을 적는 데 유용하다. */</code></pre>
+
+<h3>6.1 실습 1: 포인터와 동적 배열</h3>
+<pre><code>#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int x = 10, y = 20;
+
+    int* p = &amp;x;              // p가 x를 가리킴
+    cout &lt;&lt; *p &lt;&lt; endl;       // 10
+    p = &amp;y;                   // p가 y를 가리키도록 변경
+    cout &lt;&lt; *p &lt;&lt; endl;       // 20
+
+    int n = 5;
+    int* arr = new int[n];    // 동적 배열
+    for (int i = 0; i &lt; n; i++) arr[i] = (i + 1) * 100;
+    for (int i = 0; i &lt; n; i++) cout &lt;&lt; arr[i] &lt;&lt; " ";
+    // 100 200 300 400 500
+
+    delete[] arr;             // 해제 필수!
+    return 0;
+}</code></pre>
+
+<h3>6.2 실습 2: 포인터로 만드는 연결 리스트</h3>
+<pre><code>#include &lt;iostream&gt;
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;               // 다음 노드를 가리키는 포인터
+};
+
+int main() {
+    Node* head   = new Node();
+    Node* second = new Node();
+    Node* third  = new Node();
+
+    head-&gt;data = 10;  second-&gt;data = 20;  third-&gt;data = 30;
+    head-&gt;next = second;  second-&gt;next = third;  third-&gt;next = NULL;
+
+    Node* current = head;                 // 순회
+    while (current != NULL) {
+        cout &lt;&lt; current-&gt;data &lt;&lt; " → ";
+        current = current-&gt;next;
+    }
+    cout &lt;&lt; "NULL" &lt;&lt; endl;               // 10 → 20 → 30 → NULL
+
+    delete head; delete second; delete third;
+    return 0;
+}</code></pre>
+<div class="figwrap">
+<svg viewBox="0 0 560 66" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Sans KR',sans-serif">
+  <g stroke="#1f2328" fill="#fff">
+    <rect x="10" y="16" width="70" height="34" rx="6"/><rect x="170" y="16" width="70" height="34" rx="6"/><rect x="330" y="16" width="70" height="34" rx="6"/>
+  </g>
+  <g font-size="12.5" text-anchor="middle" fill="#1f2328">
+    <text x="45" y="37">10 | •</text><text x="205" y="37">20 | •</text><text x="365" y="37">30 | •</text>
+  </g>
+  <g stroke="#1f2328" stroke-width="1.4">
+    <line x1="80" y1="33" x2="164" y2="33"/><path d="M160 29 L170 33 L160 37 Z" fill="#1f2328" stroke="none"/>
+    <line x1="240" y1="33" x2="324" y2="33"/><path d="M320 29 L330 33 L320 37 Z" fill="#1f2328" stroke="none"/>
+    <line x1="400" y1="33" x2="440" y2="33"/>
+  </g>
+  <text x="452" y="38" font-size="12" fill="#6b7280">NULL</text>
+  <text x="10" y="12" font-size="11.5" fill="#6b7280">head →</text>
+</svg>
+<div class="figcap">실행 결과의 메모리 구조: 노드 3개가 포인터로 연결</div>
+</div>
+</section>
+
+<section class="part">
+<h2>7. 핵심 정리</h2>
+<div class="box concept">
+  <span class="box-label">이 강의에서 C++이 필요한 이유</span>
+  <ol>
+  <li><strong class="k-blue">포인터</strong> — 연결 리스트, 트리, 그래프는 모두 포인터 기반. 포인터 없이 동적 자료구조는 구현 불가.</li>
+  <li><strong class="k-blue">메모리 관리</strong> — new/delete로 자료구조의 메모리 사용 방식을 이해. 누수는 실무 버그의 주요 원인.</li>
+  <li><strong class="k-blue">성능 측정</strong> — 빠른 언어라 복잡도 차이가 정확히 측정됨 → 자료구조 선택의 근거.</li>
+  <li><strong class="k-blue">개념의 연결</strong> — 저수준(메모리)과 고수준(자료구조)을 잇는 다리.</li>
+  </ol>
+</div>
+<div class="box tipbox">
+  <span class="box-label">다음 강의 준비 체크리스트</span>
+  <ul>
+  <li>동적 배열 생성: <code>int* arr = new int[n];</code></li>
+  <li>포인터 사용: <code>Node* next;</code></li>
+  <li>구조체 정의: <code>struct Node { int data; Node* next; };</code></li>
+  <li>메모리 해제: <code>delete[] arr;</code> / <code>delete node;</code></li>
+  </ul>
+  <p>이 4개가 자연스럽게 나오면 준비 완료.</p>
+</div>
+</section>
+
+<div class="pnav"><a href="sum1.html">‹ 정리본 1. Introduction</a><a href="index.html">목차</a><a href="sum3.html">정리본 3. 알고리즘 분석 ›</a></div>
+</div></article></div>
+</body>
+</html>
