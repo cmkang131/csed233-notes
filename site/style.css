@@ -55,21 +55,9 @@ h1.t-title{font-size:27px;line-height:1.32;color:var(--ink);font-weight:700;marg
 .refline{font-size:12.5px;color:var(--gray);margin:2px 0 8px}
 
 /* ===== boxes (네모 구분) ===== */
-.box{border-radius:10px;border:1px solid var(--rule);padding:14px 18px 15px;margin:14px 0;background:#fff;box-shadow:0 1px 2px rgba(17,24,39,.04)}
-.box .box-label{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;letter-spacing:.05em;padding:2px 9px;border-radius:999px;margin:0 0 8px;border:1px solid transparent}
+.box{border-radius:10px;border:1.5px solid var(--ink);padding:14px 18px 15px;margin:14px 0;background:#fff}
+.box .box-label{display:block;font-size:13px;font-weight:700;color:var(--ink);margin:0 0 6px;letter-spacing:.02em}
 .box > :last-child{margin-bottom:0}
-.box.concept{background:var(--blue-bg);border-color:var(--blue-bd)}
-.box.concept .box-label{background:#e2ecfd;color:var(--blue-deep);border-color:var(--blue-bd)}
-.box.defbox{background:var(--blue-bg);border-color:var(--blue-bd)}
-.box.defbox .box-label{background:#e2ecfd;color:var(--blue-deep);border-color:var(--blue-bd)}
-.box.warnbox{background:var(--red-bg);border-color:var(--red-bd)}
-.box.warnbox .box-label{background:#fbe3e0;color:var(--red);border-color:var(--red-bd)}
-.box.example{background:var(--amber-bg);border-color:var(--amber-bd)}
-.box.example .box-label{background:#f8ecc9;color:var(--amber);border-color:var(--amber-bd)}
-.box.tipbox{background:var(--green-bg);border-color:var(--green-bd)}
-.box.tipbox .box-label{background:#dff0e5;color:var(--green);border-color:var(--green-bd)}
-.box.formula{background:#fff;border:1.5px solid var(--ink)}
-.box.formula .box-label{background:#eef0f3;color:var(--ink);border-color:#d3d7dd}
 .box .mjx-display{margin:.2em 0}
 .box ul,.box ol{margin:.2em 0}
 
@@ -80,7 +68,7 @@ h1.t-title{font-size:27px;line-height:1.32;color:var(--ink);font-weight:700;marg
 
 /* code */
 code{font-family:'SF Mono',Menlo,Consolas,'Noto Sans KR',monospace;font-size:.88em;background:#f2f3f5;padding:.05em .3em;border:1px solid #e6e8eb;border-radius:4px}
-pre{background:var(--code-bg);border:1px solid var(--code-bd);border-radius:8px;padding:12px 16px;margin:.5em 0;overflow-x:auto;
+pre{background:var(--code-bg);border:1.5px solid var(--ink);border-radius:8px;padding:12px 16px;margin:.5em 0;overflow-x:auto;
   font-family:'SF Mono',Menlo,Consolas,'D2Coding','Noto Sans KR',monospace;font-size:13.5px;line-height:1.6;white-space:pre}
 pre code{background:none;border:none;padding:0;font-size:inherit;border-radius:0}
 
@@ -100,7 +88,7 @@ table td b.hl,table td strong.hl{background:var(--hl);color:var(--ink)}
 .qa-final .hl{background:var(--hl);color:var(--ink)}
 
 /* generic pretty toggle (cheat-sheet sections) */
-details.tg{border:1px solid var(--rule);border-radius:10px;margin:12px 0;background:#fff;box-shadow:0 1px 2px rgba(17,24,39,.04)}
+details.tg{border:1.5px solid var(--ink);border-radius:10px;margin:12px 0;background:#fff}
 details.tg>summary{font-weight:700;font-size:16px;cursor:pointer;list-style:none;position:relative;padding:12px 40px 12px 18px;border-radius:10px}
 details.tg>summary::-webkit-details-marker{display:none}
 details.tg>summary::after{content:"+";position:absolute;right:16px;top:10px;color:var(--gray);font-size:19px;font-weight:400}
@@ -111,8 +99,8 @@ details.tg .tg-body{padding:2px 18px 16px;border-top:1px solid #eef0f3}
 /* index cards */
 section.idx-sec{margin-top:34px}
 .idx-sec h2{font-size:17px;font-weight:700;color:var(--ink);margin-bottom:6px;padding-bottom:6px;border-bottom:2px solid var(--ink)}
-a.card{display:block;text-decoration:none;color:var(--ink);border:1px solid var(--rule);border-radius:12px;padding:15px 20px;margin-top:12px;cursor:pointer;background:#fff;box-shadow:0 1px 2px rgba(17,24,39,.04);transition:border-color .15s ease, box-shadow .15s ease}
-a.card:hover{border-color:var(--blue-bd);box-shadow:0 2px 8px rgba(36,86,196,.10)}
+a.card{display:block;text-decoration:none;color:var(--ink);border:1.5px solid var(--ink);border-radius:12px;padding:15px 20px;margin-top:12px;cursor:pointer;background:#fff;box-shadow:0 1px 2px rgba(17,24,39,.04);transition:border-color .15s ease, box-shadow .15s ease}
+a.card:hover{border-color:var(--ink);box-shadow:0 2px 8px rgba(17,24,39,.12)}
 a.card:hover .card-t{color:var(--blue)}
 .go{float:right;color:var(--gray);font-size:17px}
 a.card:hover .go{color:var(--blue)}
@@ -141,10 +129,10 @@ a.card:hover .go{color:var(--blue)}
 }
 
 /* compatibility layer for ch pages */
-.def{border:1px solid var(--blue-bd);border-left:4px solid var(--blue);background:var(--blue-bg);border-radius:0 10px 10px 0;padding:10px 16px;margin:12px 0}
-.warn{border:1px solid var(--red-bd);border-left:4px solid var(--red);background:var(--red-bg);border-radius:0 10px 10px 0;padding:10px 16px;margin:12px 0}
+.def{border:1.5px solid var(--ink);border-left:4px solid var(--ink);background:#fff;border-radius:0 10px 10px 0;padding:10px 16px;margin:12px 0}
+.warn{border:1.5px solid var(--ink);border-left:4px solid var(--ink);background:#fff;border-radius:0 10px 10px 0;padding:10px 16px;margin:12px 0}
 .def p,.warn p{margin:.25em 0}
-.fbox{border:1px solid var(--rule);border-radius:10px;padding:12px 18px;margin:12px 0;background:#f8fafc}
+.fbox{border:1.5px solid var(--ink);border-radius:10px;padding:12px 18px;margin:12px 0;background:#fff}
 .fbox .mjx-display{margin:.15em 0}
 .tbl{overflow-x:auto;margin:10px 0}
 @media print{article.prob-page{page-break-before:always}article.prob-page:first-of-type{page-break-before:avoid}}
