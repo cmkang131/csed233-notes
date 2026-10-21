@@ -21,12 +21,12 @@
 <h2>1. 자료구조(Data Structure)란?</h2>
 
 <div class="box defbox">
-  <span class="box-label">정의</span>
+  
   <p><strong class="k-blue">자료구조(Data Structure)</strong>: 데이터를 조직하고 효율적으로 관리하는 방법.</p>
 </div>
 
 <div class="box formula">
-  <span class="box-label">핵심 명제</span>
+  
   <p style="text-align:center;font-weight:700;font-size:17px">Program = Data Structure + Algorithm</p>
 </div>
 
@@ -38,7 +38,7 @@
 </ul>
 
 <div class="box example">
-  <span class="box-label">예제 · 자료구조가 알고리즘을 제한한다</span>
+  <p class="xlead">예제 · 자료구조가 알고리즘을 제한한다</p>
   <p>같은 "정렬" 작업도 자료구조에 따라 선택지가 달라진다.</p>
   <ul>
   <li><strong class="k-blue">배열(Array)</strong>: Bubble, Selection, Insertion, Merge, Quick, Heap — 6가지 이상 선택 가능.</li>
@@ -50,7 +50,7 @@
 </section>
 
 <section class="part">
-<h2>2. 자료구조의 종류 한눈에 보기</h2>
+<h2>2. 자료구조의 종류</h2>
 
 <div class="figwrap">
 <svg viewBox="0 0 640 168" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Sans KR',sans-serif">
@@ -206,7 +206,7 @@
 </ul>
 
 <div class="box tipbox">
-  <span class="box-label">같은 연산도 구조마다 비용이 다르다</span>
+  <p class="xlead">같은 연산도 구조마다 비용이 다르다</p>
   <p>"중간에 삽입" 한 번을 예로 들면:</p>
   <ul>
   <li><strong class="k-blue">배열</strong>: 위치 찾기 O(n) + 오른쪽 원소 전부 Shift O(n) → O(n).</li>
@@ -244,8 +244,8 @@ return hashTable[hash(target)];</code></pre>
 <h2>5. 어떤 자료구조를 고를까</h2>
 <p>정답이 하나로 정해진 것이 아니라, <span class="hl">문제의 조건을 보고 트레이드오프를 따지는 과정</span>이다. 세 가지 질문을 순서대로 던지면 된다.</p>
 
-<div class="box concept">
-  <span class="box-label">선택 기준 3단계</span>
+<div class="box">
+  <p class="xlead">선택 기준 3단계</p>
   <ol>
   <li><strong class="k-blue">가장 빈번한 연산이 무엇인가?</strong>
     <ul>
@@ -290,25 +290,25 @@ return hashTable[hash(target)];</code></pre>
 <h2>6. 강의 로드맵과 학습 전략</h2>
 
 <div class="figwrap">
-<svg viewBox="0 0 660 150" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Sans KR',sans-serif">
+<svg viewBox="0 0 660 172" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Sans KR',sans-serif">
   <line x1="30" y1="60" x2="630" y2="60" stroke="#d8dce2" stroke-width="2"/>
   <g font-size="11.5" text-anchor="middle">
     <circle cx="60" cy="60" r="7" fill="#1f2328"/><text x="60" y="86" fill="#1f2328">L2</text><text x="60" y="102" fill="#6b7280">C++ 기초</text>
-    <circle cx="120" cy="60" r="7" fill="#1f2328"/><text x="120" y="86" fill="#1f2328">L3</text><text x="120" y="102" fill="#6b7280">알고리즘 분석</text>
+    <circle cx="120" cy="60" r="7" fill="#1f2328"/><text x="120" y="86" fill="#1f2328">L3</text><text x="120" y="118" fill="#6b7280">알고리즘 분석</text>
     <circle cx="180" cy="60" r="7" fill="#1f2328"/><text x="180" y="86" fill="#1f2328">L4</text><text x="180" y="102" fill="#6b7280">List/Stack/Queue</text>
-    <circle cx="240" cy="60" r="7" fill="#1f2328"/><text x="240" y="86" fill="#1f2328">L5</text><text x="240" y="102" fill="#6b7280">Trees 기초</text>
+    <circle cx="240" cy="60" r="7" fill="#1f2328"/><text x="240" y="86" fill="#1f2328">L5</text><text x="240" y="118" fill="#6b7280">Trees 기초</text>
     <circle cx="330" cy="60" r="7" fill="#1f2328"/><text x="330" y="86" fill="#1f2328">L6</text><text x="330" y="102" fill="#6b7280">Traversal</text>
     <circle cx="390" cy="60" r="7" fill="#1f2328"/><text x="390" y="86" fill="#1f2328">L7</text><text x="390" y="102" fill="#6b7280">Heaps</text>
     <circle cx="450" cy="60" r="7" fill="#1f2328"/><text x="450" y="86" fill="#1f2328">L8</text><text x="450" y="102" fill="#6b7280">Sorting</text>
     <circle cx="510" cy="60" r="7" fill="#1f2328"/><text x="510" y="86" fill="#1f2328">L9</text><text x="510" y="102" fill="#6b7280">BST</text>
     <circle cx="600" cy="60" r="7" fill="#1f2328"/><text x="600" y="86" fill="#1f2328">L10</text><text x="600" y="102" fill="#6b7280">AVL</text>
   </g>
-  <rect x="40" y="118" width="220" height="22" rx="11" fill="#ffffff" stroke="#1f2328"/>
-  <text x="150" y="133" text-anchor="middle" font-size="11.5" fill="#1f2328">기초 · 선형 자료구조 (L2–5)</text>
-  <rect x="300" y="118" width="240" height="22" rx="11" fill="#ffffff" stroke="#1f2328"/>
-  <text x="420" y="133" text-anchor="middle" font-size="11.5" fill="#1f2328">중급 · 트리 &amp; 정렬 (L6–9)</text>
-  <rect x="560" y="118" width="80" height="22" rx="11" fill="#ffffff" stroke="#1f2328"/>
-  <text x="600" y="133" text-anchor="middle" font-size="11.5" fill="#1f2328">심화 (L10)</text>
+  <rect x="40" y="138" width="220" height="22" rx="11" fill="#ffffff" stroke="#1f2328"/>
+  <text x="150" y="153" text-anchor="middle" font-size="11.5" fill="#1f2328">기초 · 선형 자료구조 (L2–5)</text>
+  <rect x="300" y="138" width="240" height="22" rx="11" fill="#ffffff" stroke="#1f2328"/>
+  <text x="420" y="153" text-anchor="middle" font-size="11.5" fill="#1f2328">중급 · 트리 &amp; 정렬 (L6–9)</text>
+  <rect x="560" y="138" width="80" height="22" rx="11" fill="#ffffff" stroke="#1f2328"/>
+  <text x="600" y="153" text-anchor="middle" font-size="11.5" fill="#1f2328">심화 (L10)</text>
 </svg>
 <div class="figcap">L2(C++)와 L3(알고리즘 분석)이 모든 것의 토대. L3, L8, L10에서 개념적 도약이 온다.</div>
 </div>
@@ -331,7 +331,7 @@ return hashTable[hash(target)];</code></pre>
 
 <h3>6.2 AI 활용 기준</h3>
 <ul>
-<li><strong class="k-green">허용</strong>: 개념 질문("Stack이 뭐야?"), 구현 예시 요청, 강의 복습, 디버깅.</li>
+<li><strong class="k-blue">허용</strong>: 개념 질문("Stack이 뭐야?"), 구현 예시 요청, 강의 복습, 디버깅.</li>
 <li><strong class="k-red">금지</strong>: 시험 중 사용, AI가 쓴 코드 그대로 제출, 이해 없이 복사.</li>
 <li>"어떤 자료구조를 써야 하는가"를 판단하는 능력이 진짜 경쟁력이다.</li>
 </ul>

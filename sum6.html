@@ -88,7 +88,7 @@ void postorder(Node* n) { if (!n) return; postorder(n-&gt;left); postorder(n-&gt
 <p>문제: 순회 수열 하나만으로 원본 트리를 복원할 수 있는가?</p>
 
 <div class="box example">
-  <span class="box-label">반례 — 같은 Preorder, 다른 트리</span>
+  <p class="xlead">같은 Preorder, 다른 트리</p>
 <pre><code>Tree 1:    A        Tree 2:    A
           /                    \
          B                      B
@@ -99,15 +99,15 @@ void postorder(Node* n) { if (!n) return; postorder(n-&gt;left); postorder(n-&gt
 
 <table>
 <tr><td>조합</td><td>복원 가능?</td></tr>
-<tr><td>Preorder + Inorder</td><td><b class="k-green">✓ 가능</b></td></tr>
-<tr><td>Postorder + Inorder</td><td><b class="k-green">✓ 가능</b></td></tr>
-<tr><td>Level-order + Inorder</td><td><b class="k-green">✓ 가능</b></td></tr>
+<tr><td>Preorder + Inorder</td><td><b class="k-blue">✓ 가능</b></td></tr>
+<tr><td>Postorder + Inorder</td><td><b class="k-blue">✓ 가능</b></td></tr>
+<tr><td>Level-order + Inorder</td><td><b class="k-blue">✓ 가능</b></td></tr>
 <tr><td>Preorder + Postorder</td><td><b class="k-red">✗ 불가능</b> — 왼쪽/오른쪽 서브트리 경계를 모름</td></tr>
 </table>
 <p>→ <span class="hl">Inorder가 반드시 필요</span>하다. Inorder가 루트 기준 왼쪽/오른쪽 구간의 경계를 알려주기 때문.</p>
 
 <div class="box example">
-  <span class="box-label">예제 · Preorder + Inorder로 복원</span>
+  <p class="xlead">예제 · Preorder + Inorder로 복원</p>
   <p>Pre: <code>A B D E C</code> · In: <code>D B E A C</code></p>
   <ol class="steps">
     <li>Preorder의 첫 원소는 항상 루트 → 루트 = A.</li>
@@ -205,7 +205,7 @@ void postorder(Node* n) { if (!n) return; postorder(n-&gt;left); postorder(n-&gt
 </div>
 
 <div class="box tipbox">
-  <span class="box-label">아름다운 대응 관계</span>
+  <p class="xlead">아름다운 대응 관계</p>
   <ul>
   <li>일반 트리의 <strong class="k-blue">Preorder</strong> = 변환된 이진 트리의 <strong class="k-blue">Preorder</strong> (a b e f c d — 완벽 일치).</li>
   <li>일반 트리의 <strong class="k-blue">Postorder</strong> = 변환된 이진 트리의 <strong class="k-blue">Inorder</strong> (e f b c d a — 완벽 일치).</li>

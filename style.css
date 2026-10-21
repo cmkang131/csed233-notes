@@ -40,6 +40,8 @@ h1.t-title{font-size:27px;line-height:1.32;color:var(--ink);font-weight:700;marg
 .notes ul li::before{content:"•";position:absolute;left:.3em;color:var(--ink)}
 .notes ul ul{margin:.12em 0;padding-left:1.15em}
 .notes ul ul li::before{content:"–";color:#555}
+.notes ul ol>li{padding-left:0}
+.notes ul ol>li::before{content:none}
 .notes ul ul ul{padding-left:1.15em}
 .notes ul ul ul li::before{content:"·";color:#999}
 .notes ol{margin:.25em 0;padding-left:1.7em;list-style:decimal outside}
@@ -54,12 +56,14 @@ h1.t-title{font-size:27px;line-height:1.32;color:var(--ink);font-weight:700;marg
 .hl{background:var(--hl);padding:.02em .18em;border-radius:2px;-webkit-box-decoration-break:clone;box-decoration-break:clone}
 .refline{font-size:12.5px;color:var(--gray);margin:2px 0 8px}
 
-/* ===== boxes (네모 구분) ===== */
-.box{border-radius:10px;border:1.5px solid var(--ink);padding:14px 18px 15px;margin:14px 0;background:#fff}
-.box .box-label{display:block;font-size:13px;font-weight:700;color:var(--ink);margin:0 0 6px;letter-spacing:.02em}
+/* ===== boxes: black border ONLY for concept statements & formulas; everything else plain text separated by rules ===== */
+.box{margin:18px 0 0;padding:13px 0 0;border-top:1px solid var(--rule);background:#fff}
 .box > :last-child{margin-bottom:0}
 .box .mjx-display{margin:.2em 0}
 .box ul,.box ol{margin:.2em 0}
+.box.concept,.box.defbox,.box.formula{border:1.5px solid var(--ink);border-radius:10px;padding:14px 18px 15px;margin:14px 0}
+.xlead{font-weight:700;margin:0 0 5px}
+h2+.box:not(.concept):not(.defbox):not(.formula),h3+.box:not(.concept):not(.defbox):not(.formula){border-top:none;padding-top:2px;margin-top:10px}
 
 /* comparison / flow helpers */
 .figwrap{text-align:center;margin:14px 0}
@@ -68,7 +72,7 @@ h1.t-title{font-size:27px;line-height:1.32;color:var(--ink);font-weight:700;marg
 
 /* code */
 code{font-family:'SF Mono',Menlo,Consolas,'Noto Sans KR',monospace;font-size:.88em;background:#f2f3f5;padding:.05em .3em;border:1px solid #e6e8eb;border-radius:4px}
-pre{background:var(--code-bg);border:1.5px solid var(--ink);border-radius:8px;padding:12px 16px;margin:.5em 0;overflow-x:auto;
+pre{background:var(--code-bg);border:1px solid var(--code-bd);border-radius:8px;padding:12px 16px;margin:.5em 0;overflow-x:auto;
   font-family:'SF Mono',Menlo,Consolas,'D2Coding','Noto Sans KR',monospace;font-size:13.5px;line-height:1.6;white-space:pre}
 pre code{background:none;border:none;padding:0;font-size:inherit;border-radius:0}
 
@@ -81,26 +85,25 @@ table td b.k-red,table td strong.k-red{color:var(--red)}
 table td b.hl,table td strong.hl{background:var(--hl);color:var(--ink)}
 
 /* numbered solution steps */
-.steps{list-style:none;counter-reset:step;padding-left:0;margin:8px 0}
+.steps,.notes ol.steps{list-style:none;counter-reset:step;padding-left:0;margin:8px 0}
 .steps li{counter-increment:step;position:relative;padding-left:2.1em;margin:.45em 0;line-height:1.6}
 .steps li::before{content:counter(step);position:absolute;left:0;top:.18em;width:1.45em;height:1.45em;border-radius:50%;background:var(--ink);color:#fff;font-size:.72em;font-weight:700;display:flex;align-items:center;justify-content:center}
 .steps li .why{color:var(--gray);font-size:.92em}
 .qa-final .hl{background:var(--hl);color:var(--ink)}
 
 /* generic pretty toggle (cheat-sheet sections) */
-details.tg{border:1.5px solid var(--ink);border-radius:10px;margin:12px 0;background:#fff}
-details.tg>summary{font-weight:700;font-size:16px;cursor:pointer;list-style:none;position:relative;padding:12px 40px 12px 18px;border-radius:10px}
+details.tg{border:none;border-top:1px solid var(--rule);margin:0;background:#fff}
+details.tg>summary{font-weight:700;font-size:16px;cursor:pointer;list-style:none;position:relative;padding:12px 34px 12px 2px}
 details.tg>summary::-webkit-details-marker{display:none}
-details.tg>summary::after{content:"+";position:absolute;right:16px;top:10px;color:var(--gray);font-size:19px;font-weight:400}
+details.tg>summary::after{content:"+";position:absolute;right:6px;top:10px;color:var(--gray);font-size:19px;font-weight:400}
 details.tg[open]>summary::after{content:"–"}
-details.tg>summary:hover{color:var(--blue);background:#fafbfc}
-details.tg .tg-body{padding:2px 18px 16px;border-top:1px solid #eef0f3}
+details.tg>summary:hover{color:var(--blue-deep)}
+details.tg .tg-body{padding:4px 2px 18px}
 
 /* index cards */
 section.idx-sec{margin-top:34px}
 .idx-sec h2{font-size:17px;font-weight:700;color:var(--ink);margin-bottom:6px;padding-bottom:6px;border-bottom:2px solid var(--ink)}
-a.card{display:block;text-decoration:none;color:var(--ink);border:1.5px solid var(--ink);border-radius:12px;padding:15px 20px;margin-top:12px;cursor:pointer;background:#fff;box-shadow:0 1px 2px rgba(17,24,39,.04);transition:border-color .15s ease, box-shadow .15s ease}
-a.card:hover{border-color:var(--ink);box-shadow:0 2px 8px rgba(17,24,39,.12)}
+a.card{display:block;text-decoration:none;color:var(--ink);border-top:1px solid var(--rule);padding:13px 2px;cursor:pointer;background:#fff}
 a.card:hover .card-t{color:var(--blue)}
 .go{float:right;color:var(--gray);font-size:17px}
 a.card:hover .go{color:var(--blue)}

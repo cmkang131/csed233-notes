@@ -27,7 +27,7 @@
 
 <h3>1.1 다른 언어와 비교하면 이유가 보인다</h3>
 <div class="box example">
-  <span class="box-label">Python — 구현은 쉽지만 본질을 숨긴다</span>
+  <p class="xlead">Python — 구현은 쉽지만 본질을 숨긴다</p>
 <pre><code>arr = [0] * 1000000   # 내부 구조? 메모리는? 포인터는? 전부 모른다
 class Node:
     def __init__(self, data):
@@ -35,13 +35,13 @@ class Node:
 <p>포인터라는 메모리 개념을 배울 수 없다. 자료구조의 진정한 이해 = 메모리 레벨의 이해인데, Python은 그것을 감춘다.</p>
 </div>
 <div class="box example">
-  <span class="box-label">Java — 자동화가 원리 이해를 막는다</span>
+  <p class="xlead">Java — 자동화가 원리 이해를 막는다</p>
 <pre><code>LinkedList&lt;Integer&gt; list = new LinkedList&lt;&gt;();
 list.add(10);   // 내부 동작? 메모리 할당/해제 시점? GC의 영향?</code></pre>
 <p>세부사항이 자동화되어 있어 동작 원리와 성능 분석이 어렵다(Garbage Collection의 영향).</p>
 </div>
 <div class="box tipbox">
-  <span class="box-label">C++ — 메모리 관리가 프로그래머의 책임</span>
+  <p class="xlead">C++ — 메모리 관리가 프로그래머의 책임</p>
 <pre><code>int* arr = new int[n];  // 할당이 명시적
 arr[i] = value;         // 접근이 명시적
 delete[] arr;           // 해제가 명시적
@@ -106,13 +106,11 @@ struct Node {
 <tr><td><b class="k-blue">④ 실행(Execution)</b></td><td>프로그램 실행, 결과 출력.</td><td>런타임 오류 — 실제 동작 중 발생</td></tr>
 </table>
 
-<div class="box concept">
-  <span class="box-label">개념 · 여러 파일 프로젝트</span>
+<p class="xlead">여러 파일 프로젝트</p>
 <pre><code>main.cpp ──[컴파일]──&gt; main.o ┐
 LinkedList.cpp ──[컴파일]──&gt; LinkedList.o ├──[링킹]──&gt; app ──[실행]──&gt; 출력
                                   stdlib ──┘</code></pre>
 <p>컴파일은 "각 파일이 맞는가?", 링킹은 "전부 모아 완성됐는가?", 실행은 "실제로 작동하는가?"를 본다.</p>
-</div>
 </section>
 
 <section class="part">
@@ -142,7 +140,7 @@ LinkedList.cpp ──[컴파일]──&gt; LinkedList.o ├──[링킹]──&
 <h2>4. 포인터와 메모리 — 자료구조의 핵심</h2>
 
 <div class="box defbox">
-  <span class="box-label">정의</span>
+  
   <p><strong class="k-blue">포인터(Pointer)</strong>: 메모리 주소를 저장하는 변수.</p>
   <ul>
   <li><code>&amp;</code> = "주소를 얻어라" &nbsp;·&nbsp; <code>*</code> = "그 주소가 가리키는 값을 얻어라" &nbsp;·&nbsp; <code>-&gt;</code> = 포인터로 구조체 멤버 접근</li>
@@ -210,7 +208,7 @@ delete[] arr;              // 사용 후 반드시 해제</code></pre>
 <p>메모리 관리는 <span class="hl">할당(new) → 사용 → 해제(delete)</span>의 라이프사이클에 대한 책임이다.</p>
 
 <div class="box warnbox">
-  <span class="box-label">주의 · Memory Leak(메모리 누수)</span>
+  <p class="xlead">Memory Leak(메모리 누수)</p>
 <pre><code>void processRequest() {
     int* p = new int[1000000];  // 4MB 할당
     // delete[] p;  ← 빼먹으면?
@@ -300,8 +298,8 @@ int main() {
 
 <section class="part">
 <h2>7. 핵심 정리</h2>
-<div class="box concept">
-  <span class="box-label">이 강의에서 C++이 필요한 이유</span>
+<div class="box">
+  <p class="xlead">이 강의에서 C++이 필요한 이유</p>
   <ol>
   <li><strong class="k-blue">포인터</strong> — 연결 리스트, 트리, 그래프는 모두 포인터 기반. 포인터 없이 동적 자료구조는 구현 불가.</li>
   <li><strong class="k-blue">메모리 관리</strong> — new/delete로 자료구조의 메모리 사용 방식을 이해. 누수는 실무 버그의 주요 원인.</li>
@@ -310,7 +308,7 @@ int main() {
   </ol>
 </div>
 <div class="box tipbox">
-  <span class="box-label">다음 강의 준비 체크리스트</span>
+  <p class="xlead">다음 강의 준비 체크리스트</p>
   <ul>
   <li>동적 배열 생성: <code>int* arr = new int[n];</code></li>
   <li>포인터 사용: <code>Node* next;</code></li>
