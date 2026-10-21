@@ -12,7 +12,6 @@
   --ink:#1a1a1a; --gray:#666; --rule:#1a1a1a;
   
   --red:#9e2b25;  --red-bg:#fdf0ee;  --red-bd:#efc9c4;  --red-ink:#9e2b25;
-  --green:#2e7d4f;--green-bg:#eef7f0;--green-bd:#c9e5d2;--green-ink:#256e44;
   --hl:#fff1a8;
   --card-bd:#e6e3da;
   --shadow:0 1px 2px rgba(26,26,26,.05),0 2px 8px rgba(26,26,26,.04);
@@ -66,7 +65,6 @@ h1.pagetitle{font-size:25px;font-weight:900;letter-spacing:-0.01em;margin:22px 0
 
 /* 강조 표기 */
 .k-red{color:var(--red);font-weight:700}
-.k-green{color:var(--green);font-weight:700}
 .hl{background:var(--hl);padding:.02em .18em;border-radius:2px;-webkit-box-decoration-break:clone;box-decoration-break:clone}
 
 /* ---------- 박스: 개념 문장·공식·최종 답·한 줄 정리만 ---------- */
@@ -106,8 +104,6 @@ h1.pagetitle{font-size:25px;font-weight:900;letter-spacing:-0.01em;margin:22px 0
 .stat .l{font-size:12.5px;color:#4a5a7a;margin-top:2px}
 .stat.warn2{background:var(--red-bg);border-color:var(--red-bd)}
 .stat.warn2 .v{color:var(--red-ink)} .stat.warn2 .l{color:#7a4a44}
-.stat.green2{background:var(--green-bg);border-color:var(--green-bd)}
-.stat.green2 .v{color:var(--green-ink)} .stat.green2 .l{color:#3f6b4f}
 
 /* 그림 */
 figure{margin:16px 0;text-align:center}
