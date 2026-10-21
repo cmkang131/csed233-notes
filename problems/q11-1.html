@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quiz 11-1 · 데이터베이스가 B+-tree를 쓰는 이유 — CSED233 데이터구조</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/study-note.css">
+</head>
+<body>
+<article class="paper prob-page">
+<div class="phead">
+  <a class="to-home" href="../index.html">&larr; 문제 목록</a>
+  <span class="phead-c">Quiz 11-1 &middot; <span class="k-blue">B+-tree(B+ 트리)</span></span>
+  <span class="phead-r">CSED233 &middot; 데이터구조</span>
+</div>
+<div class="body notes boxmath">
+<section>
+  <div class="problem">
+    <span class="prob-no">Quiz 11-1</span>
+    <p>B-tree can return early at an internal node; B+-tree always descends to a leaf. So why does virtually every database use B+-trees?</p>
+  </div>
+</section>
+
+<section>
+  <details class="pd"><summary>힌트 보기</summary>
+    <div class="pd-body">
+      <div class="bx">
+        <div class="bx-h">개념 정리 · B+-tree의 구조</div>
+        <ul>
+          <li>실데이터(레코드 포인터)는 <span class="k-blue">leaf에만</span> 두고, 내부 노드는 라우팅용 키만 담는다. 모든 leaf는 <span class="k-blue">연결리스트</span>로 이어져 있다.</li>
+          <li>데이터베이스의 비용 단위는 메모리 비교가 아니라 <span class="k-red">디스크 I/O(노드 접근 횟수)</span>다. 내부 노드에 키가 더 많이 들어가면 fan-out이 커진다.</li>
+        </ul>
+        <p class="refline">강의 슬라이드 Ch11 p09 Quiz</p>
+      </div>
+    </div>
+  </details>
+  <details class="pd"><summary>정답 보기</summary>
+    <div class="pd-body">
+      <p class="ans-ref">개념 정리는 위 힌트 보기에 있음</p>
+      <span class="sol-tag">풀이</span>
+      <ol class="steps">
+        <li><span class="st-t">낮은 트리 높이 → 디스크 I/O 감소.</span> 내부 노드가 데이터 대신 키만 담으므로 한 노드에 키를 더 많이 넣을 수 있어 fan-out이 커지고 높이가 낮아진다.
+          <span class="why">높이 1 = 디스크 접근 1번이라, I/O가 곧 성능이다.</span></li>
+        <li><span class="st-t">효율적인 range query와 순차 스캔.</span> 모든 값이 leaf에 정렬되어 있고 leaf끼리 연결리스트로 이어져 있어 범위 탐색이 시작점 탐색 후 순차 스캔 <span class="mjx"><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="4.665ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 2062 1000"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D442" d="M740 435Q740 320 676 213T511 42T304 -22Q207 -22 138 35T51 201Q50 209 50 244Q50 346 98 438T227 601Q351 704 476 704Q514 704 524 703Q621 689 680 617T740 435ZM637 476Q637 565 591 615T476 665Q396 665 322 605Q242 542 200 428T157 216Q157 126 200 73T314 19Q404 19 485 98T608 313Q637 408 637 476Z"></path></g><g data-mml-node="mo" transform="translate(763,0)"><path data-c="28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path></g><g data-mml-node="mi" transform="translate(1152,0)"><path data-c="1D458" d="M121 647Q121 657 125 670T137 683Q138 683 209 688T282 694Q294 694 294 686Q294 679 244 477Q194 279 194 272Q213 282 223 291Q247 309 292 354T362 415Q402 442 438 442Q468 442 485 423T503 369Q503 344 496 327T477 302T456 291T438 288Q418 288 406 299T394 328Q394 353 410 369T442 390L458 393Q446 405 434 405H430Q398 402 367 380T294 316T228 255Q230 254 243 252T267 246T293 238T320 224T342 206T359 180T365 147Q365 130 360 106T354 66Q354 26 381 26Q429 26 459 145Q461 153 479 153H483Q499 153 499 144Q499 139 496 130Q455 -11 378 -11Q333 -11 305 15T277 90Q277 108 280 121T283 145Q283 167 269 183T234 206T200 217T182 220H180Q168 178 159 139T145 81T136 44T129 20T122 7T111 -2Q98 -11 83 -11Q66 -11 57 -1T48 16Q48 26 85 176T158 471L195 616Q196 629 188 632T149 637H144Q134 637 131 637T124 640T121 647Z"></path></g><g data-mml-node="mo" transform="translate(1673,0)"><path data-c="29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path></g></g></g></svg></span>로 끝난다.
+          <span class="why">B-tree는 값이 내부 노드에도 흩어져 있어 범위 스캔이 비효율적이다.</span></li>
+        <li><span class="st-t">균일하고 예측 가능한 성능.</span> 모든 검색이 정확히 같은 깊이(leaf)에서 끝난다.
+          <span class="why">B-tree의 내부 조기 종료는 운 좋을 때의 작은 이득일 뿐, 위 장점들에 압도된다.</span></li>
+      </ol>
+      <div class="ans-final"><span class="lb">최종 답</span><span class="val"><span class="hl">fan-out↑(높이↓·I/O↓) + leaf 연결로 range query 효율 + 균일한 탐색 깊이</span></span></div>
+    </div>
+  </details>
+</section>
+
+<div class="takeaway"><b>한 줄 정리</b> &middot; B-tree의 조기 종료는 best-case의 작은 이득, B+-tree의 <span class="k-blue">낮은 높이·순차 스캔·균일 성능</span>이 압도한다.</div>
+<div class="pnav"><a href="q10-5.html">&larr; Quiz 10-5</a><a href="../index.html">목차</a><a href="q11-2.html">Quiz 11-2 &rarr;</a></div>
+</div>
+</article>
+<script>window.addEventListener('beforeprint',function(){document.querySelectorAll('details').forEach(function(d){d.setAttribute('open','')})});</script>
+</body>
+</html>

@@ -3,59 +3,81 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CSED233 데이터구조 — 문제별 풀이</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
-<title>CSED233 데이터구조</title>
+<link rel="stylesheet" href="assets/home.css">
 </head>
 <body>
-<div class="paper"><article>
-<div class="body notes">
-<div class="t-course">데이터구조 · CSED233 · 포스텍</div>
-<h1 class="t-title">CSED233 데이터구조</h1>
-<div class="t-sub">강의 노트 + 정리본 + 시험 대비 치트시트. 시험 전날 이것만 보면 된다.</div>
+<div class="paper">
+  <div class="course">CSED233 &middot; 데이터구조 &middot; POSTECH</div>
+  <h1>문제별 풀이</h1>
+  <div class="sub">강의 슬라이드 Quiz 26개 + Mock Final 8문제. 문제 하나 = 페이지 하나. 먼저 풀어 보고 힌트 &rarr; 정답 순서로 연다.</div>
 
-<section class="part">
-<h2>강의 노트</h2>
-<div class="idx-cards">
-  <a class="card" href="ch1.html"><div class="card-t">Ch1. Introduction — 자료구조란?</div><div class="card-d">Program = Data Structure + Algorithm · 코스 로드맵</div><span class="go">›</span></a>
-  <a class="card" href="ch2.html"><div class="card-t">Ch2. One-Day C++ — 구현 토대</div><div class="card-d">컴파일·링크 · 포인터와 배열 · new/delete · 레퍼런스 · struct vs class</div><span class="go">›</span></a>
-  <a class="card" href="ch3.html"><div class="card-t">Ch3. Algorithm Analysis — Big-O & 점근 분석</div><div class="card-d">점근 분석 · Big-O/Ω/Θ · 성장률 순위 · Amortized 더블링</div><span class="go">›</span></a>
-  <a class="card" href="ch4.html"><div class="card-t">Ch4. List, Stack, Queue — 선형 자료구조</div><div class="card-d">List ADT · 배열/연결 구현 · Stack LIFO · Queue FIFO · 환형 큐</div><span class="go">›</span></a>
-  <a class="card" href="ch5.html"><div class="card-t">Ch5. Trees (1) — 기본 개념 & Binary Tree</div><div class="card-d">트리 용어 · depth/height/degree · full/complete · 순회 3종</div><span class="go">›</span></a>
-  <a class="card" href="ch6.html"><div class="card-t">Ch6. Trees (2) — 순회와 재구성</div><div class="card-d">DFS vs BFS · Reconstruction(Inorder 필수) · General Tree 구현 · Knuth Transform</div><span class="go">›</span></a>
-  <a class="card" href="ch7.html"><div class="card-t">Ch7. Priority Queue & Heap</div><div class="card-d">Heap = CBT + heap-order · Insert/DeleteMin · Heapify O(n) 증명</div><span class="go">›</span></a>
-  <a class="card" href="ch8.html"><div class="card-t">Ch8. Sorting</div><div class="card-d">Bubble/Selection/Insertion · Merge · Quick · Heap · Stability와 선택 기준</div><span class="go">›</span></a>
-  <a class="card" href="ch9.html"><div class="card-t">Ch9. Binary Search Tree</div><div class="card-d">BST property · Inorder = 정렬 · Delete 3 cases</div><span class="go">›</span></a>
-  <a class="card" href="ch10.html"><div class="card-t">Ch10. AVL Tree</div><div class="card-d">Balance Factor · LL/RR/LR/RL Rotation · Insert 1회, Delete 연쇄 회전</div><span class="go">›</span></a>
+  <section>
+    <h2>Ch10 &middot; AVL Tree</h2>
+    <a class="card" href="problems/q10-1.html"><span class="go">→</span><div class="card-t"><span class="no">Quiz 10-1</span>AVL 균형의 의미</div><div class="card-d">높이 O(log n)이면 AVL 균형인가?</div><div class="card-m">강의 슬라이드 Ch10 p07</div></a>
+    <a class="card" href="problems/q10-2.html"><span class="go">→</span><div class="card-t"><span class="no">Quiz 10-2</span>AVL 삽입 회전 횟수 세기</div><div class="card-d">3, 2, 1, 4, 5, 6, 7 삽입 시 회전은 몇 번?</div><div class="card-m">강의 슬라이드 Ch10 p33</div></a>
+    <a class="card" href="problems/q10-3.html"><span class="go">→</span><div class="card-t"><span class="no">Quiz 10-3</span>삽입 회전 후 멈춤의 정당성</div><div class="card-d">pivot에서 회전 후 조상을 점검하지 않아도 되는 이유</div><div class="card-m">강의 슬라이드 Ch10 p34</div></a>
+    <a class="card" href="problems/q10-4.html"><span class="go">→</span><div class="card-t"><span class="no">Quiz 10-4</span>삭제 1회의 최대 회전 수</div><div class="card-d">삽입↔삭제의 핵심 비대칭</div><div class="card-m">강의 슬라이드 Ch10 p47</div></a>
+    <a class="card" href="problems/q10-5.html"><span class="go">→</span><div class="card-t"><span class="no">Quiz 10-5</span>일반 BST가 AVL보다 나은 상황</div><div class="card-d">worst-case 보장이 가치 없는 워크로드</div><div class="card-m">강의 슬라이드 Ch10 p48</div></a>
+  </section>
+
+  <section>
+    <h2>Ch11 &middot; B-Tree / 2-3 Tree</h2>
+    <a class="card" href="problems/q11-1.html"><span class="go">→</span><div class="card-t"><span class="no">Quiz 11-1</span>데이터베이스가 B+-tree를 쓰는 이유</div><div class="card-d">B-tree의 조기 종료 이득을 누르는 세 가지</div><div class="card-m">강의 슬라이드 Ch11 p09</div></a>
+    <a class="card" href="problems/q11-2.html"><span class="go">→</span><div class="card-t"><span class="no">Quiz 11-2</span>2-3 트리의 leaf 수 범위</div><div class="card-d">높이 h일 때 n의 최소·최대</div><div class="card-m">강의 슬라이드 Ch11 p12</div></a>
+    <a class="card" href="problems/q11-3.html"><span class="go">→</span><div class="card-t"><span class="no">Quiz 11-3</span>왜 2-3이지 1-4가 아닌가</div><div class="card-d">높이 상한을 무너뜨리는 것은 하한 1</div><div class="card-m">강의 슬라이드 Ch11 p13</div></a>
+    <a class="card" href="problems/q11-4.html"><span class="go">→</span><div class="card-t"><span class="no">Quiz 11-4</span>2-3 트리는 BST보다 검색이 빠른가</div><div class="card-d">"항상 낮다"와 "최악이 보장된다"의 구분</div><div class="card-m">강의 슬라이드 Ch11 p15</div></a>
+    <a class="card" href="problems/q11-5.html"><span class="go">→</span><div class="card-t"><span class="no">Quiz 11-5</span>삽입 순서가 중요한가</div><div class="card-d">2-3 트리 vs BST의 높이 결정 방식</div><div class="card-m">강의 슬라이드 Ch11 p27</div></a>
+    <a class="card" href="problems/q11-6.html"><span class="go">→</span><div class="card-t"><span class="no">Quiz 11-6</span>회전이 필요 없는 이유</div><div class="card-d">높이 변화는 루트에서만 — split/merge</div><div class="card-m">강의 슬라이드 Ch11 p41</div></a>
+  </section>
+
+  <section>
+    <h2>Ch12 &middot; Dictionary &amp; Hashing</h2>
+    <a class="card" href="problems/q12-1.html"><span class="go">→</span><div class="card-t"><span class="no">Quiz 12-1</span>직접 주소 테이블의 낭비</div><div class="card-d">키 공간 10억, 실제 키 1,000개</div><div class="card-m">강의 슬라이드 Ch12 p08</div></a>
+    <a class="card" href="problems/q12-2.html"><span class="go">→</span><div class="card-t"><span class="no">Quiz 12-2</span>h(key) = key는 왜 안 되는가</div><div class="card-d">해시 함수의 두 경쟁 목표</div><div class="card-m">강의 슬라이드 Ch12 p15</div></a>
+    <a class="card" href="problems/q12-3.html"><span class="go">→</span><div class="card-t"><span class="no">Quiz 12-3</span>mod 해시에서 소수 M이 중요한 때</div><div class="card-d">8의 배수 주소를 M=16, M=17로 해시</div><div class="card-m">강의 슬라이드 Ch12 p25</div></a>
+    <a class="card" href="problems/q12-4.html"><span class="go">→</span><div class="card-t"><span class="no">Quiz 12-4</span>해시 테이블의 진짜 최악 시간</div><div class="card-d">평균 O(1)의 함정과 적대자 공격</div><div class="card-m">강의 슬라이드 Ch12 p52</div></a>
+  </section>
+
+  <section>
+    <h2>Ch14 &middot; Graph Traversals</h2>
+    <a class="card" href="problems/q14-1.html"><span class="go">→</span><div class="card-t"><span class="no">Quiz 14-1</span>visited 표시가 필요한 이유</div><div class="card-d">트리와 그래프의 구조적 차이</div><div class="card-m">강의 슬라이드 Ch14 p04</div></a>
+    <a class="card" href="problems/q14-2.html"><span class="go">→</span><div class="card-t"><span class="no">Quiz 14-2</span>위상 정렬로 사이클 탐지</div><div class="card-d">출력 개수 = n ⇔ DAG</div><div class="card-m">강의 슬라이드 Ch14 p24</div></a>
+    <a class="card" href="problems/q14-3.html"><span class="go">→</span><div class="card-t"><span class="no">Quiz 14-3</span>최단 경로(간선 수)에는 BFS</div><div class="card-d">DFS가 최단을 보장하지 못하는 이유</div><div class="card-m">강의 슬라이드 Ch14 p35</div></a>
+  </section>
+
+  <section>
+    <h2>Ch15 &middot; Shortest Path</h2>
+    <a class="card" href="problems/q15-1.html"><span class="go">→</span><div class="card-t"><span class="no">Quiz 15-1</span>Dijkstra가 naive greedy와 다른 점</div><div class="card-d">relaxation의 역할</div><div class="card-m">강의 슬라이드 Ch15 p10</div></a>
+    <a class="card" href="problems/q15-2.html"><span class="go">→</span><div class="card-t"><span class="no">Quiz 15-2</span>확정의 정당성과 음수 간선</div><div class="card-d">D[v]가 참 최단이라는 논증과 그 붕괴 지점</div><div class="card-m">강의 슬라이드 Ch15 p24</div></a>
+    <a class="card" href="problems/q15-3.html"><span class="go">→</span><div class="card-t"><span class="no">Quiz 15-3</span>DeleteMin이 O(log n)인 이유</div><div class="card-d">down-heap에서 더 작은 자식과 비교하는 이유</div><div class="card-m">강의 슬라이드 Ch15 p35</div></a>
+    <a class="card" href="problems/q15-4.html"><span class="go">→</span><div class="card-t"><span class="no">Quiz 15-4</span>Floyd vs 반복 Dijkstra</div><div class="card-d">밀도별 승자와 음수 간선 처리</div><div class="card-m">강의 슬라이드 Ch15 p51</div></a>
+  </section>
+
+  <section>
+    <h2>Ch16 &middot; MST</h2>
+    <a class="card" href="problems/q16-1.html"><span class="go">→</span><div class="card-t"><span class="no">Quiz 16-1</span>컴포넌트별 최소 간선 선택</div><div class="card-d">한 번 vs 반복 — Borůvka</div><div class="card-m">강의 슬라이드 Ch16 p06</div></a>
+    <a class="card" href="problems/q16-2.html"><span class="go">→</span><div class="card-t"><span class="no">Quiz 16-2</span>음수 가중치에서도 Prim이 맞는 이유</div><div class="card-d">cut property는 부호를 모른다</div><div class="card-m">강의 슬라이드 Ch16 p20</div></a>
+    <a class="card" href="problems/q16-3.html"><span class="go">→</span><div class="card-t"><span class="no">Quiz 16-3</span>Kruskal의 greedy가 안전한 이유와 병목</div><div class="card-d">Union-Find는 거의 공짜, 병목은 정렬</div><div class="card-m">강의 슬라이드 Ch16 p29</div></a>
+    <a class="card" href="problems/q16-4.html"><span class="go">→</span><div class="card-t"><span class="no">Quiz 16-4</span>Prim vs Kruskal vs Sollin</div><div class="card-d">밀도별 선택과 MST 유일성</div><div class="card-m">강의 슬라이드 Ch16 p72</div></a>
+  </section>
+
+  <section>
+    <h2>Mock Final Exam &middot; 8문제 43점</h2>
+    <a class="card" href="problems/mock-1.html"><span class="go">→</span><div class="card-t"><span class="no">Q1</span>AVL — 삽입 vs 삭제 (5점)</div><div class="card-d">T/F 판정 + 삭제 회전 수의 상한</div><div class="card-m">Mock Final</div></a>
+    <a class="card" href="problems/mock-2.html"><span class="go">→</span><div class="card-t"><span class="no">Q2</span>2-3 트리의 높이 상한 (5점)</div><div class="card-d">leaf 수 범위에서 h = O(log n) 유도</div><div class="card-m">Mock Final</div></a>
+    <a class="card" href="problems/mock-3.html"><span class="go">→</span><div class="card-t"><span class="no">Q3</span>해싱 — 스텝 크기와 선형 탐사 (5점)</div><div class="card-d">gcd(c, m)과 전 슬롯 탐사 조건</div><div class="card-m">Mock Final</div></a>
+    <a class="card" href="problems/mock-4.html"><span class="go">→</span><div class="card-t"><span class="no">Q4</span>그래프 표현 — 행렬 vs 리스트 (6점)</div><div class="card-d">연산별 비용표와 밀도에 따른 선택</div><div class="card-m">Mock Final</div></a>
+    <a class="card" href="problems/mock-5.html"><span class="go">→</span><div class="card-t"><span class="no">Q5</span>위상 정렬의 유일성 (6점)</div><div class="card-d">큐 상태 추적과 유일화 간선 추가</div><div class="card-m">Mock Final</div></a>
+    <a class="card" href="problems/mock-6.html"><span class="go">→</span><div class="card-t"><span class="no">Q6</span>Dijkstra 반례 만들기 (6점)</div><div class="card-d">정점 3개, 음수 간선 1개</div><div class="card-m">Mock Final</div></a>
+    <a class="card" href="problems/mock-7.html"><span class="go">→</span><div class="card-t"><span class="no">Q7</span>MST — 컷과 사이클 성질 (5점)</div><div class="card-d">AB 포함 증명, AC 제외 증명</div><div class="card-m">Mock Final</div></a>
+    <a class="card" href="problems/mock-8.html"><span class="go">→</span><div class="card-t"><span class="no">Q8</span>문자열 매칭 — Naive vs KMP (5점)</div><div class="card-d">최악 입력 구성과 비교 횟수 계산</div><div class="card-m">Mock Final</div></a>
+  </section>
+
+  <div class="foot">문제 원문: 강의 슬라이드 Quiz(영어 원문) 및 Mock Final Exam. 풀이는 한글. 힌트에는 개념만, 정답에는 풀이 단계와 최종 답만 있다.</div>
 </div>
-</section>
-
-<section class="part">
-<h2>정리본</h2>
-<div class="idx-cards">
-  <a class="card" href="sum1.html"><div class="card-t">정리본 1. Introduction</div><div class="card-d">자료구조 정의와 종류 · 100만 데이터 성능 비교 · 선택 기준 · 퀴즈</div><span class="go">›</span></a>
-  <a class="card" href="sum2.html"><div class="card-t">정리본 2. C++ 기초</div><div class="card-d">C vs C++ · 컴파일 프로세스 · 포인터와 메모리 · 실습 예제</div><span class="go">›</span></a>
-  <a class="card" href="sum3.html"><div class="card-t">정리본 3. 알고리즘 분석</div><div class="card-d">좋은 알고리즘 5조건 · 점근 표기법 · 최악/평균/최선 · 퀴즈</div><span class="go">›</span></a>
-  <a class="card" href="sum4.html"><div class="card-t">정리본 4. Lists, Stacks, Queues</div><div class="card-d">List 8개 연산 · 배열 vs 링크드 · Stack/Queue/Deque · 퀴즈</div><span class="go">›</span></a>
-  <a class="card" href="sum5.html"><div class="card-t">정리본 5. Trees</div><div class="card-d">트리 정의와 성질 · 이진 트리 종류 · 배열/링크드 구현 · 퀴즈</div><span class="go">›</span></a>
-  <a class="card" href="sum6.html"><div class="card-t">정리본 6. Trees Traversal</div><div class="card-d">순회 4가지 · 트리 재구성 · General Tree 구현 · 퀴즈</div><span class="go">›</span></a>
-  <a class="card" href="sum7.html"><div class="card-t">정리본 7. Heaps</div><div class="card-d">힙 성질 · Insert/DeleteMin · Heapify O(n) 증명 · 퀴즈</div><span class="go">›</span></a>
-  <a class="card" href="sum8.html"><div class="card-t">정리본 8. Sorting</div><div class="card-d">단순/고급 정렬 · 비교 표 · 데이터별 선택 기준 · 퀴즈</div><span class="go">›</span></a>
-  <a class="card" href="sum9.html"><div class="card-t">정리본 9. Binary Search Tree</div><div class="card-d">BST 성질 · Search/Insert/Delete · 균형 vs 편향 · 퀴즈</div><span class="go">›</span></a>
-  <a class="card" href="sum10.html"><div class="card-t">정리본 10. AVL Tree</div><div class="card-d">회전 4유형 · Insert/Delete · 회전 횟수 연습 · 퀴즈</div><span class="go">›</span></a>
-</div>
-</section>
-
-<section class="part">
-<h2>시험 대비</h2>
-<div class="idx-cards">
-  <a class="card" href="exam.html"><div class="card-t">시험 전에 볼 것</div><div class="card-d">개념 치트시트 · 연산 빠른 복습 · 자료구조별 Pseudocode 모음</div><span class="go">›</span></a>
-</div>
-</section>
-
-<div class="foot">CSED233 데이터구조 스터디 노트</div>
-</div></article></div>
 </body>
 </html>

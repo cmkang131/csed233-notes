@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quiz 16-2 · 음수 가중치에서도 Prim이 맞는 이유 — CSED233 데이터구조</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/study-note.css">
+</head>
+<body>
+<article class="paper prob-page">
+<div class="phead">
+  <a class="to-home" href="../index.html">&larr; 문제 목록</a>
+  <span class="phead-c">Quiz 16-2 &middot; <span class="k-blue">Prim(프림)</span></span>
+  <span class="phead-r">CSED233 &middot; 데이터구조</span>
+</div>
+<div class="body notes boxmath">
+<section>
+  <div class="problem">
+    <span class="prob-no">Quiz 16-2</span>
+    <p>Would Prim's algorithm still work if some edges had negative weights?</p>
+  </div>
+</section>
+
+<section>
+  <details class="pd"><summary>힌트 보기</summary>
+    <div class="pd-body">
+      <div class="bx">
+        <div class="bx-h">개념 정리 · Prim의 정확성 근거</div>
+        <ul>
+          <li>Prim의 각 선택은 "현재 트리와 나머지 사이 컷의 최소 간선"이고, 그 안전성은 <span class="k-blue">cut property</span>가 보장한다.</li>
+          <li>cut property가 비교하는 것은 가중치의 <span class="k-blue">상대적 크기</span>뿐이다. 부호를 가정하는가?</li>
+        </ul>
+        <p class="refline">강의 슬라이드 Ch16 p20 Quiz</p>
+      </div>
+    </div>
+  </details>
+  <details class="pd"><summary>정답 보기</summary>
+    <div class="pd-body">
+      <p class="ans-ref">개념 정리는 위 힌트 보기에 있음</p>
+      <span class="sol-tag">풀이</span>
+      <ol class="steps">
+        <li><span class="st-t">정확성의 근거를 확인한다.</span> 알고리즘의 각 단계가 cut property 하나에만 의존한다.
+          <span class="why">매 단계 "컷의 최소 간선 추가"만 반복하므로, 그 선택의 안전성이 곧 전체의 정확성이다.</span></li>
+        <li><span class="st-t">cut property와 부호.</span> cut property는 가중치의 상대적 크기만 비교하므로 부호와 무관하다.
+          <span class="why">교환 논증(더 싼 간선으로 바꿔치기)은 음수에서도 그대로 성립한다.</span></li>
+        <li><span class="st-t">결론과 대비.</span> 따라서 음수 간선이 있어도 Prim은 올바른 MST를 찾는다.
+          <span class="why">음수 간선에 취약한 최단경로 Dijkstra와 대비되는 지점이다.</span></li>
+      </ol>
+      <div class="ans-final"><span class="lb">최종 답</span><span class="val"><span class="hl">그대로 작동한다</span> — cut property는 상대적 크기만 비교해 부호와 무관</span></div>
+    </div>
+  </details>
+</section>
+
+<div class="takeaway"><b>한 줄 정리</b> &middot; MST 알고리즘의 정확성은 <span class="k-blue">cut property</span>에서 오고, cut property는 부호를 모른다.</div>
+<div class="pnav"><a href="q16-1.html">&larr; Quiz 16-1</a><a href="../index.html">목차</a><a href="q16-3.html">Quiz 16-3 &rarr;</a></div>
+</div>
+</article>
+<script>window.addEventListener('beforeprint',function(){document.querySelectorAll('details').forEach(function(d){d.setAttribute('open','')})});</script>
+</body>
+</html>

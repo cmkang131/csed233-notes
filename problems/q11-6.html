@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quiz 11-6 · 2-3 트리에 회전이 필요 없는 이유 — CSED233 데이터구조</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/study-note.css">
+</head>
+<body>
+<article class="paper prob-page">
+<div class="phead">
+  <a class="to-home" href="../index.html">&larr; 문제 목록</a>
+  <span class="phead-c">Quiz 11-6 &middot; <span class="k-blue">split/merge vs rotation</span></span>
+  <span class="phead-r">CSED233 &middot; 데이터구조</span>
+</div>
+<div class="body notes boxmath">
+<section>
+  <div class="problem">
+    <span class="prob-no">Quiz 11-6</span>
+    <p>Insertion grows the tree at the root, deletion shrinks it at the root. Why does this make AVL-style rotations unnecessary?</p>
+  </div>
+</section>
+
+<section>
+  <details class="pd"><summary>힌트 보기</summary>
+    <div class="pd-body">
+      <div class="bx">
+        <div class="bx-h">개념 정리 · AVL 회전의 존재 이유</div>
+        <ul>
+          <li>AVL 회전은 불균형이 <span class="k-red">임의의 내부 노드</span>에서 발생할 수 있어서, 그 노드의 부분트리를 국소적으로 재배치하는 도구다.</li>
+          <li><b>2-3 트리의 높이 변화 지점</b> — 삽입은 <span class="k-blue">root split</span>으로만 +1, 삭제는 <span class="k-blue">root merge</span>로만 −1.</li>
+        </ul>
+        <p class="refline">강의 슬라이드 Ch11 p41 Quiz</p>
+      </div>
+    </div>
+  </details>
+  <details class="pd"><summary>정답 보기</summary>
+    <div class="pd-body">
+      <p class="ans-ref">개념 정리는 위 힌트 보기에 있음</p>
+      <span class="sol-tag">풀이</span>
+      <ol class="steps">
+        <li><span class="st-t">높이 변화가 루트에만 모인다.</span> 2-3 트리는 삽입이 루트 split으로만 높이를 +1 하고, 삭제가 루트 merge로만 −1 한다.
+          <span class="why">내부 노드에서는 높이가 바뀌지 않는다.</span></li>
+        <li><span class="st-t">불변식이 split/merge만으로 유지된다.</span> "모든 leaf가 같은 레벨"이라는 불변식은 leaf에서 시작된 split/merge가 위로 전파되는 것만으로 회복된다.
+          <span class="why">부분트리의 좌우 높이를 맞추는 작업이 아예 필요 없다.</span></li>
+        <li><span class="st-t">회전의 역할이 사라진다.</span> AVL 회전은 임의의 내부 노드의 좌우 높이차를 고치는 도구인데, 2-3 트리에는 그런 국소 불균형 자체가 생기지 않는다.
+          <span class="why">균형을 맞추는 메커니즘이 구조 불변식에 내장되어 있다.</span></li>
+      </ol>
+      <div class="ans-final"><span class="lb">최종 답</span><span class="val"><span class="hl">높이 변화가 오직 루트에서만 일어나기 때문</span> — 국소 불균형이 없으니 회전 불필요</span></div>
+    </div>
+  </details>
+</section>
+
+<div class="takeaway"><b>한 줄 정리</b> &middot; 2-3 트리는 균형을 <span class="k-blue">구조 불변식</span>으로 유지하고, AVL은 <span class="k-blue">국소 회전</span>으로 유지한다.</div>
+<div class="pnav"><a href="q11-5.html">&larr; Quiz 11-5</a><a href="../index.html">목차</a><a href="q12-1.html">Quiz 12-1 &rarr;</a></div>
+</div>
+</article>
+<script>window.addEventListener('beforeprint',function(){document.querySelectorAll('details').forEach(function(d){d.setAttribute('open','')})});</script>
+</body>
+</html>
