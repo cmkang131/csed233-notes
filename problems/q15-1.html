@@ -13,7 +13,7 @@
 <article class="paper prob-page">
 <div class="phead">
   <a class="to-home" href="../index.html">&larr; 문제 목록</a>
-  <span class="phead-c">Quiz 15-1 &middot; <span class="k-blue">relaxation(완화)</span></span>
+  <span class="phead-c">Quiz 15-1 &middot; <span class="lt">relaxation(완화)</span></span>
   <span class="phead-r">CSED233 &middot; 데이터구조</span>
 </div>
 <div class="body notes boxmath">
@@ -30,7 +30,7 @@
       <div class="bx">
         <div class="bx-h">개념 정리 · relaxation</div>
         <ul>
-          <li><b>Relaxation(완화)</b> — 정점을 확정할 때마다 그 정점을 경유하는 이웃들의 <span class="k-blue">tentative 거리를 개선</span>한다.</li>
+          <li><b>Relaxation(완화)</b> — 정점을 확정할 때마다 그 정점을 경유하는 이웃들의 <span class="lt">tentative 거리를 개선</span>한다.</li>
           <li>naive greedy는 "지금 가장 가까운 정점"만 보고, 그 선택이 <span class="k-red">다른 정점까지의 거리 정보를 갱신하지 않는다</span>.</li>
         </ul>
         <p class="refline">강의 슬라이드 Ch15 p10 Quiz</p>
@@ -44,7 +44,7 @@
       <ol class="steps">
         <li><span class="st-t">naive greedy의 결함.</span> 가장 가까운 미방문 정점을 골라도, 그 선택이 다른 정점들의 최단 후보 거리에 반영되지 않는다.
           <span class="why">경유 경로가 더 짧은 경우를 놓친다.</span></li>
-        <li><span class="st-t">Dijkstra의 두 요소.</span> 미확정 정점 중 <span class="k-blue">최소 거리를 확정</span>하고, 확정 직후 그 정점을 경유하는 이웃을 <span class="k-blue">relaxation으로 갱신</span>한다.
+        <li><span class="st-t">Dijkstra의 두 요소.</span> 미확정 정점 중 <span class="lt">최소 거리를 확정</span>하고, 확정 직후 그 정점을 경유하는 이웃을 <span class="lt">relaxation으로 갱신</span>한다.
           <span class="why">경유 경로 개선분이 즉시 다음 선택에 반영된다.</span></li>
         <li><span class="st-t">왜 모든 비음수 그래프에서 맞는가.</span> 확정 시점에 그 정점보다 짧은 미발견 경로가 존재할 수 없다(모든 가중치 ≥ 0).
           <span class="why">relaxation과 최소-확정의 결합이 정확성 논증을 가능하게 한다.</span></li>
@@ -54,7 +54,7 @@
   </details>
 </section>
 
-<div class="takeaway"><b>한 줄 정리</b> &middot; greedy가 작동하려면 "선택의 효과를 전파"해야 한다 — 그게 <span class="k-blue">relaxation</span>.</div>
+<div class="takeaway"><b>한 줄 정리</b> &middot; greedy가 작동하려면 "선택의 효과를 전파"해야 한다 — 그게 <span class="lt">relaxation</span>.</div>
 <div class="pnav"><a href="q14-3.html">&larr; Quiz 14-3</a><a href="../index.html">목차</a><a href="q15-2.html">Quiz 15-2 &rarr;</a></div>
 </div>
 </article>
