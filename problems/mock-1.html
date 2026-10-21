@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<script src="../assets/theme.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Q1 · AVL — 삽입 vs 삭제 — CSED233 데이터구조</title>
@@ -14,7 +15,7 @@
 <div class="phead">
   <a class="to-home" href="../index.html">&larr; 문제 목록</a>
   <span class="phead-c">Mock Final Q1(5점) &middot; <span class="lt">AVL tree(AVL 트리)</span></span>
-  <span class="phead-r">CSED233 &middot; 데이터구조</span>
+  <span class="phead-r">CSED233 &middot; 데이터구조 &middot; <a class="to-root" href="https://cmkang131.github.io/">전체 홈&#8599;</a></span>
 </div>
 <div class="body notes boxmath">
 <section>
@@ -44,7 +45,6 @@
   </details>
   <details class="pd"><summary>정답 보기</summary>
     <div class="pd-body">
-      <p class="ans-ref">개념 정리는 위 힌트 보기에 있음</p>
       <span class="sol-tag">풀이</span>
       <div class="subpart first">
         <ul><li><span class="part">(a)</span> <b>True.</b> 삽입 후의 회전은 회전된 부분트리의 높이를 삽입 전과 정확히 같게 복원하므로, 모든 조상의 balance factor는 변하지 않는다.
@@ -64,7 +64,7 @@
 </section>
 
 <div class="takeaway"><b>한 줄 정리</b> &middot; 삽입 회전은 높이를 <span class="lt">복원</span>하고 삭제 회전은 높이를 <span class="k-red">남겨 둔다</span> — 이 비대칭이 (a)/(b)를 가른다.</div>
-<div class="pnav"><a href="q16-4.html">&larr; Quiz 16-4</a><a href="../index.html">목차</a><a href="mock-2.html">Mock Q2 &rarr;</a></div>
+<div class="pnav"><a href="q16-4.html">&larr; Quiz 16-4</a><a href="../index.html">목차</a><a class="tap" href="mock-2.html">Mock Q2</a></div>
 </div>
 </article>
 <script>window.addEventListener('beforeprint',function(){document.querySelectorAll('details').forEach(function(d){d.setAttribute('open','')})});</script>

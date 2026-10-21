@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<script src="../assets/theme.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Quiz 11-1 · 데이터베이스가 B+-tree를 쓰는 이유 — CSED233 데이터구조</title>
@@ -14,7 +15,7 @@
 <div class="phead">
   <a class="to-home" href="../index.html">&larr; 문제 목록</a>
   <span class="phead-c">Quiz 11-1 &middot; <span class="lt">B+-tree(B+ 트리)</span></span>
-  <span class="phead-r">CSED233 &middot; 데이터구조</span>
+  <span class="phead-r">CSED233 &middot; 데이터구조 &middot; <a class="to-root" href="https://cmkang131.github.io/">전체 홈&#8599;</a></span>
 </div>
 <div class="body notes boxmath">
 <section>
@@ -39,7 +40,6 @@
   </details>
   <details class="pd"><summary>정답 보기</summary>
     <div class="pd-body">
-      <p class="ans-ref">개념 정리는 위 힌트 보기에 있음</p>
       <span class="sol-tag">풀이</span>
       <ol class="steps">
         <li><span class="st-t">낮은 트리 높이 → 디스크 I/O 감소.</span> 내부 노드가 데이터 대신 키만 담으므로 한 노드에 키를 더 많이 넣을 수 있어 fan-out이 커지고 높이가 낮아진다.
@@ -55,7 +55,7 @@
 </section>
 
 <div class="takeaway"><b>한 줄 정리</b> &middot; B-tree의 조기 종료는 best-case의 작은 이득, B+-tree의 <span class="lt">낮은 높이·순차 스캔·균일 성능</span>이 압도한다.</div>
-<div class="pnav"><a href="q10-5.html">&larr; Quiz 10-5</a><a href="../index.html">목차</a><a href="q11-2.html">Quiz 11-2 &rarr;</a></div>
+<div class="pnav"><a href="q10-5.html">&larr; Quiz 10-5</a><a href="../index.html">목차</a><a class="tap" href="q11-2.html">Quiz 11-2</a></div>
 </div>
 </article>
 <script>window.addEventListener('beforeprint',function(){document.querySelectorAll('details').forEach(function(d){d.setAttribute('open','')})});</script>

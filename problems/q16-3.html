@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<script src="../assets/theme.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Quiz 16-3 · Kruskal의 greedy가 안전한 이유와 병목 — CSED233 데이터구조</title>
@@ -14,7 +15,7 @@
 <div class="phead">
   <a class="to-home" href="../index.html">&larr; 문제 목록</a>
   <span class="phead-c">Quiz 16-3 &middot; <span class="lt">Kruskal(크루스칼)</span></span>
-  <span class="phead-r">CSED233 &middot; 데이터구조</span>
+  <span class="phead-r">CSED233 &middot; 데이터구조 &middot; <a class="to-root" href="https://cmkang131.github.io/">전체 홈&#8599;</a></span>
 </div>
 <div class="body notes boxmath">
 <section>
@@ -39,7 +40,6 @@
   </details>
   <details class="pd"><summary>정답 보기</summary>
     <div class="pd-body">
-      <p class="ans-ref">개념 정리는 위 힌트 보기에 있음</p>
       <span class="sol-tag">풀이</span>
       <ol class="steps">
         <li><span class="st-t">막다른 길이 없는 이유.</span> Kruskal이 고르는 간선은 어떤 컷의 최소 간선이고, cut property상 안전하므로 나중에 더 무거운 간선을 억지로 써야 하는 상황이 오지 않는다.
@@ -55,7 +55,7 @@
 </section>
 
 <div class="takeaway"><b>한 줄 정리</b> &middot; Kruskal의 시간은 <span class="lt">정렬</span>이 지배한다 — Union-Find는 거의 공짜.</div>
-<div class="pnav"><a href="q16-2.html">&larr; Quiz 16-2</a><a href="../index.html">목차</a><a href="q16-4.html">Quiz 16-4 &rarr;</a></div>
+<div class="pnav"><a href="q16-2.html">&larr; Quiz 16-2</a><a href="../index.html">목차</a><a class="tap" href="q16-4.html">Quiz 16-4</a></div>
 </div>
 </article>
 <script>window.addEventListener('beforeprint',function(){document.querySelectorAll('details').forEach(function(d){d.setAttribute('open','')})});</script>
