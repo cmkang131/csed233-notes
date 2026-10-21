@@ -4,7 +4,7 @@
 <script src="../assets/theme.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Quiz 10-2 · AVL 삽입 회전 횟수 — CSED233 데이터구조</title>
+<title>Quiz 10-2 · AVL 삽입 회전 횟수 · CSED233 데이터구조</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -33,7 +33,7 @@
         <div class="bx-h">개념 정리 · 회전이 일어나는 조건</div>
         <ul>
           <li>삽입 후 어떤 노드의 <span class="lt">|balance factor| = 2</span>가 되면 그 노드를 pivot으로 회전한다.</li>
-          <li><b>4가지 경우</b> — LL은 우회전 1회, RR은 좌회전 1회, LR/RL은 이중 회전. 같은 방향으로 두 번 쏠리면(LL/RR) <span class="lt">single rotation</span>으로 끝난다.</li>
+          <li><b>4가지 경우</b>: LL은 우회전 1회, RR은 좌회전 1회, LR/RL은 이중 회전. 같은 방향으로 두 번 쏠리면(LL/RR) <span class="lt">single rotation</span>으로 끝난다.</li>
         </ul>
         <p class="refline">강의 슬라이드 Ch10 p33 Quiz</p>
       </div>
@@ -56,7 +56,7 @@
         <li><span class="st-t">7 삽입 → 회전 ④.</span> 노드 5에서 RR 불균형 → 좌회전 1회.
           <span class="why">같은 패턴이 반복된다.</span></li>
       </ol>
-      <div class="ans-final"><span class="lb">최종 답</span><span class="val"><span class="hl">4회 — 전부 single rotation</span></span></div>
+      <div class="ans-final"><span class="lb">최종 답</span><span class="val"><span class="hl">4회. 전부 single rotation</span></span></div>
     </div>
   </details>
 </section>

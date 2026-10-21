@@ -4,7 +4,7 @@
 <script src="../assets/theme.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Quiz 16-1 · 컴포넌트별 최소 간선 선택은 MST가 되는가 — CSED233 데이터구조</title>
+<title>Quiz 16-1 · 컴포넌트별 최소 간선 선택은 MST가 되는가 · CSED233 데이터구조</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -32,7 +32,7 @@
       <div class="bx">
         <div class="bx-h">개념 정리 · cut property</div>
         <ul>
-          <li><b>Cut property(컷 성질)</b> — 어떤 컷을 가로지르는 <span class="lt">최소 가중치 간선은 어떤 MST에든 속한다</span>(안전한 선택).</li>
+          <li><b>Cut property(컷 성질)</b>: 어떤 컷을 가로지르는 <span class="lt">최소 가중치 간선은 어떤 MST에든 속한다</span>(안전한 선택).</li>
           <li>한 번 적용했을 때 결과가 반드시 <span class="k-red">연결된 하나의 트리</span>인지 생각해 볼 것. 정점 수와 간선 수를 세어 보면?</li>
         </ul>
         <p class="refline">강의 슬라이드 Ch16 p06 Quiz</p>
@@ -45,12 +45,12 @@
       <ol class="steps">
         <li><span class="st-t">한 번 적용의 결과.</span> 각 정점이 하나씩 고르면 간선이 <span class="mjx"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="1.357ex" height="1.025ex" role="img" focusable="false" viewBox="0 -442 600 453"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D45B" d="M21 287Q22 293 24 303T36 341T56 388T89 425T135 442Q171 442 195 424T225 390T231 369Q231 367 232 367L243 378Q304 442 382 442Q436 442 469 415T503 336T465 179T427 52Q427 26 444 26Q450 26 453 27Q482 32 505 65T540 145Q542 153 560 153Q580 153 580 145Q580 144 576 130Q568 101 554 73T508 17T439 -10Q392 -10 371 17T350 73Q350 92 386 193T423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 180T152 343Q153 348 153 366Q153 405 129 405Q91 405 66 305Q60 285 60 284Q58 278 41 278H27Q21 284 21 287Z"></path></g></g></g></svg></span>개라 사이클이 생기거나 끊긴 포레스트가 될 수 있어 그 자체로 MST는 아니다.
           <span class="why">MST는 간선이 정확히 <span class="mjx"><svg style="vertical-align: -0.186ex;" xmlns="http://www.w3.org/2000/svg" width="5.254ex" height="1.692ex" role="img" focusable="false" viewBox="0 -666 2322.4 748"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D45B" d="M21 287Q22 293 24 303T36 341T56 388T89 425T135 442Q171 442 195 424T225 390T231 369Q231 367 232 367L243 378Q304 442 382 442Q436 442 469 415T503 336T465 179T427 52Q427 26 444 26Q450 26 453 27Q482 32 505 65T540 145Q542 153 560 153Q580 153 580 145Q580 144 576 130Q568 101 554 73T508 17T439 -10Q392 -10 371 17T350 73Q350 92 386 193T423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 180T152 343Q153 348 153 366Q153 405 129 405Q91 405 66 305Q60 285 60 284Q58 278 41 278H27Q21 284 21 287Z"></path></g><g data-mml-node="mo" transform="translate(822.2,0)"><path data-c="2212" d="M84 237T84 250T98 270H679Q694 262 694 250T679 230H98Q84 237 84 250Z"></path></g><g data-mml-node="mn" transform="translate(1822.4,0)"><path data-c="31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z"></path></g></g></g></svg></span>개인 연결 트리다.</span></li>
-        <li><span class="st-t">반복하면 성립한다.</span> 컴포넌트 단위로 반복해 컴포넌트끼리 연결해 나가면 MST가 된다 — 이것이 Borůvka(Sollin) 알고리즘.
+        <li><span class="st-t">반복하면 성립한다.</span> 컴포넌트 단위로 반복해 컴포넌트끼리 연결해 나가면 MST가 된다. 이것이 Borůvka(Sollin) 알고리즘.
           <span class="why">각 컴포넌트의 최소 outgoing edge는 그 컴포넌트를 한쪽으로 하는 컷의 최소 간선이라 cut property상 안전하다.</span></li>
         <li><span class="st-t">동점 처리.</span> 가중치가 같으면 사이클 방지를 위해 tie-break가 필요하다.
           <span class="why">동률의 두 간선을 서로가 서로의 최소로 고르면 2-사이클이 생길 수 있다.</span></li>
       </ol>
-      <div class="ans-final"><span class="lb">최종 답</span><span class="val"><span class="hl">한 번만으로는 아니다, 반복하면 된다 (Borůvka)</span> — 각 선택이 cut property상 안전</span></div>
+      <div class="ans-final"><span class="lb">최종 답</span><span class="val"><span class="hl">한 번만으로는 아니다, 반복하면 된다 (Borůvka)</span>. 각 선택이 cut property상 안전</span></div>
     </div>
   </details>
 </section>

@@ -4,7 +4,7 @@
 <script src="../assets/theme.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Q5 · 위상 정렬의 유일성 — CSED233 데이터구조</title>
+<title>Q5 · 위상 정렬의 유일성 · CSED233 데이터구조</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -52,7 +52,7 @@
       <div class="bx">
         <div class="bx-h">개념 정리 · 큐의 상태와 위상 순서</div>
         <ul>
-          <li>큐에 <span class="lt">2개 이상</span>이 있으면 어느 것을 먼저 꺼내도 알고리즘은 진행된다 — 선택지가 곧 서로 다른 출력 순서다.</li>
+          <li>큐에 <span class="lt">2개 이상</span>이 있으면 어느 것을 먼저 꺼내도 알고리즘은 진행된다. 선택지가 곧 서로 다른 출력 순서다.</li>
           <li>유일성을 보려면 <span class="lt">각 단계의 큐 상태</span>를 적어 본다. 큐 크기가 항상 1 이하여야 유일하다.</li>
         </ul>
         <p class="refline">강의 슬라이드 Ch14 &middot; in-degree 큐 알고리즘 (Quiz 14-2)</p>
@@ -67,14 +67,14 @@
         <span class="why">큐 안의 정점들은 서로 선후 관계가 없어(in-degree 0) 어떤 순서로 내보내도 위상 조건을 만족한다.</span></li></ul>
       </div>
       <div class="subpart">
-        <ul><li><span class="part">(2)</span> in-degree: A=0, B=1, C=1, D=2, E=1. 큐 추적: [A] → A 제거 → <b>[B, C] — 두 개!</b> → 이후 진행.
+        <ul><li><span class="part">(2)</span> in-degree: A=0, B=1, C=1, D=2, E=1. 큐 추적: [A] → A 제거 → <b>[B, C]: 두 개!</b> → 이후 진행.
         <span class="why">B와 C가 동시에 큐에 있으므로 순서가 유일하지 않다. 실제로 A,B,C,D,E와 A,C,B,D,E가 모두 유효하다.</span></li></ul>
       </div>
       <div class="subpart">
         <ul><li><span class="part">(3)</span> 간선 <b>B → C</b>를 추가한다(C의 in-degree가 2로). 큐 추적: [A] → [B] → B 제거(C의 in-degree 0) → [C] → C 제거(D의 in-degree 0) → [D] → [E].
-        <span class="why">모든 단계에서 큐에 최대 1개뿐이라 선택의 여지가 없고, 위상 순서는 A, B, C, D, E로 유일하다.</span></li></ul>
+        <span class="why">모든 단계에서 큐에 최대 1개뿐이라 선택의 여지가 없고 위상 순서는 A, B, C, D, E로 유일하다.</span></li></ul>
       </div>
-      <div class="ans-final"><span class="lb">최종 답</span><span class="val">(2) <span class="hl">유일하지 않다 — 큐에 B, C 동시 존재</span> &nbsp; (3) <span class="hl">B → C 추가 → A,B,C,D,E로 유일</span></span></div>
+      <div class="ans-final"><span class="lb">최종 답</span><span class="val">(2) <span class="hl">유일하지 않다. 큐에 B, C 동시 존재</span> &nbsp; (3) <span class="hl">B → C 추가 → A,B,C,D,E로 유일</span></span></div>
     </div>
   </details>
 </section>
