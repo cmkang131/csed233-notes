@@ -63,7 +63,7 @@
 <tr><td>Retrieve(p, L)</td><td>인덱스 p의 값 반환</td><td>배열 O(1) · 연결 리스트 O(n)</td></tr>
 <tr><td>Next(p, L)</td><td>p의 다음 인덱스</td><td>O(1)</td></tr>
 <tr><td>Previous(p, L)</td><td>p의 이전 인덱스</td><td>O(1)</td></tr>
-<tr><td>MakeNull(L)</td><td>L을 공 리스트로</td><td>O(n)</td></tr>
+<tr><td>MakeNull(L)</td><td>L을 공 리스트로</td><td>구현에 따라 O(1)~O(n) (노드 해제 여부)</td></tr>
 </table>
 </section>
 
@@ -92,7 +92,7 @@
   <g font-size="12.5" text-anchor="middle"><text x="501" y="44">20</text><text x="543" y="44">23</text><text x="585" y="44" fill="#1f2328">10</text><text x="627" y="44">12</text><text x="669" y="44">15</text></g>
   <text x="480" y="70" font-size="11" fill="#6b7280">Step 2: 빈자리에 10 삽입</text>
 </svg>
-<div class="figcap">배열 삽입: Shift 비용 때문에 O(n). 맨 뒤 삽입만 O(1).</div>
+<div class="figcap">배열 삽입: Shift 비용 때문에 O(n). 맨 뒤 삽입만 O(1) (끝에 여유 공간이 있을 때; 재할당 시 O(n), 분할상환 O(1)).</div>
 </div>
 
 <h3>2.2 포인터 기반 — 연결 리스트</h3>
@@ -258,7 +258,7 @@
 <h2>5. Deque(덱) — Double-Ended Queue</h2>
 <p>양쪽 끝에서 삽입/삭제가 모두 가능한 큐. Stack + Queue의 기능을 합친 인터페이스로 보면 된다.</p>
 <ul>
-<li>양쪽 끝 모두 O(1) 접근. 구현: 원형 배열 또는 이중 연결 리스트.</li>
+<li>양쪽 끝의 삽입·삭제·원소 확인 모두 O(1) (임의 위치 접근은 구현에 따라 다름). 구현: 원형 배열 또는 이중 연결 리스트.</li>
 <li>응용: 슬라이딩 윈도우 등 앞뒤 접근이 모두 필요한 경우.</li>
 </ul>
 </section>
