@@ -50,8 +50,8 @@
 <p>노드 x에서 |bf(x)| = 2가 발견되면, <strong>무거운 쪽 자식의 bf 부호</strong>로 유형을 판정한다.</p>
 <table>
 <tr><td>유형</td><td>판정</td><td>의미</td><td>해결</td></tr>
-<tr><td><b class="k-blue">LL</b></td><td>bf(x) = +2, bf(왼쪽 자식) &gt; 0</td><td>왼쪽-왼쪽으로 무거움</td><td><b>우회전 1회</b></td></tr>
-<tr><td><b class="k-blue">RR</b></td><td>bf(x) = −2, bf(오른쪽 자식) &lt; 0</td><td>오른쪽-오른쪽으로 무거움</td><td><b>좌회전 1회</b></td></tr>
+<tr><td><b class="k-blue">LL</b></td><td>bf(x) = +2, bf(왼쪽 자식) ≥ 0 (삭제 재균형에서는 =0도 LL)</td><td>왼쪽-왼쪽으로 무거움</td><td><b>우회전 1회</b></td></tr>
+<tr><td><b class="k-blue">RR</b></td><td>bf(x) = −2, bf(오른쪽 자식) ≤ 0 (삭제 재균형에서는 =0도 RR)</td><td>오른쪽-오른쪽으로 무거움</td><td><b>좌회전 1회</b></td></tr>
 <tr><td><b class="k-blue">LR</b></td><td>bf(x) = +2, bf(왼쪽 자식) &lt; 0</td><td>왼쪽 자식의 오른쪽이 무거움</td><td><b>자식 좌회전 → 부모 우회전</b></td></tr>
 <tr><td><b class="k-blue">RL</b></td><td>bf(x) = −2, bf(오른쪽 자식) &gt; 0</td><td>오른쪽 자식의 왼쪽이 무거움</td><td><b>자식 우회전 → 부모 좌회전</b></td></tr>
 </table>
