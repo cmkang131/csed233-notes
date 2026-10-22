@@ -66,7 +66,7 @@
   <rect x="80" y="70" width="160" height="32" rx="8" fill="#ffffff" stroke="#1f2328"/>
   <text x="160" y="90" text-anchor="middle" font-size="13" font-weight="700" fill="#1f2328">선형 (Linear, 1차원)</text>
   <rect x="380" y="70" width="200" height="32" rx="8" fill="#ffffff" stroke="#1f2328"/>
-  <text x="480" y="90" text-anchor="middle" font-size="13" font-weight="700" fill="#1f2328">비선형 (Non-Linear, 2차원+)</text>
+  <text x="480" y="90" text-anchor="middle" font-size="13" font-weight="700" fill="#1f2328">비선형 (Non-Linear: 원소 관계가 순차열이 아니라 계층·연결 구조)</text>
   <g font-size="12.5" fill="#1f2328">
     <line x1="160" y1="102" x2="160" y2="116" stroke="#9aa1aa" stroke-width="1.5"/>
     <line x1="62" y1="116" x2="258" y2="116" stroke="#9aa1aa" stroke-width="1.5"/>
@@ -199,13 +199,13 @@
 <table>
 <tr><td>자료구조</td><td>시간복잡도</td><td>실제 비교 횟수</td><td>소요 시간</td></tr>
 <tr><td>배열 + 선형 탐색</td><td>O(n)</td><td>평균 500,000회</td><td>0.5ms</td></tr>
-<tr><td>이진 탐색 트리(BST)</td><td>O(log n)</td><td>평균 20회</td><td>0.00002ms</td></tr>
+<tr><td>이진 탐색 트리(BST, 균형)</td><td>O(log n)</td><td>평균 20회</td><td>0.00002ms</td></tr>
 <tr><td>해시 테이블</td><td>O(1)</td><td>평균 1회</td><td>0.000001ms</td></tr>
 </table>
 
 <ul>
 <li>배열 vs BST → <strong class="k-red">25,000배</strong> 차이, 배열 vs Hash → <strong class="k-red">500,000배</strong> 차이.</li>
-<li>데이터가 작으면(n &lt; 100) 무관하지만, 커질수록 격차는 지수적으로 벌어진다. n = 100K에서 배열은 약 100배, n = 1M에서는 약 1000배 느리다.</li>
+<li>데이터가 작으면(n &lt; 100) 무관하지만, 커질수록 격차는 빠르게 벌어진다(비율 ≈ n/log n). n = 100K에서 배열은 약 100배, n = 1M에서는 약 1000배 느리다.</li>
 </ul>
 
 <div class="box tipbox">
@@ -213,7 +213,7 @@
   <p>"중간에 삽입" 한 번을 예로 들면:</p>
   <ul>
   <li><strong class="k-blue">배열</strong>: 위치 찾기 O(n) + 오른쪽 원소 전부 Shift O(n) → O(n).</li>
-  <li><strong class="k-blue">연결 리스트</strong>: 위치 찾기(순회) O(n) + 포인터 수정 O(1) → O(n)이지만 상수가 작다.</li>
+  <li><strong class="k-blue">연결 리스트</strong>: 위치 찾기(순회) O(n) + 포인터 수정 O(1) → O(n). 위치를 알고 있다면 삽입 자체는 O(1)이고 shift가 없어 배열의 중간 삽입보다 유리할 수 있다.</li>
   <li><strong class="k-blue">트리</strong>에서 중간 데이터 찾기: 이진 탐색 O(log n) → 배열 대비 100배.</li>
   </ul>
   <p>문제 해결 방식 자체가 자료구조에 의존한다.</p>
@@ -227,7 +227,7 @@
 <table>
 <tr><td>방안</td><td>구조</td><td>검색 방식</td><td>평균 비교</td></tr>
 <tr><td><strong class="k-blue">A. 배열</strong></td><td>[성적1][성적2]…[성적1000]</td><td>처음부터 끝까지 순서대로 비교</td><td>O(n) ≈ 500회</td></tr>
-<tr><td><strong class="k-blue">B. BST</strong></td><td>중앙값 학번 500이 루트, 좌우로 분기</td><td>크기 비교로 절반씩 제외</td><td>O(log n) ≈ 10회</td></tr>
+<tr><td><strong class="k-blue">B. BST</strong></td><td>중앙값 학번 500이 루트, 좌우로 분기 (균형 트리 가정)</td><td>크기 비교로 절반씩 제외</td><td>O(log n) ≈ 10회</td></tr>
 <tr><td><strong class="k-blue">C. 해시 테이블</strong></td><td>Hash Function으로 학번 → 인덱스</td><td>계산 후 바로 접근</td><td>O(1) ≈ 1회</td></tr>
 </table>
 
@@ -258,7 +258,7 @@ return hashTable[hash(target)];</code></pre>
     </ul></li>
   <li><strong class="k-blue">메모리 제약이 있는가?</strong>
     <ul>
-    <li>제한 있음 → Linked List (추가 메모리 최소, 예: 임베디드)</li>
+    <li>제한 있음 → Linked List (데이터 수에 비례하는 메모리 - hash table처럼 여유 bucket 불필요, 예: 임베디드)</li>
     <li>충분함 → Hash Table (예: 클라우드, 고성능 서버)</li>
     </ul></li>
   <li><strong class="k-blue">최악의 경우 보장이 중요한가?</strong>
@@ -272,17 +272,18 @@ return hashTable[hash(target)];</code></pre>
 <h3>5.1 연산별 성능 요약</h3>
 <table>
 <tr><td>자료구조</td><td>검색</td><td>삽입</td><td>삭제</td><td>순서 유지</td><td>사용 시기</td></tr>
-<tr><td>배열</td><td>O(1) (정렬 시)</td><td>O(n), 끝은 O(1)</td><td>O(n), 끝은 O(1)</td><td>○ (인덱스)</td><td>정렬된 고정 데이터</td></tr>
+<tr><td>배열</td><td>O(1) (인덱스 접근), 정렬 시 값 검색 O(log n)</td><td>O(n), 끝은 O(1)</td><td>O(n), 끝은 O(1)</td><td>○ (인덱스)</td><td>정렬된 고정 데이터</td></tr>
 <tr><td>연결 리스트</td><td>O(n)</td><td>O(1) (위치 알 때)</td><td>O(1) (위치 알 때)</td><td>○ (순서)</td><td>크기가 자주 변할 때</td></tr>
 <tr><td>BST</td><td>O(log n) 평균</td><td>O(log n) 평균</td><td>O(log n) 평균</td><td>○ (In-order)</td><td>검색 + 순서 유지</td></tr>
 <tr><td>Hash Table</td><td>O(1) 평균</td><td>O(1) 평균</td><td>O(1) 평균</td><td>×</td><td>검색만 중요할 때</td></tr>
 <tr><td>Heap</td><td>O(n)</td><td>O(log n)</td><td>O(log n)</td><td>○ (Max/Min만)</td><td>우선순위 큐, Sort</td></tr>
 </table>
+<p class="fn">BST의 '평균'은 랜덤 삽입 순서의 기대값; 편향되면 최악 O(n). AVL Tree 등 균형 BST는 검색·삽입·삭제 O(log n) 보장.</p>
 
 <h3>5.2 n = 100만일 때 체감</h3>
 <table>
 <tr><td>자료구조</td><td>검색 1회</td><td>삽입 1회</td><td>체감</td></tr>
-<tr><td>배열</td><td>100만회</td><td>100만회</td><td>매우 느림</td></tr>
+<tr><td>배열</td><td>100만회</td><td>100만회 (중간 삽입; 끝이면 1회)</td><td>매우 느림</td></tr>
 <tr><td>연결 리스트</td><td>100만회</td><td>1회 (위치 알 때)</td><td>느림</td></tr>
 <tr><td>BST (균형)</td><td>20회</td><td>20회</td><td>매우 빠름</td></tr>
 <tr><td>해시 테이블</td><td>1회</td><td>1회</td><td>극도로 빠름</td></tr>
@@ -365,7 +366,7 @@ return hashTable[hash(target)];</code></pre>
   <div class="qa-q"><span class="qa-badge">Q2</span>"자료구조 선택이 알고리즘을 결정한다"는 무슨 의미인가?</div>
   <details class="qa-hint"><summary>힌트</summary>
     <div class="qa-panel">
-      <p>섹션 1의 정렬 예시를 떠올려 보자. 배열에서는 6가지 정렬이 가능하지만 연결 리스트에서는 QuickSort가 불가능하고, BST는 순회만으로 정렬된다.</p>
+      <p>섹션 1의 정렬 예시를 떠올려 보자. 배열에서는 6가지 정렬이 가능하지만 연결 리스트에서는 QuickSort가 Random Access 부재로 비효율적이고, BST는 순회만으로 정렬된다.</p>
     </div></details>
   <details class="qa-ans"><summary>정답</summary>
     <div class="qa-panel">
