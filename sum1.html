@@ -45,7 +45,7 @@
   <p>같은 "정렬" 작업도 자료구조에 따라 선택지가 달라진다.</p>
   <ul>
   <li><strong class="k-blue">배열(Array)</strong>: Bubble, Selection, Insertion, Merge, Quick, Heap — 6가지 이상 선택 가능.</li>
-  <li><strong class="k-blue">연결 리스트(Linked List)</strong>: Merge, Insertion만 효율적. QuickSort는 Random Access(임의 접근)가 불가능해서 사실상 제외.</li>
+  <li><strong class="k-blue">연결 리스트(Linked List)</strong>: Merge, Insertion만 효율적. QuickSort는 Random Access 부재로 배열 기반 구현이 비효율적 → 사실상 제외 (연결 리스트엔 Merge Sort가 적합).</li>
   <li><strong class="k-blue">Binary Search Tree(이진 탐색 트리)</strong>: In-order Traversal(중위 순회) 하나면 자동으로 정렬됨. 별도 정렬 알고리즘이 필요 없다.</li>
   </ul>
   <p>→ 올바른 자료구조 선택이 곧 올바른 알고리즘 선택이다.</p>
@@ -264,7 +264,7 @@ return hashTable[hash(target)];</code></pre>
   <li><strong class="k-blue">최악의 경우 보장이 중요한가?</strong>
     <ul>
     <li>중요(실시간) → Merge Sort O(n log n) 보장 (예: 의료, 항공, 금융)</li>
-    <li>평균만 중요 → Quick Sort 평균 O(n log n) (예: 일반 데이터 처리)</li>
+    <li>평균만 중요 → Quick Sort 평균 O(n log n), 최악 O(n²) - 피벗·입력에 따라 달라짐 (예: 일반 데이터 처리)</li>
     </ul></li>
   </ol>
 </div>
