@@ -53,7 +53,7 @@ while queue not empty:
 <h2>2. Tree Reconstruction (재구성)</h2>
 <h3>질문</h3>
 <ul>
-<li>순회 결과만 보고 원래 tree 구조를 복원할 수 있는가?
+<li>순회 결과만 보고 원래 tree 구조를 재구성할 수 있는가?
 </li>
 </ul>
 <h3>결론</h3>
@@ -88,7 +88,7 @@ while queue not empty:
 </li>
 </ul>
 </li>
-<li>→ 'root 식별 + 좌우 분할'이 함께 있어야 재귀적으로 복원
+<li>→ 'root 식별 + 좌우 분할'이 함께 있어야 재귀적으로 재구성
 </li>
 </ul>
 <h3>알고리즘 (Preorder + Inorder)</h3>
@@ -110,7 +110,7 @@ while queue not empty:
 </li>
 <li>→ Left: {20,30,35,40,45}, Right: {55,60,70}
 </li>
-<li>→ 재귀 반복하여 복원
+<li>→ 재귀 반복하여 재구성
 </li>
 </ul>
 </section>
@@ -232,7 +232,7 @@ while queue not empty:
 <h3>핵심 통찰</h3>
 <blockquote><b class="k-blue">어떤 general k-ary tree도 binary tree로 변환 가능!</b></blockquote>
 <ul>
-<li>이유: (leftmost-child, right-sibling) 두 링크만 있으면 구조 복원 가능 → 구조적으로 binary tree와 동형
+<li>이유: (leftmost-child, right-sibling) 두 링크만 있으면 구조 재구성 가능 → 구조적으로 binary tree와 동형
 </li>
 </ul>
 <h3>Dynamic (Linked) 구현</h3>

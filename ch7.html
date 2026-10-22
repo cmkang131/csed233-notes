@@ -128,7 +128,7 @@
 <ol>
 <li><b class="k-blue">Hole 생성</b>: CBT 구조 유지 위해 <b class="k-blue">최하위 level의 가장 오른쪽</b>에 새 노드 slot 추가 → array 끝에 append
 </li>
-<li><b class="k-blue">Up-heap bubbling</b>: heap-order 복원 위해 새 원소를 parent와 비교하며 <b class="k-blue">위로 swap</b>
+<li><b class="k-blue">Up-heap bubbling</b>: heap-order 회복을 위해 새 원소를 parent와 비교하며 <b class="k-blue">위로 swap</b>
 </li>
 </ol>
 <h3>시간복잡도 유도</h3>
@@ -149,7 +149,7 @@
 <ol>
 <li><b class="k-blue">Root 제거 &amp; 마지막 원소 이동</b>: root 삭제 → 최하위 최우측 원소를 root 자리로
 </li>
-<li><b class="k-blue">Down-heap bubbling</b>: heap-order 복원 위해 <b class="k-blue">더 작은 자식</b>과 비교하며 아래로 swap
+<li><b class="k-blue">Down-heap bubbling</b>: heap-order 회복을 위해 <b class="k-blue">더 작은 자식</b>과 비교하며 아래로 swap
 </li>
 </ol>
 <h3>왜 '더 작은' 자식과 비교?</h3>

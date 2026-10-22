@@ -89,7 +89,7 @@ void postorder(Node* n) { if (!n) return; postorder(n-&gt;left); postorder(n-&gt
 
 <section class="part">
 <h2>2. Tree 재구성(Reconstruction)</h2>
-<p>문제: 순회 수열 하나만으로 원본 트리를 복원할 수 있는가?</p>
+<p>문제: 순회 수열 하나만으로 원본 트리를 재구성할 수 있는가?</p>
 
 <div class="box example">
   <p class="xlead">같은 Preorder, 다른 트리</p>
@@ -102,21 +102,21 @@ void postorder(Node* n) { if (!n) return; postorder(n-&gt;left); postorder(n-&gt
 </div>
 
 <table>
-<tr><td>조합</td><td>복원 가능?</td></tr>
+<tr><td>조합</td><td>재구성 가능?</td></tr>
 <tr><td>Preorder + Inorder</td><td><b class="k-blue">✓ 가능</b></td></tr>
 <tr><td>Postorder + Inorder</td><td><b class="k-blue">✓ 가능</b></td></tr>
 <tr><td>Level-order + Inorder</td><td><b class="k-blue">✓ 가능</b></td></tr>
 <tr><td>Preorder + Postorder</td><td><b class="k-red">✗ 불가능</b> — 왼쪽/오른쪽 서브트리 경계를 모름</td></tr>
 </table>
-<p>→ <span class="hl">일반 이진 트리에서는 Inorder가 반드시 필요</span>하다 (단, Proper 이진 트리는 Preorder + Postorder만으로도 복원 가능). Inorder가 루트 기준 왼쪽/오른쪽 구간의 경계를 알려주기 때문.</p>
+<p>→ <span class="hl">일반 이진 트리에서는 Inorder가 반드시 필요</span>하다 (단, Proper 이진 트리는 Preorder + Postorder만으로도 재구성 가능). Inorder가 루트 기준 왼쪽/오른쪽 구간의 경계를 알려주기 때문.</p>
 
 <div class="box example">
-  <p class="xlead">예제 · Preorder + Inorder로 복원</p>
+  <p class="xlead">예제 · Preorder + Inorder로 재구성</p>
   <p>Pre: <code>A B D E C</code> · In: <code>D B E A C</code></p>
   <ol class="steps">
     <li>Preorder의 첫 원소는 항상 루트 → 루트 = A.</li>
     <li>Inorder에서 A의 위치를 찾으면 왼쪽 [D B E] / 오른쪽 [C]로 갈라진다.</li>
-    <li>각 구간을 서브트리로 재귀 복원: 왼쪽 Pre = B D E, In = D B E → 루트 B, 왼쪽 D, 오른쪽 E.</li>
+    <li>각 구간을 서브트리로 재귀 재구성: 왼쪽 Pre = B D E, In = D B E → 루트 B, 왼쪽 D, 오른쪽 E.</li>
   </ol>
 <pre><code>결과:    A
         / \
@@ -249,7 +249,7 @@ void postorder(Node* n) { if (!n) return; postorder(n-&gt;left); postorder(n-&gt
   <details class="qa-ans"><summary>정답</summary>
     <div class="qa-panel">
       <p class="qa-note">개념은 힌트 참고.</p>
-      <div class="qa-final">정답: 루트는 알아도 왼쪽/오른쪽 서브트리의 경계를 구분할 수 없어서. 일반 이진 트리에서는 Inorder가 반드시 필요하다 (Proper 트리라면 Preorder + Postorder로 복원 가능).</div>
+      <div class="qa-final">정답: 루트는 알아도 왼쪽/오른쪽 서브트리의 경계를 구분할 수 없어서. 일반 이진 트리에서는 Inorder가 반드시 필요하다 (Proper 트리라면 Preorder + Postorder로 재구성 가능).</div>
     </div></details>
 </div>
 
