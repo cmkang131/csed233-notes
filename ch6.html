@@ -58,6 +58,7 @@ while queue not empty:
 </ul>
 <h3>결론</h3>
 <ul>
+<li><b class="k-blue">전제</b>: 모든 노드의 값이 서로 다를 때 (중복 값이면 root 위치를 유일하게 못 정함)</li>
 <li><b class="k-red">단일 순회 불가</b>: preorder 하나, inorder 하나, postorder 하나만으론 tree 고유 식별 불가
 </li>
 <li><b class="k-blue">2개 순회 필요</b> (단, inorder 반드시 포함):
@@ -284,6 +285,7 @@ while queue not empty:
 </tr>
 </table></div>
 <ul>
+<li>Original 열의 inorder convention: 첫째 자식 → root → 나머지 자식 (general tree 표준)</li>
 <li><b class="hl">핵심</b>: <b class="k-blue">Preorder는 변환 전후 동일!</b>
 </li>
 <li>이유: leftmost-child → left child 매핑이 'root 먼저 → 왼쪽 먼저' 순서를 보존
