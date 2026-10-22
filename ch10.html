@@ -55,7 +55,7 @@
 <section class="part">
 <h2>2. Height-Balanced 정의</h2>
 <h3>두 가지 수준의 balance</h3>
-<div class="def"><p><b class="k-blue">Perfectly balanced</b>: 모든 leaf가 같은 level → full binary tree. 너무 엄격, 유지 거의 불가능 (insert마다 완전 재구성 필요).</p></div>
+<div class="def"><p><b class="k-blue">Perfectly balanced</b>: 모든 level이 꽉 참 (= 모든 내부 노드 자식 2개 + 모든 leaf가 같은 level; 같은 level만으로는 full이 아님). 너무 엄격, 유지 거의 불가능 (insert마다 완전 재구성 필요).</p></div>
 <div class="def"><p><b class="k-blue">(Almost) Height-Balanced</b>: 각 노드 <span class="mjx"><svg focusable="false" aria-hidden="true" style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="1.294ex" height="1.025ex" role="img" focusable="false" viewBox="0 -442 572 453"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D465" d="M52 289Q59 331 106 386T222 442Q257 442 286 424T329 379Q371 442 430 442Q467 442 494 420T522 361Q522 332 508 314T481 292T458 288Q439 288 427 299T415 328Q415 374 465 391Q454 404 425 404Q412 404 406 402Q368 386 350 336Q290 115 290 78Q290 50 306 38T341 26Q378 26 414 59T463 140Q466 150 469 151T485 153H489Q504 153 504 145Q504 144 502 134Q486 77 440 33T333 -11Q263 -11 227 52Q186 -10 133 -10H127Q78 -10 57 16T35 71Q35 103 54 123T99 143Q142 143 142 101Q142 81 130 66T107 46T94 41L91 40Q91 39 97 36T113 29T132 26Q168 26 194 71Q203 87 217 139T245 247T261 313Q266 340 266 352Q266 380 251 392T217 404Q177 404 142 372T93 290Q91 281 88 280T72 278H58Q52 284 52 289Z"></path></g></g></g></svg></span>에 대해 <b class="k-blue">두 subtree의 높이 차 ≤ 1</b>, 그리고 두 subtree도 재귀적으로 height-balanced → <b class="k-blue">AVL tree 조건</b>.</p></div>
 <h3>Height 규약</h3>
 <ul>
@@ -216,7 +216,7 @@
 <text x="410" y="90">3. A가 B의 오른쪽 자식이 됨</text>
 </g>
 </svg>
-<div class="figcap">Right Rotation(LL): B_R만 주인이 바뀌고, inorder 순서는 B_L B B_R A A_R로 불변</div>
+<div class="figcap">Right Rotation(LL): B_R만 주인이 바뀌고, inorder 순서는 B_L B B_R A A_R로 불변 (회전 전·후 동일 - B_R만 A의 왼쪽 subtree로 이동)</div>
 </div>
 <h3>핵심 조작</h3>
 <ul>
