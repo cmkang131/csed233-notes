@@ -179,12 +179,10 @@
 <div class="qa">
   <div class="qa-q"><span class="qa-badge">Q1</span>루프 안의 if가 일부 iteration에서만 실행될 때 점근 분석은 어떻게 하나?</div>
   <details class="qa-hint"><summary>힌트</summary>
-    <div class="qa-panel"><p>점근 분석의 기본 기준은 worst case다.</p></div></details>
+    <div class="qa-panel"><p>Worst-case 분석에서는 입력 크기 n에 대해 실제로 가능한 최대 실행 비용을 고려한다. 조건문이 실행되는 횟수는 조건의 구조와 입력에 의해 결정된다.</p></div></details>
   <details class="qa-ans"><summary>정답</summary>
     <div class="qa-panel">
-      <p class="qa-note">개념은 힌트 참고.</p>
-      <p>if가 일부 반복에서만 실행돼도, <strong class="k-blue">worst case 기준</strong>으로는 매 반복 실행되는 입력을 기준으로 분석한다 (실현 가능한 최악의 실행 경로의 비용).</p>
-      <div class="qa-final">정답: Worst-case 분석에서는 크기 n인 입력 중 실제로 가능한 최대 실행 비용을 구한다. if문의 본문이 매 반복 실행될 수 있다면 그 경우를 사용할 수 있지만, 조건의 구조상 불가능하면 실제로 실행 가능한 최대 횟수를 계산해야 한다. 따라서 조건문을 매번 실행한다고 가정하는 방법은 상한을 구하는 데 사용할 수 있으나, 항상 타이트한 worst-case 복잡도를 주지는 않는다.</div>
+      <div class="qa-final">정답: 루프 안의 if문이 일부 반복에서만 실행된다면, 먼저 크기 n인 입력에서 if문 본문이 최대 몇 번 실행될 수 있는지 판단해야 한다. if문 본문이 모든 반복에서 실행 가능한 경우에는 그 경로를 worst case 분석에 사용할 수 있다. 반대로 조건의 구조상 매번 실행될 수 없다면, 실제 가능한 최대 실행 횟수를 기준으로 비용을 합산해야 한다. if문 본문이 매 반복 실행된다고 가정하는 것은 상한을 구하는 방법으로 사용할 수 있지만, 반드시 타이트한 worst-case 복잡도를 주는 것은 아니다.</div>
     </div></details>
 </div></section>
 <section class="part"><h2>7. Amortized(분할 상환) Analysis (분할 상환)</h2>
