@@ -240,9 +240,9 @@ for (i = 0; i &lt; 1000; i++) if (id[i] == target) return score[i];
 
 // B. BST
 if (node == nullptr) return NOT_FOUND;
-if (target == node.key) return node.score;
-if (target &lt; node.key) return search(node.left);
-else return search(node.right);
+if (target == node-&gt;key) return node-&gt;score;
+if (target &lt; node-&gt;key) return search(node-&gt;left);
+else return search(node-&gt;right);
 
 // C. 해시 테이블
 return hashTable[hash(target)];</code></pre>
