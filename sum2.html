@@ -61,7 +61,7 @@ struct Node {
 <tr><td>C</td><td>절차지향, 메모리 직접 관리, 함수 중심</td><td>빠르지만 위험하다</td></tr>
 <tr><td>C++</td><td>객체지향·템플릿 등 추상화 + 저수준 메모리 접근</td><td>주소·할당·해제를 직접 관찰·제어할 수 있다</td></tr>
 <tr><td>Python</td><td>주소 연산과 수동 메모리 관리를 추상화해 감춘다</td><td>메모리 레벨의 원리를 직접 다루기 어렵다</td></tr>
-<tr><td>Java</td><td>Garbage Collection으로 할당/해제가 자동화되어 있다</td><td>동작 원리와 성능 분석이 어렵다</td></tr>
+<tr><td>Java</td><td>객체 생성은 new로 명시적으로 요청하고, Garbage Collection이 자동화하는 것은 도달 불가능한 객체의 메모리 회수이다</td><td>동작 원리와 성능 분석이 어렵다</td></tr>
 </table>
 
 <h3>1.2 C++이 필수인 3가지 이유</h3>
@@ -201,7 +201,7 @@ LinkedList.cpp ──[컴파일]──&gt; LinkedList.o ├──[링킹]──&
 <tr><td></td><td>Stack</td><td>Heap</td></tr>
 <tr><td><b class="k-blue">속도</b></td><td>빠름</td><td>느림</td></tr>
 <tr><td><b class="k-blue">크기</b></td><td>작음 (한정)</td><td>큼</td></tr>
-<tr><td><b class="k-blue">해제</b></td><td>자동</td><td>new로 직접 할당한 메모리는 delete/delete[]로 해제하되, std::vector·스마트 포인터·RAII로 자동화할 수 있다</td></tr>
+<tr><td><b class="k-blue">해제</b></td><td>자동 (속한 블록 종료 시 소멸)</td><td>new로 직접 할당한 메모리는 delete/delete[]로 해제하되, std::vector·스마트 포인터·RAII로 자동화할 수 있다</td></tr>
 <tr><td><b class="k-blue">위험</b></td><td>자동 해제 (단, 수명 후 접근·댕글링 포인터 가능)</td><td>누수·이중 해제·댕글링 위험</td></tr>
 <tr><td><b class="k-blue">용도</b></td><td>지역 변수</td><td>동적 배열 등 동적 자료구조에 자주 쓰임 (모든 자료구조에 필수는 아님)</td></tr>
 </table>

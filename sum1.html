@@ -47,10 +47,10 @@
   <p>같은 "정렬" 작업도 자료구조에 따라 선택지가 달라진다.</p>
   <ul>
   <li><strong class="k-blue">배열(Array)</strong>: Bubble, Selection, Insertion, Merge, Quick, Heap — 6가지 이상 선택 가능.</li>
-  <li><strong class="k-blue">연결 리스트(Linked List)</strong>: Merge, Insertion만 효율적. Quick Sort도 구현할 수 있지만 Random Access가 O(n)이라 배열용 구현 그대로는 비효율적이다. 연결 리스트에는 Merge Sort가 적합하다 (최악 O(n log n) 보장).</li>
+  <li><strong class="k-blue">연결 리스트(Linked List)</strong>: 임의 위치의 노드를 찾으려면 O(n) 순회가 필요해, 배열의 인덱스 기반 Quick Sort 구현을 그대로 적용하면 비효율적이다. Merge Sort가 대표적으로 적합하며 최악 O(n log n)을 보장한다. Insertion Sort도 구현할 수 있지만 일반적으로 평균·최악 O(n²)이다.</li>
   <li><strong class="k-blue">Binary Search Tree(이진 탐색 트리)</strong>: In-order Traversal(중위 순회)은 키를 오름차순으로 방문하는 것이지 트리를 정렬하는 연산은 아니다 (O(n)).</li>
   </ul>
-  <p>→ 올바른 자료구조 선택이 곧 올바른 알고리즘 선택이다.</p>
+  <p>→ 자료구조 선택은 알고리즘의 구현 방식과 효율에 영향을 주지만, 사용할 수 있는 알고리즘을 하나로 결정하지는 않는다.</p>
 </div>
 </section>
 
@@ -163,7 +163,7 @@
     <text x="95" y="51">1</text><text x="55" y="97">2</text><text x="135" y="97">3</text>
     <text x="30" y="143">4</text><text x="80" y="143">5</text><text x="110" y="143">6</text><text x="160" y="143">7</text>
   </g>
-  <text x="10" y="172" font-size="11.5" fill="#6b7280">부모-자식 관계 · 순회 방식 다양 · 정렬 용도</text>
+  <text x="10" y="172" font-size="11.5" fill="#6b7280">부모-자식 관계 · 순회 방식 다양 · BST는 inorder로 오름차순 방문 가능</text>
   <!-- 그래프 -->
   <text x="250" y="18" font-size="13.5" font-weight="700" fill="#1f2328">그래프(Graph) — 복잡한 관계</text>
   <g stroke="#1f2328" fill="#fff">
@@ -188,7 +188,7 @@
   <rect x="572" y="34" width="80" height="26" rx="6" fill="#fff" stroke="#1f2328"/>
   <text x="612" y="51" text-anchor="middle" font-size="12" fill="#1f2328">학생 정보</text>
   <text x="470" y="86" font-size="11.5" fill="#6b7280">Hash Function으로 Key → 인덱스 변환</text>
-  <text x="470" y="104" font-size="11.5" fill="#6b7280">평균 O(1) 검색 · 순서는 없음</text>
+  <text x="470" y="104" font-size="11.5" fill="#6b7280">평균 O(1) 검색 · 키의 정렬 순서는 보장하지 않음</text>
 </svg>
 <div class="figcap">비선형 자료구조 3종</div>
 </div>
@@ -239,10 +239,13 @@
 for (i = 0; i &lt; 1000; i++) if (id[i] == target) return score[i];
 
 // B. BST
+if (node == nullptr) return NOT_FOUND;
+if (target == node.key) return node.score;
 if (target &lt; node.key) search(node.left); else search(node.right);
 
 // C. 해시 테이블
 return hashTable[hash(target)];</code></pre>
+<p class="fn">해시 테이블의 약 1회 접근은 충돌이 없는 이상적 모델 기준이다. 실제로는 충돌 처리와 해시 계산 비용이 있을 수 있지만, 적절한 가정 아래 평균 O(1)이다.</p>
 
 <p>같은 문제인데 <strong class="k-red">500회 vs 10회 vs 1회</strong> — 자료구조만으로 50배 이상 차이가 난다.</p>
 </section>
@@ -283,6 +286,7 @@ return hashTable[hash(target)];</code></pre>
 <tr><td>Heap</td><td>O(n)</td><td>O(log n)</td><td>O(log n) (루트 삭제 기준)</td><td>△ (부모-자식 부분 순서만)</td><td>우선순위 큐, Sort</td></tr>
 </table>
 <p class="fn">BST의 '평균'은 랜덤 삽입 순서의 기대값; 편향되면 최악 O(n). AVL Tree 등 균형 BST는 검색·삽입·삭제 O(log n) 보장.</p>
+<p class="fn">배열 모델 구분: 정적 배열은 크기가 고정되어 남는 용량이 있을 때만 끝 삽입이 O(1)이고 가득 차면 확장할 수 없다. 동적 배열은 용량이 부족하면 재할당·복사로 확장하며, 끝 삽입은 분할상환 O(1)이다 (재할당 회차에는 최악 O(n)).</p>
 
 <h3>5.2 n = 100만일 때 체감</h3>
 <table>
@@ -359,11 +363,11 @@ return hashTable[hash(target)];</code></pre>
     <div class="qa-panel">
       <p class="qa-note">개념은 힌트 참고.</p>
       <ol class="steps">
-        <li>배열: target이 어디 있는지 알 수 없어 평균 n/2회 비교 → O(n).</li>
-        <li>BST: 루트와 비교해 좌/우 하나를 버리는 것을 반복 → O(log n).</li>
+        <li>배열: 정렬되어 있지 않고 인덱스도 모르는 배열에서는 target이 어디 있는지 알 수 없어 평균 n/2회 비교 → O(n). 정렬된 배열이면 이진 탐색 O(log n), 인덱스를 알면 O(1)이다.</li>
+        <li>BST: 균형 BST에서는 루트와 비교해 좌/우 하나를 버리는 것을 반복 → O(log n). 일반 BST는 최악 O(n)이다.</li>
         <li>같은 데이터인데 구조가 다르면 쓸 수 있는 탐색 절차가 달라진다.</li>
       </ol>
-      <div class="qa-final">정답: 자료구조가 연산 방식을 결정하기 때문 — 배열은 선형 탐색 O(n), BST는 이진 탐색 O(log n)이 가능하다.</div>
+      <div class="qa-final">정답: 자료구조가 연산 방식을 결정하기 때문 — 정렬·인덱싱되지 않은 배열은 선형 탐색 O(n), 균형 BST는 이진 탐색 O(log n)이 가능하다.</div>
     </div></details>
 </div>
 
@@ -371,17 +375,17 @@ return hashTable[hash(target)];</code></pre>
   <div class="qa-q"><span class="qa-badge">Q2</span>"자료구조 선택이 알고리즘을 결정한다"는 무슨 의미인가?</div>
   <details class="qa-hint"><summary>힌트</summary>
     <div class="qa-panel">
-      <p>섹션 1의 정렬 예시를 떠올려 보자. 배열에서는 6가지 정렬이 가능하지만 연결 리스트에서는 QuickSort가 Random Access 부재로 비효율적이고, BST는 순회만으로 정렬된다.</p>
+      <p>섹션 1의 정렬 예시를 떠올려 보자. 배열에서는 6가지 정렬이 가능하지만 연결 리스트에서는 QuickSort가 Random Access 부재로 비효율적이고, BST에서는 inorder 순회로 키를 오름차순으로 읽을 수 있다.</p>
     </div></details>
   <details class="qa-ans"><summary>정답</summary>
     <div class="qa-panel">
       <p class="qa-note">개념은 힌트 참고.</p>
       <ol class="steps">
         <li>배열 → Random Access 가능 → Bubble/Quick/Merge 등 대부분의 정렬 사용 가능.</li>
-        <li>연결 리스트 → Random Access 불가 → Merge, Insertion만 효율적.</li>
-        <li>BST → In-order Traversal 자체가 정렬 → 별도 알고리즘 불필요.</li>
+        <li>연결 리스트 → 임의 위치 접근에 O(n) 순회가 필요해 배열식 Quick Sort는 비효율적이고, Merge Sort가 대표적으로 적합하다 (Insertion Sort는 평균·최악 O(n²)).</li>
+        <li>BST → 키 순서 조건이 유지된 상태라면 In-order Traversal로 키를 오름차순 출력할 수 있고 순회 자체는 O(n)이지만, 이는 정렬 연산이 아니라 이미 유지된 순서를 읽는 것이다. BST를 만드는 과정은 별도다 (임의 입력 삽입부터 세면 균형 BST O(n log n), 일반 BST 최악 O(n²)).</li>
       </ol>
-      <div class="qa-final">정답: 같은 문제라도 자료구조마다 필요한(가능한) 알고리즘이 다르다. 자료구조를 고르는 순간 알고리즘 후보가 정해진다는 뜻이다.</div>
+      <div class="qa-final">정답: 같은 문제라도 자료구조에 따라 효율적인 방식이 달라질 뿐, 하나의 알고리즘만 쓸 수 있는 것은 아니다. 자료구조를 고르면 효율적인 알고리즘 후보가 좁혀진다는 뜻이다.</div>
     </div></details>
 </div>
 
