@@ -392,7 +392,7 @@ METHOD pop(heap) {
 
 <details class="tg"><summary>Sort — Merge / Quick / Quick(in-place)</summary>
 <div class="box code"><pre><code>Merge-sort(L, n):
-    if n == 1: return L                    // 기저 조건
+    if n <= 1: return L                    // 기저 조건
     L1 = L의 앞 절반, L2 = L의 뒤 절반        // 분할
     return merge(Merge-sort(L1, length(L1)), Merge-sort(L2, length(L2)))  // n이 홀수면 두 부분 길이가 다름</code></pre></div>
 <div class="box code"><pre><code>Quicksort(A):
