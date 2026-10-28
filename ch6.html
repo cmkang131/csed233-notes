@@ -44,11 +44,11 @@
 <pre>BFS(root):
     if root == null: return
     queue.enqueue(root)
-while queue not empty:
-    cur = queue.dequeue()
-    visit(cur)
-    for each child of cur:
-        queue.enqueue(child)</pre>
+    while queue not empty:
+        cur = queue.dequeue()
+        visit(cur)
+        for each child of cur:
+            queue.enqueue(child)</pre>
 <p>빈 트리에서는 아무 노드도 방문하지 않는다. 비어 있지 않은 트리에서는 루트를 먼저 큐에 넣고, 노드를 꺼낼 때마다 방문한 후 자식들을 정해진 순서대로 큐에 넣는다. 큐의 FIFO 특성 때문에 낮은 level부터 차례로 방문한다.</p>
 <ul>
 <li><b class="hl">핵심 차이</b>: Stack → LIFO → 깊이 방향 / Queue → FIFO → 너비 방향
@@ -64,10 +64,10 @@ while queue not empty:
 </ul>
 <h3>결론</h3>
 <ul>
-<li><b class="k-blue">전제</b>: 모든 노드의 값이 서로 다를 때 (중복 값이면 root 위치를 유일하게 못 정함)</li>
+<li><b class="k-blue">전제</b>: 순회 결과로부터 이진트리의 유일한 재구성을 보장하려면 일반적으로 모든 노드의 값이 서로 다르다고 가정한다. 중복 값이 있으면 inorder에서 루트 값에 해당하는 위치가 여러 개일 수 있으므로 재구성의 유일성이 보장되지 않는다. 다만 중복 값이 존재하더라도 순회 결과에 따라 트리가 유일하게 결정되는 경우는 있다.</li>
 <li><b class="k-red">단일 순회 불가</b>: preorder 하나, inorder 하나, postorder 하나만으론 tree 고유 식별 불가
 </li>
-<li><b class="k-blue">2개 순회 필요</b> (단, inorder 반드시 포함):
+<li>추가적인 구조 제약이 없고 모든 노드 값이 서로 다른 일반 이진트리에서는 preorder + inorder, postorder + inorder, level-order + inorder의 조합으로 트리를 유일하게 재구성할 수 있다. Preorder + postorder만으로는 일반적으로 유일 재구성이 불가능하다. 단, full binary tree와 BST처럼 추가 조건이 주어진 경우에는 다른 순회 조합이나 단일 순회만으로도 재구성이 가능하다.
 <ul>
 <li><b class="k-blue">✓</b> (preorder + inorder)
 </li>
@@ -374,7 +374,7 @@ while queue not empty:
 <ul>
 <li>DFS = stack, BFS = queue, 둘 다 <span class="mjx"><svg focusable="false" aria-hidden="true" style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="4.844ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 2141 1000"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D442" d="M740 435Q740 320 676 213T511 42T304 -22Q207 -22 138 35T51 201Q50 209 50 244Q50 346 98 438T227 601Q351 704 476 704Q514 704 524 703Q621 689 680 617T740 435ZM637 476Q637 565 591 615T476 665Q396 665 322 605Q242 542 200 428T157 216Q157 126 200 73T314 19Q404 19 485 98T608 313Q637 408 637 476Z"></path></g><g data-mml-node="mo" transform="translate(763,0)"><path data-c="28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path></g><g data-mml-node="mi" transform="translate(1152,0)"><path data-c="1D45B" d="M21 287Q22 293 24 303T36 341T56 388T89 425T135 442Q171 442 195 424T225 390T231 369Q231 367 232 367L243 378Q304 442 382 442Q436 442 469 415T503 336T465 179T427 52Q427 26 444 26Q450 26 453 27Q482 32 505 65T540 145Q542 153 560 153Q580 153 580 145Q580 144 576 130Q568 101 554 73T508 17T439 -10Q392 -10 371 17T350 73Q350 92 386 193T423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 180T152 343Q153 348 153 366Q153 405 129 405Q91 405 66 305Q60 285 60 284Q58 278 41 278H27Q21 284 21 287Z"></path></g><g data-mml-node="mo" transform="translate(1752,0)"><path data-c="29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path></g></g></g></svg></span>
 </li>
-<li>재구성: inorder + (pre/post/level) 중 하나 필요
+<li>재구성: 노드 값이 모두 다른 일반 이진트리는 inorder + (preorder/postorder/level-order)로 유일 재구성 가능. 예외적으로 full binary tree는 preorder + postorder, BST는 preorder 또는 postorder 하나만으로도 유일 재구성 가능.
 </li>
 <li>General tree 구현 3가지: Parent / List-of-Children / LC-RS
 </li>
