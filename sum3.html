@@ -33,15 +33,15 @@
 <li><strong class="k-blue">입력(Input)</strong>이 명확한가 — 배열, 정수, 문자열 등.</li>
 <li><strong class="k-blue">출력(Output)</strong>이 명확한가 — 정렬된 배열, 최댓값, true/false 등.</li>
 <li><strong class="k-blue">명확성(Definiteness)</strong> — "비슷한 것"이 아니라 "정확히 이것".</li>
-<li><strong class="k-blue">유한성(Finiteness)</strong> — 무한 루프 없음. <code>while(true)</code> ✗, <code>while(n--)</code> ✓.</li>
-<li><strong class="k-blue">효율성(Effectiveness)</strong> — 컴퓨터로 실제 실행 가능한 단계.</li>
+<li><strong class="k-blue">유한성(Finiteness)</strong> — 허용되는 모든 입력에 대해 알고리즘이 유한한 횟수의 단계를 실행하고 반드시 종료해야 한다. 반복문의 존재 자체가 문제가 아니라 종료 조건과 그 조건에 도달한다는 보장이 중요하다. 정상 종료 예: <code>for (int i = 0; i &lt; n; ++i)</code>는 정상적인 조건에서 유한하게 종료한다. <code>while (true) { break; }</code>도 한 번 실행 후 종료한다. 종료하지 않는 예: <code>while (true) { }</code>는 종료 조건이 없어 유한성을 만족하지 않는다.</li>
+<li><strong class="k-blue">실행 가능성(Effectiveness, 유효성)</strong> — 알고리즘의 각 연산은 명확하게 정의되어야 하며, 유한한 시간 안에 정확하게 수행할 수 있어야 한다. 실행 가능성은 연산 횟수나 메모리 사용량을 줄이는 효율성(Efficiency)과 구별된다.</li>
 </ol>
 
 <h3>1.2 성능은 두 축으로 측정한다</h3>
 <ul>
 <li><strong class="k-blue">Time complexity(시간복잡도)</strong> <span class="mjx"><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="4.71ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 2082 1000"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D447" d="M40 437Q21 437 21 445Q21 450 37 501T71 602L88 651Q93 669 101 677H569H659Q691 677 697 676T704 667Q704 661 687 553T668 444Q668 437 649 437Q640 437 637 437T631 442L629 445Q629 451 635 490T641 551Q641 586 628 604T573 629Q568 630 515 631Q469 631 457 630T439 622Q438 621 368 343T298 60Q298 48 386 46Q418 46 427 45T436 36Q436 31 433 22Q429 4 424 1L422 0Q419 0 415 0Q410 0 363 1T228 2Q99 2 64 0H49Q43 6 43 9T45 27Q49 40 55 46H83H94Q174 46 189 55Q190 56 191 56Q196 59 201 76T241 233Q258 301 269 344Q339 619 339 625Q339 630 310 630H279Q212 630 191 624Q146 614 121 583T67 467Q60 445 57 441T43 437H40Z"></path></g><g data-mml-node="mo" transform="translate(704,0)"><path data-c="28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path></g><g data-mml-node="mi" transform="translate(1093,0)"><path data-c="1D45B" d="M21 287Q22 293 24 303T36 341T56 388T89 425T135 442Q171 442 195 424T225 390T231 369Q231 367 232 367L243 378Q304 442 382 442Q436 442 469 415T503 336T465 179T427 52Q427 26 444 26Q450 26 453 27Q482 32 505 65T540 145Q542 153 560 153Q580 153 580 145Q580 144 576 130Q568 101 554 73T508 17T439 -10Q392 -10 371 17T350 73Q350 92 386 193T423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 180T152 343Q153 348 153 366Q153 405 129 405Q91 405 66 305Q60 285 60 284Q58 278 41 278H27Q21 284 21 287Z"></path></g><g data-mml-node="mo" transform="translate(1693,0)"><path data-c="29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path></g></g></g></svg></span>: 입력 크기 n에 따라 몇 번의 연산? 예: 선형 탐색은 n번 비교 → <span class="mjx"><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="4.844ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 2141 1000"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D442" d="M740 435Q740 320 676 213T511 42T304 -22Q207 -22 138 35T51 201Q50 209 50 244Q50 346 98 438T227 601Q351 704 476 704Q514 704 524 703Q621 689 680 617T740 435ZM637 476Q637 565 591 615T476 665Q396 665 322 605Q242 542 200 428T157 216Q157 126 200 73T314 19Q404 19 485 98T608 313Q637 408 637 476Z"></path></g><g data-mml-node="mo" transform="translate(763,0)"><path data-c="28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path></g><g data-mml-node="mi" transform="translate(1152,0)"><path data-c="1D45B" d="M21 287Q22 293 24 303T36 341T56 388T89 425T135 442Q171 442 195 424T225 390T231 369Q231 367 232 367L243 378Q304 442 382 442Q436 442 469 415T503 336T465 179T427 52Q427 26 444 26Q450 26 453 27Q482 32 505 65T540 145Q542 153 560 153Q580 153 580 145Q580 144 576 130Q568 101 554 73T508 17T439 -10Q392 -10 371 17T350 73Q350 92 386 193T423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 180T152 343Q153 348 153 366Q153 405 129 405Q91 405 66 305Q60 285 60 284Q58 278 41 278H27Q21 284 21 287Z"></path></g><g data-mml-node="mo" transform="translate(1752,0)"><path data-c="29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path></g></g></g></svg></span>.</li>
 <li><strong class="k-blue">Space complexity(공간복잡도)</strong> <span class="mjx"><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="4.577ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 2023 1000"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D446" d="M308 24Q367 24 416 76T466 197Q466 260 414 284Q308 311 278 321T236 341Q176 383 176 462Q176 523 208 573T273 648Q302 673 343 688T407 704H418H425Q521 704 564 640Q565 640 577 653T603 682T623 704Q624 704 627 704T632 705Q645 705 645 698T617 577T585 459T569 456Q549 456 549 465Q549 471 550 475Q550 478 551 494T553 520Q553 554 544 579T526 616T501 641Q465 662 419 662Q362 662 313 616T263 510Q263 480 278 458T319 427Q323 425 389 408T456 390Q490 379 522 342T554 242Q554 216 546 186Q541 164 528 137T492 78T426 18T332 -20Q320 -22 298 -22Q199 -22 144 33L134 44L106 13Q83 -14 78 -18T65 -22Q52 -22 52 -14Q52 -11 110 221Q112 227 130 227H143Q149 221 149 216Q149 214 148 207T144 186T142 153Q144 114 160 87T203 47T255 29T308 24Z"></path></g><g data-mml-node="mo" transform="translate(645,0)"><path data-c="28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path></g><g data-mml-node="mi" transform="translate(1034,0)"><path data-c="1D45B" d="M21 287Q22 293 24 303T36 341T56 388T89 425T135 442Q171 442 195 424T225 390T231 369Q231 367 232 367L243 378Q304 442 382 442Q436 442 469 415T503 336T465 179T427 52Q427 26 444 26Q450 26 453 27Q482 32 505 65T540 145Q542 153 560 153Q580 153 580 145Q580 144 576 130Q568 101 554 73T508 17T439 -10Q392 -10 371 17T350 73Q350 92 386 193T423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 180T152 343Q153 348 153 366Q153 405 129 405Q91 405 66 305Q60 285 60 284Q58 278 41 278H27Q21 284 21 287Z"></path></g><g data-mml-node="mo" transform="translate(1634,0)"><path data-c="29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path></g></g></g></svg></span>: 입력 크기 n에 따라 얼마의 메모리? 예: 32비트 정수 배열은 4n bytes → <span class="mjx"><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="4.844ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 2141 1000"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D442" d="M740 435Q740 320 676 213T511 42T304 -22Q207 -22 138 35T51 201Q50 209 50 244Q50 346 98 438T227 601Q351 704 476 704Q514 704 524 703Q621 689 680 617T740 435ZM637 476Q637 565 591 615T476 665Q396 665 322 605Q242 542 200 428T157 216Q157 126 200 73T314 19Q404 19 485 98T608 313Q637 408 637 476Z"></path></g><g data-mml-node="mo" transform="translate(763,0)"><path data-c="28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path></g><g data-mml-node="mi" transform="translate(1152,0)"><path data-c="1D45B" d="M21 287Q22 293 24 303T36 341T56 388T89 425T135 442Q171 442 195 424T225 390T231 369Q231 367 232 367L243 378Q304 442 382 442Q436 442 469 415T503 336T465 179T427 52Q427 26 444 26Q450 26 453 27Q482 32 505 65T540 145Q542 153 560 153Q580 153 580 145Q580 144 576 130Q568 101 554 73T508 17T439 -10Q392 -10 371 17T350 73Q350 92 386 193T423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 180T152 343Q153 348 153 366Q153 405 129 405Q91 405 66 305Q60 285 60 284Q58 278 41 278H27Q21 284 21 287Z"></path></g><g data-mml-node="mo" transform="translate(1752,0)"><path data-c="29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path></g></g></g></svg></span>.</li>
-<li>실무 우선순위: ① 시간(사용자가 기다린다) ② 공간(메모리가 충분하면 덜 중요).</li>
+<li>실무에서 시간복잡도와 공간복잡도의 우선순위는 문제의 제약에 따라 달라진다. 응답 지연이 중요한 서비스에서는 실행 시간이 우선될 수 있고, 메모리 제한이 엄격한 임베디드 시스템이나 대용량 데이터 처리에서는 공간 사용량이 우선될 수 있다. 알고리즘 선택 시 입력 크기, 시간 제한, 메모리 제한을 함께 고려해야 한다.</li>
 </ul>
 </section>
 
@@ -51,14 +51,17 @@
 <tr><td></td><td><b class="k-blue">Empirical(경험적 분석)</b></td><td><b class="k-blue">Theoretical(이론적 분석)</b></td></tr>
 <tr><td>방법</td><td>실제로 구현 → 실행 → 시간 측정</td><td>고수준 설계를 수학적으로 계산</td></tr>
 <tr><td>장점</td><td>실제 성능 데이터 · 환경(CPU/OS) 반영 · 직관적</td><td>환경 독립 · 일반적 예측 · 큰 n도 계산 가능</td></tr>
-<tr><td>단점</td><td>구현 비용 · 환경 따라 결과 변동 · 큰 n 측정 곤란</td><td>실제와 괴리 가능 · 상수 인자 무시</td></tr>
+<tr><td>단점</td><td>구현 비용 · 환경 따라 결과 변동 · 큰 n 측정 곤란</td><td>계산 모델과 실제 시스템의 차이로 실측과 괴리 가능. 이론적 분석은 T(n)=2n+3처럼 상수항·계수를 포함할 수 있으며, 상수 인자와 낮은 차수 항을 무시하는 것은 점근 표기법으로 성장률을 표현할 때의 특징이다</td></tr>
 </table>
 <pre><code>// 경험적 분석의 예: 직접 재 본다
-#include &lt;ctime&gt;
-clock_t start = clock();
-linearSearch(arr, target);
-clock_t end = clock();
-cout &lt;&lt; "시간: " &lt;&lt; (end - start) &lt;&lt; " ms";</code></pre>
+#include &lt;chrono&gt;
+#include &lt;iostream&gt;
+auto start = std::chrono::steady_clock::now();
+auto result = linearSearch(arr, target);
+auto end = std::chrono::steady_clock::now();
+double elapsed_ms = std::chrono::duration&lt;double, std::milli&gt;(end - start).count();
+std::cout &lt;&lt; "경과 시간: " &lt;&lt; elapsed_ms &lt;&lt; " ms\n";
+// clock()을 쓰려면 CPU 시간(ms) = 1000.0 * (end - start) / CLOCKS_PER_SEC 로 환산한다.</code></pre>
 </section>
 
 <section class="part">
@@ -101,7 +104,7 @@ cout &lt;&lt; "시간: " &lt;&lt; (end - start) &lt;&lt; " ms";</code></pre>
   <line x1="56" y1="258" x2="590" y2="258" stroke="#6b7280" stroke-width="2" stroke-dasharray="5 4"/>
   <text x="66" y="252" font-size="12.5" font-weight="700" fill="#6b7280">O(1)</text>
 </svg>
-<div class="figcap">같은 n에서 위에 있을수록 느리다. 실무 표준은 O(n log n) 이하.</div>
+<div class="figcap">성장률 그래프는 상수 인자 등을 단순화한 대표 복잡도 함수들의 증가 추세를 비교한다. 입력 크기가 충분히 커질 때 일반적으로 O(1), O(log n), O(n), O(n log n), O(n²), O(2ⁿ) 순으로 대표 함수의 성장 속도가 커진다. 단, Big-O는 상한을 나타내는 표기법이며 같은 n에서 실제 실행 시간의 순위를 보장하지 않는다. 상수 인자와 구현 비용이 다르면 작은 입력에서는 순위가 바뀔 수 있다. 대규모 입력에서는 성장률이 낮은 알고리즘이 일반적으로 유리하지만, 모든 문제에 O(n log n) 이하를 요구하는 것은 아니다.</div>
 </div>
 
 <h3>3.2 n = 1,000일 때 연산 횟수</h3>
@@ -149,12 +152,12 @@ cout &lt;&lt; "시간: " &lt;&lt; (end - start) &lt;&lt; " ms";</code></pre>
 
 <section class="part">
 <h2>5. 최악 / 평균 / 최선</h2>
-<p>배열 [3, 1, 4, 1, 5, 9, 2, 6]에서 선형 탐색을 예로 들면:</p>
+<p>배열 [3, 1, 4, 8, 5, 9, 2, 6]에서 선형 탐색을 예로 들면:</p>
 <table>
 <tr><td>경우</td><td>의미</td><td>선형 탐색 예</td><td>중요도</td></tr>
 <tr><td><b class="k-red">Worst(최악)</b></td><td>가장 오래 걸리는 입력</td><td>6 검색(끝에 있음) 또는 7(없음) → 8회 → O(n)</td><td><b class="k-red">가장 중요</b> — 성능 보장의 기준</td></tr>
-<tr><td><b class="k-blue">Average(평균)</b></td><td>모든 입력의 평균 (대상이 반드시 존재·각 위치 동일 확률 가정)</td><td>(1+2+…+8)/8 = 4.5회 → O(n) (실패 포함 시 입력 분포에 따라 달라짐)</td><td>현실적인 지표</td></tr>
-<tr><td>Best(최선)</td><td>가장 빨리 끝나는 입력</td><td>3 검색 → 첫 원소에서 즉시 발견 → O(1)</td><td>거의 안 일어남, 지표 아님</td></tr>
+<tr><td><b class="k-blue">Average(평균)</b></td><td>모든 입력의 평균 (찾는 대상이 반드시 존재하고, 8개 원소 각각이 동일한 확률로 검색 대상이 된다고 가정)</td><td>(1+2+…+8)/8 = 4.5회 → O(n). 일반 n에서는 (n+1)/2 = Θ(n) (실패 포함 시 입력 분포에 따라 달라짐)</td><td>현실적인 지표</td></tr>
+<tr><td>Best(최선)</td><td>가장 빨리 끝나는 입력</td><td>3 검색 → 첫 원소에서 즉시 발견 → O(1)</td><td>최선 사례가 발생할 가능성은 실제 입력 분포에 달려 있다. 최선 분석은 알고리즘의 잠재적 효율성을 보여주지만 이것만으로 전체 입력에 대한 성능을 보장할 수는 없다</td></tr>
 </table>
 
 <div class="box tipbox">
@@ -162,7 +165,7 @@ cout &lt;&lt; "시간: " &lt;&lt; (end - start) &lt;&lt; " ms";</code></pre>
   <ul>
   <li><strong class="k-red">최악이 중요</strong> — 실시간 시스템(의료, 항공), 금융 거래 → Merge Sort O(n log n) 보장.</li>
   <li><strong class="k-blue">평균이 중요</strong> — 일반 데이터 처리, 온라인 게임 → Quick Sort 평균 O(n log n).</li>
-  <li><strong class="k-blue">최선이 중요</strong> — 거의 정렬된 데이터 → Insertion Sort (역전 쌍이 적을 때 효율적; 최선 O(n)).</li>
+  <li><strong class="k-blue">최선이 중요</strong> — 거의 정렬된 데이터 → Insertion Sort: 이미 정렬된 배열에서 최선 Θ(n), 역전 쌍의 개수가 I인 배열에서는 O(n+I)이라 역전 쌍이 적은 입력에서 특히 유리하다. 이는 최선 사례만 분석하는 것이 아니라 입력의 정렬 상태에 따른 적응적 성능을 활용하는 것이다.</li>
   </ul>
 </div>
 </section>
@@ -183,6 +186,7 @@ cout &lt;&lt; "시간: " &lt;&lt; (end - start) &lt;&lt; " ms";</code></pre>
         <li>비율: 10¹² / 10⁶ = 10⁶.</li>
       </ol>
       <div class="qa-final">정답: 100만 회 vs 1조 회 — <span class="hl">100만 배 차이</span>.</div>
+      <p class="qa-note">주의: 이는 함수 n과 n²를 직접 비교한 결과다. 실제 알고리즘의 연산 횟수나 실행 시간이 반드시 100만 배 차이 난다는 뜻은 아니다. O(n), O(n²)는 점근적 상한을 나타내므로 정확한 연산 횟수는 별도로 분석해야 한다.</p>
     </div></details>
 </div>
 
@@ -199,6 +203,7 @@ cout &lt;&lt; "시간: " &lt;&lt; (end - start) &lt;&lt; " ms";</code></pre>
         <li>O(n²) = 1조 회와 비교하면 약 50,000배 빠름.</li>
       </ol>
       <div class="qa-final">정답: 입력 n에 대해 대략 n × log₂(n)번의 연산. n = 100만이면 약 2천만 회로, O(n²)보다 약 5만 배 빠르다.</div>
+      <p class="qa-note">이는 점근적 성장률을 이해하기 위한 대표 함수 비교이며, 실제 실행 시간이 5만 배 차이 난다는 보장은 아니다.</p>
     </div></details>
 </div>
 
@@ -226,11 +231,12 @@ cout &lt;&lt; "시간: " &lt;&lt; (end - start) &lt;&lt; " ms";</code></pre>
     <div class="qa-panel">
       <p class="qa-note">개념은 힌트 참고.</p>
       <ol class="steps">
-        <li>Bubble Sort: n² = 1000² = 100만 회.</li>
-        <li>Merge Sort: n log₂ n ≈ 1000 × 10 = 1만 회.</li>
+        <li>Bubble Sort: 대표 성장률 함수 n² = 1000² = 100만.</li>
+        <li>Merge Sort: 대표 성장률 함수 n log₂ n ≈ 1000 × 10 = 약 1만.</li>
         <li>비율: 100만 / 1만 = 100배.</li>
       </ol>
-      <div class="qa-final">정답: 100만 회 vs 약 1만 회 — <span class="hl">100배 차이</span>.</div>
+      <div class="qa-final">정답: 대표 성장률 함수 값으로 100만 vs 약 1만 — <span class="hl">약 100배 차이</span>.</div>
+      <p class="qa-note">대표 성장률 함수의 값은 약 100배 차이가 난다. 실제 비교 횟수로 보면 표준 Bubble Sort의 최악 비교 횟수는 n(n−1)/2로 n=1000에서 499,500회이고, 일반적인 균형 분할 Merge Sort는 최악에 8,977회의 원소 비교를 할 수 있다. Big-O 성장률 비교 결과를 실제 연산 횟수나 실행 시간으로 곧바로 해석해서는 안 된다.</p>
     </div></details>
 </div>
 
@@ -243,7 +249,7 @@ cout &lt;&lt; "시간: " &lt;&lt; (end - start) &lt;&lt; " ms";</code></pre>
       <p class="qa-note">개념은 힌트 참고.</p>
       <ol class="steps">
         <li>경험적: 실제로 구현해 실행 시간을 측정 → 현실적이지만 환경(CPU/OS)에 따라 달라진다.</li>
-        <li>이론적: 수학적으로 연산 횟수를 계산 → 환경 독립적이고 일반화되지만 상수는 무시한다.</li>
+        <li>이론적: 수학적으로 연산 횟수를 계산 → 환경 독립적이고 일반화된다. 이론적 분석 자체가 상수를 반드시 무시하는 것은 아니며, 점근 분석과 구별해야 한다.</li>
       </ol>
       <div class="qa-final">정답: 경험적 = 구현 후 측정(환경 의존), 이론적 = 수학적 계산(환경 독립, 일반적).</div>
     </div></details>
