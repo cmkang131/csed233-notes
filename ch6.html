@@ -41,12 +41,15 @@
             stack.push(child)</pre>
 <p>DFS (iterative, left-to-right preorder): 스택은 마지막에 넣은 노드를 먼저 꺼내므로, 왼쪽 자식부터 방문하려면 현재 노드의 자식들을 오른쪽부터 왼쪽 순서로 스택에 넣어야 한다. 빈 트리에서는 아무 노드도 방문하지 않는다.</p>
 <p><strong class="k-blue">BFS (level-order)</strong></p>
-<pre>queue.enqueue(root)
+<pre>BFS(root):
+    if root == null: return
+    queue.enqueue(root)
 while queue not empty:
     cur = queue.dequeue()
     visit(cur)
     for each child of cur:
         queue.enqueue(child)</pre>
+<p>빈 트리에서는 아무 노드도 방문하지 않는다. 비어 있지 않은 트리에서는 루트를 먼저 큐에 넣고, 노드를 꺼낼 때마다 방문한 후 자식들을 정해진 순서대로 큐에 넣는다. 큐의 FIFO 특성 때문에 낮은 level부터 차례로 방문한다.</p>
 <ul>
 <li><b class="hl">핵심 차이</b>: Stack → LIFO → 깊이 방향 / Queue → FIFO → 너비 방향
 </li>
@@ -129,7 +132,7 @@ while queue not empty:
 </li>
 <li><b class="k-blue">일반 tree</b>: 자식 수 제한 없음, 순서 없을 수도 있음
 </li>
-<li>Binary tree와 달리 <b class="k-blue">자식 개수가 가변</b> → 구현 방식이 다양
+<li>Binary tree도 각 노드의 실제 자식 수는 0~2개로 가변적이다. 차이는 Binary tree가 왼쪽·오른쪽의 두 자식 위치를 구분하고 자식 수를 최대 2개로 제한한다는 점이다. 반면 k-ary tree는 노드당 최대 k개의 자식을 허용하며, 일반 트리는 특정한 고정 상한 k를 반드시 전제하지 않는다. 이처럼 일반 트리는 자식 관계를 표현하기 위해 Parent-Pointer, List-of-Children, LC/RS 등의 다양한 구현 방식을 사용할 수 있다.
 </li>
 </ul>
 <h3>대표 구현 3가지</h3>
