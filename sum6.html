@@ -70,7 +70,7 @@ void postorder(Node* n) { if (!n) return; postorder(n-&gt;left); postorder(n-&gt
 <tr><td>Preorder</td><td>Stack (재귀)</td><td>재귀</td><td>트리 복사·출력, 파일 시스템 브라우징</td></tr>
 <tr><td><b class="k-blue">Inorder</b></td><td>Stack (재귀)</td><td>재귀</td><td><b class="k-blue">BST에서 오름차순 정렬 출력</b> (가장 중요한 BST 성질)</td></tr>
 <tr><td>Postorder</td><td>Stack (재귀)</td><td>재귀</td><td>트리 삭제(자식 먼저 delete), 후위 표기(postfix)</td></tr>
-<tr><td>Level-order</td><td>Queue</td><td>반복</td><td>BFS 및 계층별 처리. 비가중 그래프 또는 모든 간선의 가중치가 같은 그래프에서 최소 간선 수 기준의 최단 경로를 찾는 데 사용한다.</td></tr>
+<tr><td>Level-order</td><td>Queue</td><td>반복</td><td>Level-order는 Queue를 사용하는 BFS 방식으로 구현하며, 트리의 계층별 처리에 사용한다. 비가중 그래프에서는 BFS로 최소 간선 수의 최단 경로를 찾을 수 있다. 모든 간선의 가중치가 동일한 양수인 가중 그래프에서도 최소 간선 수 경로가 최소 총 가중치 경로가 된다.</td></tr>
 </table>
 
 <pre><code>void levelorder(Node* root) {
@@ -101,15 +101,23 @@ void postorder(Node* n) { if (!n) return; postorder(n-&gt;left); postorder(n-&gt
 둘 다 Preorder = A B C → 단일 순회로는 구분 불가능</code></pre>
 </div>
 
-<p>순회 수열 조합으로 트리를 유일하게 재구성하기 위한 전제: 모든 노드가 서로 구별되는 고유한 값을 가지며, 별도의 트리 구조 정보는 주어지지 않는다. 노드 값이 중복되면 Inorder를 포함하더라도 동일한 순회 수열에 대응하는 서로 다른 트리가 존재할 수 있어 위 판정은 이 전제에서 성립한다.</p>
+<ul>
+<li><strong>전제:</strong> 아래 판정은 모든 노드의 값이 서로 다르고, 별도의 트리 구조 정보가 주어지지 않는 일반 이진 트리를 기준으로 한다.</li>
+<li><strong>단일 순회 수열의 한계:</strong> 하나의 순회 수열만으로는 일반적으로 원본 트리를 유일하게 재구성할 수 없다. 서로 다른 트리가 같은 Preorder 수열을 가질 수 있기 때문이다.</li>
+</ul>
+<p><strong>두 순회 수열의 조합:</strong></p>
 <table>
 <tr><td>조합</td><td>재구성 가능?</td></tr>
 <tr><td>Preorder + Inorder</td><td><b class="k-blue">✓ 가능</b></td></tr>
 <tr><td>Postorder + Inorder</td><td><b class="k-blue">✓ 가능</b></td></tr>
 <tr><td>Level-order + Inorder</td><td><b class="k-blue">✓ 가능</b></td></tr>
-<tr><td>Preorder + Postorder</td><td><b class="k-red">✗ 불가능</b> — 일반 이진 트리에서는 유일한 재구성이 불가능하다. 자식이 하나인 노드에서 그 자식이 왼쪽인지 오른쪽인지 구별할 수 없기 때문이다. 단, 모든 내부 노드가 정확히 두 자식을 갖는 Proper 이진 트리이고 노드 값이 서로 구별된다면 재구성할 수 있다.</td></tr>
+<tr><td>Preorder + Postorder</td><td><b class="k-red">✗ 불가능</b></td></tr>
 </table>
-<p>고유한 노드 값 외에 별도의 구조 정보가 없는 일반 이진 트리를 표준 순회 수열 두 개로 유일하게 재구성하려면 Inorder를 포함한 조합이 필요하다. 다만 BST 조건, 빈 자식 표시 등 추가 정보가 있으면 Inorder 없이도 재구성 가능한 경우가 있다.</p>
+<ul>
+<li>Preorder+Postorder는 일반적으로 불가능하다 — 자식이 하나인 노드에서 그 자식의 좌우 방향을 구별할 수 없기 때문이다.</li>
+<li><strong>Preorder+Postorder의 예외:</strong> 모든 내부 노드가 정확히 두 자식을 갖는 Proper 이진 트리에서는 노드 값이 고유하다면 Preorder와 Postorder만으로도 재구성할 수 있다.</li>
+<li><strong>전제의 한계와 추가 정보:</strong> 노드 값이 중복되면 Inorder를 포함하더라도 동일한 순회 수열에 대응하는 서로 다른 트리가 존재할 수 있다. 따라서 위 조합 판정의 유일성은 노드 값이 고유하다는 전제에서 성립한다. 다만 BST의 성질이나 빈 자식 표시와 같은 추가 구조 정보가 주어지면, Inorder 없이도 재구성할 수 있는 경우가 있다.</li>
+</ul>
 
 <div class="box example">
   <p class="xlead">예제 · Preorder + Inorder로 재구성</p>
@@ -154,8 +162,10 @@ void postorder(Node* n) { if (!n) return; postorder(n-&gt;left); postorder(n-&gt
 <tr><td>6</td><td>e</td><td>2</td><td>—</td></tr>
 </table>
 <ul>
-<li>두 트리를 결합할 때 모든 노드가 같은 인덱스 공간에 존재하고 노드 복사 또는 인덱스 재배치가 필요 없다면, 새 서브트리 루트의 부모 인덱스를 갱신하고 부모의 자식 리스트 끝에 해당 루트 인덱스를 삽입하면 된다. 부모의 자식 리스트에 tail 포인터가 있어 끝 삽입이 O(1)이라면 전체 연결 작업은 O(1)이다. 반대로 서로 독립된 배열을 합치면서 노드 복사나 인덱스 재매핑이 필요하면 전체 병합에는 O(n) 시간이 걸릴 수 있다.</li>
-<li>List-of-Children은 각 노드의 데이터를 배열에 한 번 저장하고, 별도의 자식 연결 리스트에는 자식 노드의 인덱스를 저장한다. 따라서 노드 데이터 자체가 중복되지는 않지만 자식 리스트 항목과 연결 포인터를 위한 추가 메모리가 필요하다. 노드 인덱스만 알고 있을 때 오른쪽 형제를 찾으려면 부모의 자식 리스트에서 해당 노드를 탐색해야 하므로 최악의 경우 O(deg(parent)) 시간이 걸린다. 단, 현재 자식 리스트 항목에 대한 직접 포인터가 있다면 다음 형제 항목에는 O(1)에 접근할 수 있다.</li>
+<li><strong>저장 공간:</strong> 노드의 데이터는 배열에 한 번 저장한다. 자식 연결 리스트에는 자식 노드의 인덱스를 저장한다. 노드 데이터가 중복 저장되지는 않지만, 자식 리스트 항목과 연결 포인터를 위한 추가 메모리가 필요하다.</li>
+<li><strong>오른쪽 형제 탐색:</strong> 노드 인덱스만 알고 있고 해당 노드의 자식 리스트 항목에 직접 접근할 수 없다면, 부모의 자식 리스트에서 해당 노드를 찾아야 한다. 최악 시간복잡도는 O(deg(parent))이다. 현재 자식 리스트 항목에 대한 직접 포인터가 있다면, 다음 형제 항목에는 O(1) 시간에 접근할 수 있다.</li>
+<li><strong>두 트리의 결합 — O(1)인 경우:</strong> 두 트리의 노드가 같은 인덱스 공간에 있고, 노드 복사나 인덱스 재배치가 필요 없으며, 부모의 자식 리스트에 tail 포인터가 있다면 새 서브트리 루트의 부모 인덱스를 갱신하고 자식 리스트 끝에 루트 인덱스를 삽입하면 된다.</li>
+<li><strong>두 트리의 결합 — O(n)이 걸릴 수 있는 경우:</strong> 두 트리가 서로 독립된 배열에 있고, 결합 과정에서 노드 복사나 인덱스 재매핑이 필요하면 전체 병합에 O(n) 시간이 걸릴 수 있다.</li>
 </ul>
 
 <h3>3.3 Left-Child / Right-Sibling — 일반 트리를 이진 트리로</h3>

@@ -53,9 +53,6 @@
   </g>
   <!-- depth/height annotations -->
   <g font-size="11.5" font-weight="700">
-    <text x="270" y="186" fill="#1f2328">Depth: Root에서의 거리 (Root = 0, 아래로 증가)</text>
-    <text x="270" y="206" fill="#1f2328">Height: Leaf까지의 최장 거리 (Leaf = 0, 위로 증가)</text>
-    <text x="270" y="226" fill="#1f2328">이 트리: Depth(4)=2, Height(1)=2 → 트리 높이 = 2</text>
   </g>
 </svg>
 <div class="figcap">같은 트리를 두 기준으로 본다: Depth는 위에서부터, Height는 아래에서부터</div>
@@ -64,9 +61,10 @@
 <div class="box warnbox">
   <p class="xlead">Depth와 Height를 헷갈리지 말 것</p>
   <ul>
-  <li><strong class="k-blue">Depth(깊이)</strong>: 루트에서 해당 노드까지의 간선 수. Root=0.</li>
-  <li><strong class="k-blue">Height(높이)</strong>: 해당 노드에서 가장 먼 리프까지의 간선 수. Leaf=0.</li>
-  <li><strong class="k-blue">트리의 높이 = Root의 Height.</strong></li>
+  <li><strong class="k-blue">Depth(깊이)</strong>: 루트에서 해당 노드까지의 간선 수이다. 루트의 Depth는 0이다.</li>
+  <li><strong class="k-blue">Height(높이)</strong>: 해당 노드에서 가장 먼 리프까지의 간선 수이다. 리프의 Height는 0이다.</li>
+  <li><strong class="k-blue">트리의 높이 = 루트의 Height.</strong></li>
+  <li>예: 이 트리에서 Depth(4)=2, Height(1)=2이므로 트리의 높이는 2이다.</li>
   </ul>
 </div>
 </section>
@@ -157,7 +155,15 @@
 </div>
 
 <h3>2.3 Balanced Binary Tree(균형 이진 트리)</h3>
-<p>여기서는 AVL 방식의 균형 조건을 사용한다: 모든 노드에서 왼쪽/오른쪽 서브트리의 <span class="hl">높이 차이 ≤ 1</span>인 트리. 높이가 O(log n)으로 억제된다. BST의 순서 조건까지 만족하면 검색이 O(log n)으로 보장된다 (일반 이진 트리의 검색은 순서 조건이 없어 O(n)일 수 있음). 비균형(한쪽으로만 긴) 트리는 높이가 O(n)까지 커져 성능이 저하된다 — 그래서 AVL/Red-Black Tree가 자동 균형을 잡는다(강의 10).</p>
+<p>이 노트에서는 AVL 방식의 균형 조건을 사용한다.</p>
+<ul>
+  <li><strong>균형 조건:</strong> 모든 노드에서 왼쪽·오른쪽 서브트리의 높이 차이가 1 이하이다.</li>
+  <li><strong>높이:</strong> 이 조건을 만족하는 트리의 높이는 O(log n)이다.</li>
+  <li><strong>BST 검색:</strong> 위 균형 조건에 BST의 순서 조건까지 만족하면 검색 시간은 O(log n)이다.</li>
+  <li><strong>일반 이진 트리 검색:</strong> BST 순서 조건이 없으면 트리가 균형이어도 값 검색의 최악 시간은 O(n)이다.</li>
+  <li><strong>비균형 BST:</strong> 높이가 최악 Θ(n)까지 커질 수 있으므로 검색·삽입·삭제가 O(n)까지 악화될 수 있다.</li>
+  <li>AVL Tree와 Red-Black Tree는 균형을 자동으로 유지하는 자기 균형 BST의 대표적인 예다(강의 10).</li>
+</ul>
 </section>
 
 <section class="part">
@@ -216,16 +222,33 @@ int main() {
 <div class="box">
   
   <ul>
-  <li>트리 연산의 시간복잡도는 연산 종류와 트리의 성질에 따라 달라진다. BST 검색·삽입·삭제는 한 경로를 따라 진행하므로 O(h). 균형 BST는 O(log n), 한쪽으로 치우친 BST는 최악 O(n). 일반 Binary Tree의 값 검색은 순서 조건이 없으면 균형이어도 최악 O(n). 전체 트리 순회는 항상 Θ(n). 비균형 트리는 최악의 경우 높이가 Θ(n)까지 커질 수 있다.</li>
-  <li>Depth는 위에서(Root=0), Height는 아래에서(Leaf=0) 센다.</li>
-  <li>특수형 4가지:
+  <li>트리 연산의 시간복잡도는 연산 종류와 트리의 성질에 따라 달라진다.</li>
+  </ul>
+  <p class="xlead">시간복잡도</p>
   <ul>
-  <li>Complete — 마지막 레벨을 제외한 모든 레벨이 채워지고 마지막 레벨은 왼쪽부터 채워진 트리, 배열 구현에 효율적.</li>
-  <li>Proper — 모든 노드가 자식을 0개 또는 2개 가지는 트리.</li>
-  <li>Full(이 노트의 포화 정의, Perfect) — 모든 레벨이 완전히 채워진 트리.</li>
-  <li>Balanced(여기서는 AVL 조건) — 모든 노드의 왼쪽·오른쪽 서브트리 높이 차가 1 이하인 트리.</li>
-  </ul></li>
-  <li>배열 구현은 Complete에 특히 효율적 (다른 형태도 가능하나 공간 낭비 큼), Linked 구현은 모든 형태 가능.</li>
+  <li>BST 검색·삽입·삭제: O(h).</li>
+  <li>균형 BST: 높이가 O(log n)이므로 위 연산은 O(log n).</li>
+  <li>치우친 BST: 높이가 최악 Θ(n)까지 커지므로 위 연산은 최악 O(n).</li>
+  <li>일반 이진 트리의 값 검색: BST 순서 조건이 없으면 균형이어도 최악 O(n).</li>
+  <li>전체 트리 순회: 모든 노드를 방문하므로 Θ(n).</li>
+  </ul>
+  <p class="xlead">Depth와 Height</p>
+  <ul>
+  <li>Depth: 루트에서 해당 노드까지의 간선 수이며 Root의 Depth는 0이다.</li>
+  <li>Height: 해당 노드에서 가장 먼 리프까지의 간선 수이며 Leaf의 Height는 0이다.</li>
+  <li>트리의 높이: Root의 Height이다.</li>
+  </ul>
+  <p class="xlead">이진 트리의 특수형</p>
+  <ul>
+  <li>Complete: 마지막 레벨을 제외한 모든 레벨이 완전히 채워지고, 마지막 레벨은 왼쪽부터 채워진다.</li>
+  <li>Proper: 모든 노드는 자식이 0개 또는 2개이다.</li>
+  <li>Full/Perfect(이 노트의 정의): 모든 레벨이 완전히 채워진 트리이다.</li>
+  <li>Balanced(AVL 조건): 모든 노드에서 왼쪽·오른쪽 서브트리의 높이 차이가 1 이하이다.</li>
+  </ul>
+  <p class="xlead">구현 선택</p>
+  <ul>
+  <li>배열: Complete Binary Tree에 특히 효율적이다.</li>
+  <li>Linked: 모든 형태의 이진 트리를 표현할 수 있다.</li>
   </ul>
 </div>
 </section>
