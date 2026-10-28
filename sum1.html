@@ -267,7 +267,7 @@ return hashTable[hash(target)];</code></pre>
   <li><strong class="k-blue">메모리 제약이 있는가?</strong>
     <ul>
     <li>제한 있음 → 메모리 사용량을 따져 선택한다. 연결 리스트도 노드마다 포인터 오버헤드가 있어 메모리 제한만으로 연결 리스트를 고르지는 않는다 (hash table처럼 여유 bucket이 불필요하다는 점은 비교 요소. 예: 임베디드)</li>
-    <li>충분함 → Hash Table (예: 클라우드, 고성능 서버)</li>
+    <li>충분함 → Hash Table도 선택 후보에 포함할 수 있다. 다만 메모리가 충분하다는 이유만으로 해시 테이블을 선택하지는 않으며, 주요 연산의 빈도, 키의 정렬 순서·범위 검색 필요 여부, 최악 시간 보장 등을 함께 비교하여 결정한다.</li>
     </ul></li>
   <li><strong class="k-blue">최악의 경우 보장이 중요한가?</strong>
     <ul>
@@ -384,7 +384,7 @@ return hashTable[hash(target)];</code></pre>
       <ol class="steps">
         <li>배열 → Random Access 가능 → Bubble/Quick/Merge 등 대부분의 정렬 사용 가능.</li>
         <li>연결 리스트 → 임의 위치 접근에 O(n) 순회가 필요해 배열식 Quick Sort는 비효율적이고, Merge Sort가 대표적으로 적합하다 (Insertion Sort는 평균·최악 O(n²)).</li>
-        <li>BST → 키 순서 조건이 유지된 상태라면 In-order Traversal로 키를 오름차순 출력할 수 있고 순회 자체는 O(n)이지만, 이는 정렬 연산이 아니라 이미 유지된 순서를 읽는 것이다. BST를 만드는 과정은 별도다 (임의 입력 삽입부터 세면 균형 BST O(n log n), 일반 BST 최악 O(n²)).</li>
+        <li>BST → 키 순서 조건이 유지된 상태라면 In-order Traversal로 키를 오름차순 출력할 수 있고 순회 자체는 O(n)이지만, 이는 정렬 연산이 아니라 이미 유지된 순서를 읽는 것이다. BST를 만드는 과정은 중위 순회와 별도의 비용이 든다. n개 원소를 균형 BST에 하나씩 삽입하면 전체 O(n log n)이 걸리고, 일반 BST는 삽입 순서에 따라 최악 O(n²)이 될 수 있다. 단, 이미 정렬된 배열이 주어졌다면 중앙 원소를 재귀적으로 선택하여 균형 BST를 O(n)에 직접 구성할 수도 있다. BST를 구성한 뒤 중위 순회로 키를 오름차순 출력하는 데에는 O(n)이 걸린다.</li>
       </ol>
       <div class="qa-final">정답: 같은 문제라도 자료구조에 따라 효율적인 방식이 달라질 뿐, 하나의 알고리즘만 쓸 수 있는 것은 아니다. 자료구조를 고르면 효율적인 알고리즘 후보가 좁혀진다는 뜻이다.</div>
     </div></details>
