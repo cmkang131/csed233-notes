@@ -33,7 +33,7 @@
   <p style="text-align:center;font-weight:700;font-size:17px">Program = Data Structure + Algorithm</p>
 </div>
 
-<p>프로그램이 느릴 때 원인은 두 가지 중 하나다. 나쁜 알고리즘이거나, 부적절한 자료구조거나. 그런데 실제로는 <strong class="k-red">부적절한 자료구조가 더 흔한 원인</strong>이다.</p>
+<p>프로그램의 성능은 알고리즘의 효율, 자료구조의 연산 특성, 입력 규모, 메모리 접근 패턴, I/O 및 실행 환경 등 여러 요인의 영향을 받는다. 특히 자료구조 선택이 부적절하면 검색·삽입·삭제 등의 연산 비용이 크게 증가할 수 있다. 따라서 문제의 주요 연산과 요구사항을 분석하여 적절한 자료구조와 알고리즘을 함께 선택해야 한다. 실제 성능 병목은 측정과 분석을 통해 확인한다.</p>
 <ul>
 <li><strong class="k-blue">Data Structure(자료구조)</strong>는 "데이터를 어떻게 저장할 것인가"를 결정한다 → 메모리 구조, 연산 방식, 성능 특성.</li>
 </ul>
@@ -241,7 +241,8 @@ for (i = 0; i &lt; 1000; i++) if (id[i] == target) return score[i];
 // B. BST
 if (node == nullptr) return NOT_FOUND;
 if (target == node.key) return node.score;
-if (target &lt; node.key) search(node.left); else search(node.right);
+if (target &lt; node.key) return search(node.left);
+else return search(node.right);
 
 // C. 해시 테이블
 return hashTable[hash(target)];</code></pre>
