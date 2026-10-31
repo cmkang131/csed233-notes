@@ -47,7 +47,7 @@
         <li><span class="st-t">naive greedy의 결함.</span> 가장 가까운 미방문 정점을 골라도, 그 정점을 경유해 다른 정점까지의 거리가 짧아지는지를 다시 계산하지 않으므로, 그렇게 짧아진 거리 정보가 다른 정점들의 최단 후보 거리에 반영되지 않는다.
           <span class="why">경유 경로가 더 짧은 경우를 놓친다.</span></li>
         <li><span class="st-t">Dijkstra의 두 요소.</span> 미확정 정점 중 <span class="lt">최소 거리를 확정</span>하고 확정 직후 그 정점을 경유하는 이웃을 <span class="lt">relaxation으로 갱신</span>한다.
-          <span class="why">relaxation으로 낮아진 tentative 거리는, 다음에 가장 작은 거리 라벨을 가진 미확정 정점을 확정할 때 그 선택의 후보가 된다.</span></li>
+          <span class="why">relaxation으로 낮아진 tentative 거리는 다음 선택에서 다른 미확정 정점들의 라벨과 함께 비교되어, 그중 가장 작은 라벨을 가진 정점이 다음에 확정된다.</span></li>
         <li><span class="st-t">왜 모든 비음수 그래프에서 맞는가.</span> 확정 시점에 그 정점보다 짧은 미발견 경로가 존재할 수 없다(모든 가중치 ≥ 0). 그 이유는, 아직 발견되지 않은 더 짧은 경로가 있더라도 그 경로는 확정 집합을 벗어나는 지점에서 어떤 미확정 정점 u를 처음 거쳐야 하기 때문이다. 그때 u의 거리 라벨은 이미 확정된 v의 거리 라벨보다 작지 않고(D[u] ≥ D[v]), u 이후 구간의 비용은 모두 0 이상이므로, 그 경로 전체 길이는 D[v]보다 짧아질 수 없다.
           <span class="why">relaxation과 최소-확정의 결합이 정확성 논증을 가능하게 한다.</span></li>
       </ol>
