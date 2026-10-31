@@ -46,7 +46,7 @@
         <li><span class="st-t">정확성의 근거를 확인한다.</span> 알고리즘의 각 단계가 cut property 하나에만 의존한다.
           <span class="why">매 단계 "컷의 최소 간선 추가"만 반복하므로 그 선택의 안전성이 곧 전체의 정확성이다.</span></li>
         <li><span class="st-t">cut property와 부호.</span> cut property는 가중치의 상대적 크기만 비교하므로 부호와 무관하다.
-          <span class="why">교환 논증(더 싼 간선으로 바꿔치기)은 음수에서도 그대로 성립한다.</span></li>
+          <span class="why">교환 논증에서는 컷의 최소 가중치 간선 e를 선택했을 때, 기존 MST에 e가 없다면 e를 추가해 생긴 사이클에서 같은 컷을 가로지르는 간선 f를 제거한다. 이때 w(e) ≤ w(f)이므로 총가중치는 증가하지 않는다. 동률일 때도 논증이 성립하며, 음수 가중치에서도 동일하다.</span></li>
         <li><span class="st-t">결론과 대비.</span> 따라서 음수 간선이 있어도 Prim은 올바른 MST를 찾는다.
           <span class="why">음수 간선에 취약한 최단경로 Dijkstra와 대비되는 지점이다.</span></li>
       </ol>
