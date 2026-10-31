@@ -32,8 +32,16 @@
       <div class="bx">
         <div class="bx-h">개념 정리 · 회전이 일어나는 조건</div>
         <ul>
-          <li>삽입 후 어떤 노드의 <span class="lt">|balance factor| = 2</span>가 되면 그 노드를 pivot으로 회전한다.</li>
-          <li><b>4가지 경우</b>: LL은 우회전 1회, RR은 좌회전 1회, LR/RL은 이중 회전. 같은 방향으로 두 번 쏠리면(LL/RR) <span class="lt">single rotation</span>으로 끝난다.</li>
+          <li>AVL 삽입 후에는 새로 삽입한 노드에서 루트 방향으로 올라가며 <span class="lt">balance factor</span>를 확인한다. 이때 처음으로 <span class="lt">|BF| = 2</span>가 되는 조상 노드를 pivot으로 선택해 회전한다. <span class="lt">BF(v) = h(v.left) − h(v.right)</span>이며, 모든 노드에서 <span class="lt">|BF| ≤ 1</span>이면 균형이 유지된 상태이다.</li>
+          <li>불균형 노드가 여러 개 있어도 삽입 위치에서 가장 가까운 불균형 조상부터 처리한다. 예를 들어 이 문제에서 5를 삽입하면 노드 3과 노드 2가 모두 불균형이지만, 더 가까운 노드 3을 pivot으로 선택해 좌회전한다. 그러면 노드 2의 불균형도 함께 해소된다.</li>
+          <li>AVL 삽입 시 불균형은 LL, RR, LR, RL의 네 가지 유형으로 구분한다. 회전 횟수는 기본 좌회전 또는 우회전이 실제 수행된 횟수로 계산한다.
+            <ul>
+              <li>LL: pivot에서 우회전 1회. <span class="lt">Single rotation</span>.</li>
+              <li>RR: pivot에서 좌회전 1회. <span class="lt">Single rotation</span>.</li>
+              <li>LR: pivot의 왼쪽 자식을 먼저 좌회전하고, 이어서 pivot을 우회전한다. 총 2회. <span class="lt">Double rotation</span>.</li>
+              <li>RL: pivot의 오른쪽 자식을 먼저 우회전하고, 이어서 pivot을 좌회전한다. 총 2회. <span class="lt">Double rotation</span>.</li>
+            </ul></li>
+          <li>따라서 LL/RR은 기본 회전 1회, LR/RL은 기본 회전 2회로 센다. 이 문제에서는 LL 1회와 RR 3회만 발생하므로 총 4회이며, <span class="lt">double rotation</span>은 발생하지 않는다.</li>
         </ul>
         <p class="refline">강의 슬라이드 Ch10 p33 Quiz</p>
       </div>
@@ -61,7 +69,7 @@
   </details>
 </section>
 
-<div class="takeaway"><b>한 줄 정리</b> &middot; 오름차순에 가까운 입력은 매번 한쪽으로만 쏠려 LL/RR <span class="lt">single rotation</span>만 반복된다.</div>
+<div class="takeaway"><b>한 줄 정리</b> &middot; 이 문제의 입력 3, 2, 1, 4, 5, 6, 7에서는 1 삽입 시 LL 우회전 1회, 5·6·7 삽입 시 각각 RR 좌회전 1회가 발생하여 총 4회의 <span class="lt">single rotation</span>이 수행된다. 3·2·4 삽입 시에는 회전이 없다. 회전 유형은 입력 전체가 오름차순에 가까운지가 아니라, 삽입 후 pivot에서 나타나는 LL/RR/LR/RL 경로에 따라 결정된다. 따라서 오름차순에 가까운 입력에서도 LR/RL <span class="lt">double rotation</span>이 발생할 수 있다.</div>
 <div class="pnav"><a href="q10-1.html">&larr; Quiz 10-1</a><a href="../index.html">목차</a><a class="tap" href="q10-3.html">Quiz 10-3</a></div>
 </div>
 </article>
